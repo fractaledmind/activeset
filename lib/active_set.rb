@@ -4,7 +4,7 @@ require 'active_set/version'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/hash/slice'
 
-require 'active_set/filter_processor'
+require 'active_set/filter/processor'
 require 'active_set/sort_processor'
 require 'active_set/paginate_processor'
 
@@ -27,7 +27,7 @@ class ActiveSet
   end
 
   def filter(structure)
-    filterer = FilterProcessor.new(@set, structure)
+    filterer = Filter::Processor.new(@set, structure)
     self.class.new(filterer.process)
   end
 
