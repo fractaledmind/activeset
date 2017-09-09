@@ -4,6 +4,8 @@ require 'active_set/version'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/hash/slice'
 
+require 'active_set/filter_processor'
+
 class ActiveSet
   include Enumerable
 
@@ -23,10 +25,8 @@ class ActiveSet
   end
 
   def filter(structure)
-    self.class.new(structure.reject { |_, value| value.blank? }
-                            .reduce(@set) do |set, (key, value)|
-                              set.select { |item| item.send(key) == value }
-                            end)
+    filterer = FilterProcessor.new(@set, structure)
+    self.class.new(filterer.process)
   end
 
   def sort(structure)
