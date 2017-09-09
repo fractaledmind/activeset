@@ -7,8 +7,10 @@ class ActiveSet
     class EnumerableAdapter < BaseAdapter
       def process(set)
         @set = set
-        @set.sort_by { |item| item.send(@key) }
-            .tap     { |c| c.reverse! if @value.to_s == 'desc' }
+        @set.sort_by do |item|
+          attribute_value = @structure_path.value_for(item: item)
+          attribute_value.is_a?(String) ? attribute_value.downcase : attribute_value
+        end.tap { |c| c.reverse! if @value.to_s == 'desc' }
       end
     end
   end

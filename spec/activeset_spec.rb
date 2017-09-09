@@ -4,9 +4,9 @@ require 'spec_helper'
 require 'ostruct'
 
 RSpec.describe ActiveSet do
-  let(:foo) { OpenStruct.new(key: 'foo') }
-  let(:bar) { OpenStruct.new(key: 'bar') }
-  let(:baz) { OpenStruct.new(key: 'baz') }
+  let(:foo) { OpenStruct.new(key: 'foo', association: OpenStruct.new(key: 'oof')) }
+  let(:bar) { OpenStruct.new(key: 'bar', association: OpenStruct.new(key: 'rab')) }
+  let(:baz) { OpenStruct.new(key: 'baz', association: OpenStruct.new(key: 'zab')) }
   let(:set) { [foo, bar, baz] }
   let(:active_set) { ActiveSet.new set }
 
@@ -15,14 +15,27 @@ RSpec.describe ActiveSet do
   end
 
   describe 'filtering' do
-    it { p active_set.filter(key: 'bar') }
-    it { expect(active_set.filter(key: 'bar')).to eq [bar] }
-    it { expect(active_set.filter(key: 'val')).to eq ActiveSet.new([]) }
+    context 'by attributes on the base resource' do
+      it { expect(active_set.filter(key: 'bar')).to eq [bar] }
+      it { expect(active_set.filter(key: 'val')).to eq ActiveSet.new([]) }
+    end
+
+    context 'by attributes on an associated resource' do
+      it { expect(active_set.filter(association: { key: 'zab' })).to eq [baz] }
+      it { expect(active_set.filter(association: { key: 'val' })).to eq ActiveSet.new([]) }
+    end
   end
 
   describe 'sorting' do
-    it { expect(active_set.sort(key: :asc)).to eq [bar, baz, foo] }
-    it { expect(active_set.sort(key: :desc)).to eq ActiveSet.new([foo, baz, bar]) }
+    context 'by attributes on the base resource' do
+      it { expect(active_set.sort(key: :asc)).to eq [bar, baz, foo] }
+      it { expect(active_set.sort(key: :desc)).to eq ActiveSet.new([foo, baz, bar]) }
+    end
+
+    context 'by attributes on an associated resource' do
+      it { expect(active_set.sort(association: { key: :asc })).to eq [foo, bar, baz] }
+      it { expect(active_set.sort(association: { key: :desc })).to eq ActiveSet.new([baz, bar, foo]) }
+    end
   end
 
   describe 'paginating' do

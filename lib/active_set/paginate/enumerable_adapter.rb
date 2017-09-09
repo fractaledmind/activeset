@@ -17,7 +17,7 @@ class ActiveSet
       end
 
       def page_number
-        @key
+        @structure_path.attribute.to_i
       end
     end
   end

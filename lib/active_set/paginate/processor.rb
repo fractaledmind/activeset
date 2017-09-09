@@ -8,7 +8,7 @@ class ActiveSet
     class Processor < BaseProcessor
       def process
         return @set if @set.count < pagesize
-        adapter.new(@structure[:page], pagesize).process(@set)
+        adapter.new(page_number, pagesize).process(@set)
       end
 
       private
@@ -17,8 +17,12 @@ class ActiveSet
         EnumerableAdapter
       end
 
+      def page_number
+        @structure[[:page]] || 1
+      end
+
       def pagesize
-        @structure[:size] || 25
+        @structure[[:size]] || 25
       end
     end
   end

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'active_set/version'
-require 'active_support/core_ext/object/blank'
-require 'active_support/core_ext/hash/slice'
 
 require 'active_set/filter/processor'
 require 'active_set/sort/processor'

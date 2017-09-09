@@ -7,7 +7,11 @@ class ActiveSet
     class EnumerableAdapter < BaseAdapter
       def process(set)
         @set = set
-        @set.select { |item| item.send(@key) == @value }
+        @set.select do |item|
+          attribute_value = @structure_path.value_for(item: item)
+          attribute_value.send(@structure_path.operator,
+                               @value)
+        end
       end
     end
   end
