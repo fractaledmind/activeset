@@ -16,23 +16,23 @@ class ActiveSet
   end
 
   def filter(structure)
-    structure.reject { |_, value| value.blank? }
-             .reduce(@set) do |set, (key, value)|
-               set.select { |item| item.send(key) == value }
-             end
+    self.class.new(structure.reject { |_, value| value.blank? }
+                            .reduce(@set) do |set, (key, value)|
+                              set.select { |item| item.send(key) == value }
+                            end)
   end
 
   def sort(structure)
-    structure.reject { |_, value| value.blank? }
-             .reduce(@set) do |set, (key, value)|
-               set.sort_by { |item| item.send(key) }
-                  .tap     { |c| c.reverse! if value.to_s == 'desc' }
-             end
+    self.class.new(structure.reject { |_, value| value.blank? }
+                            .reduce(@set) do |set, (key, value)|
+                              set.sort_by { |item| item.send(key) }
+                                 .tap     { |c| c.reverse! if value.to_s == 'desc' }
+                            end)
   end
 
   def paginate(structure)
     pagesize = structure[:size] || 25
-    return @set if @set.count < pagesize
-    @set.each_slice(pagesize).take(structure[:page]).last
+    return self.class.new(@set) if @set.count < pagesize
+    self.class.new(@set.each_slice(pagesize).take(structure[:page]).last)
   end
 end
