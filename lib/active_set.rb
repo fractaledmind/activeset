@@ -19,4 +19,12 @@ class ActiveSet
                set.select { |item| item.send(key) == value }
              end
   end
+
+  def sort(structure)
+    structure.reject { |_, value| value.nil? || value.empty? }
+             .reduce(@set) do |set, (key, value)|
+               set.sort_by { |item| item.send(key) }
+                  .tap     { |c| c.reverse! if value.to_s == 'desc' }
+             end
+  end
 end
