@@ -6,6 +6,7 @@ require 'active_support/core_ext/hash/slice'
 
 require 'active_set/filter_processor'
 require 'active_set/sort_processor'
+require 'active_set/paginate_processor'
 
 class ActiveSet
   include Enumerable
@@ -36,8 +37,7 @@ class ActiveSet
   end
 
   def paginate(structure)
-    pagesize = structure[:size] || 25
-    return self.class.new(@set) if @set.count < pagesize
-    self.class.new(@set.each_slice(pagesize).take(structure[:page]).last)
+    paginater = PaginateProcessor.new(@set, structure)
+    self.class.new(paginater.process)
   end
 end
