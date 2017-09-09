@@ -18,8 +18,6 @@ Style/Documentation:
   Enabled: false
 Style/SignalException:
   EnforcedStyle: semantic
-Rails:
-  Enabled: true
 Metrics/BlockLength:
   Exclude:
     - 'activeset.gemspec'
