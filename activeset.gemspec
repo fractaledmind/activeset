@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'A toolkit for working with enumerable sets.'
   spec.description   = 'Easily filter, sort, and paginate enumerable sets.'
-  spec.homepage      = 'TODO: Put your gem website or public repo URL here.'
+  spec.homepage      = 'https://github.com/fractaledmind/activeset'
   spec.license       = 'MIT'
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
