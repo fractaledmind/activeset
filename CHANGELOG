@@ -1,0 +1,5 @@
+v 0.2.0
+  - allows for filtering and sorting enumerable collections via associated attributes
+v 0.1.0
+  - initial version
+  - allows for filtering, sorting, and pagination enumerable collections via direct attributes
