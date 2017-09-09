@@ -3,7 +3,7 @@
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'activeset/version'
+require 'active_set/version'
 
 Gem::Specification.new do |spec|
   spec.platform      = Gem::Platform::RUBY
