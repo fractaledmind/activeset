@@ -5,8 +5,8 @@ require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/hash/slice'
 
 require 'active_set/filter/processor'
-require 'active_set/sort_processor'
-require 'active_set/paginate_processor'
+require 'active_set/sort/processor'
+require 'active_set/paginate/processor'
 
 class ActiveSet
   include Enumerable
@@ -32,12 +32,12 @@ class ActiveSet
   end
 
   def sort(structure)
-    sorter = SortProcessor.new(@set, structure)
+    sorter = Sort::Processor.new(@set, structure)
     self.class.new(sorter.process)
   end
 
   def paginate(structure)
-    paginater = PaginateProcessor.new(@set, structure)
+    paginater = Paginate::Processor.new(@set, structure)
     self.class.new(paginater.process)
   end
 end
