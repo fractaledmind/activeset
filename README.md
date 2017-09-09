@@ -1,9 +1,5 @@
 # Activeset
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/activeset`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -22,7 +18,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The `ActiveSet` class is an extension of `Enumerable` that adds methods for filtering, sorting, and paginating (right now; other methods are sure to follow).
+
+Every convenience method added to the `ActiveSet` class is handled via a `Processor` class, and that `Processor` class will then use 1 or more `Adapter` classes to actually fulfill the functional contract.
+
+an `Adapter` for a particular `Processor` simply handles doing the job of the processor for a particular kind of Set.
+
+So, for example, the `Filter::Processor` will have an `EnumerableAdapter` (to work with generic enumerable sets) and an `ActiveRecordAdapter` (to work with active record relations).
+
+When calling a convenience method on an instance of `ActiveSet`, you pass only 1 argument: what I am currently calling a `structure`, which is a plain-old-Ruby-hash. Each convenience method works with hashes of differing signatures.
+
+e.g. `filter(attribute: 'value', association: { field: 'value' })` or `sort(attribute: :asc, association: { field: 'desc' })` or `paginate(page: 1, size: 10)`
 
 ## Development
 
