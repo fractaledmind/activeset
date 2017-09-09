@@ -2,6 +2,7 @@
 
 require 'active_set/version'
 require 'active_support/core_ext/object/blank'
+require 'active_support/core_ext/hash/slice'
 
 class ActiveSet
   include Enumerable
@@ -27,5 +28,11 @@ class ActiveSet
                set.sort_by { |item| item.send(key) }
                   .tap     { |c| c.reverse! if value.to_s == 'desc' }
              end
+  end
+
+  def paginate(structure)
+    pagesize = structure[:size] || 25
+    return @set if @set.count < pagesize
+    @set.each_slice(pagesize).take(structure[:page]).last
   end
 end

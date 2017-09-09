@@ -23,4 +23,13 @@ RSpec.describe ActiveSet do
     it { expect(active_set.sort(key: :asc)).to eq [bar, baz, foo] }
     it { expect(active_set.sort(key: :desc)).to eq [foo, baz, bar] }
   end
+
+  describe 'paginating' do
+    it { expect(active_set.paginate(page: 1, size: 1)).to eq [foo] }
+    it { expect(active_set.paginate(page: 1, size: 2)).to eq [foo, bar] }
+    it { expect(active_set.paginate(page: 2, size: 1)).to eq [bar] }
+    it { expect(active_set.paginate(page: 2, size: 2)).to eq [baz] }
+    it { expect(active_set.paginate(page: 10, size: 2)).to eq [baz] }
+    it { expect(active_set.paginate(page: 10)).to eq [foo, bar, baz] }
+  end
 end
