@@ -5,6 +5,7 @@ require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/hash/slice'
 
 require 'active_set/filter_processor'
+require 'active_set/sort_processor'
 
 class ActiveSet
   include Enumerable
@@ -30,11 +31,8 @@ class ActiveSet
   end
 
   def sort(structure)
-    self.class.new(structure.reject { |_, value| value.blank? }
-                            .reduce(@set) do |set, (key, value)|
-                              set.sort_by { |item| item.send(key) }
-                                 .tap     { |c| c.reverse! if value.to_s == 'desc' }
-                            end)
+    sorter = SortProcessor.new(@set, structure)
+    self.class.new(sorter.process)
   end
 
   def paginate(structure)
