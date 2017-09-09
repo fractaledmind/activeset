@@ -1,4 +1,5 @@
 # coding: utf-8
+# frozen_string_literal: true
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
@@ -21,7 +22,7 @@ Gem::Specification.new do |spec|
   if spec.respond_to?(:metadata)
     spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
   else
-    raise 'RubyGems 2.0 or newer is required to protect against ' \
+    fail 'RubyGems 2.0 or newer is required to protect against ' \
       'public gem pushes.'
   end
 
