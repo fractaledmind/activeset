@@ -15,21 +15,22 @@ RSpec.describe ActiveSet do
   end
 
   describe 'filtering' do
+    it { p active_set.filter(key: 'bar') }
     it { expect(active_set.filter(key: 'bar')).to eq [bar] }
-    it { expect(active_set.filter(key: 'val')).to eq [] }
+    it { expect(active_set.filter(key: 'val')).to eq ActiveSet.new([]) }
   end
 
   describe 'sorting' do
     it { expect(active_set.sort(key: :asc)).to eq [bar, baz, foo] }
-    it { expect(active_set.sort(key: :desc)).to eq [foo, baz, bar] }
+    it { expect(active_set.sort(key: :desc)).to eq ActiveSet.new([foo, baz, bar]) }
   end
 
   describe 'paginating' do
-    it { expect(active_set.paginate(page: 1, size: 1)).to eq [foo] }
+    it { expect(active_set.paginate(page: 1, size: 1)).to eq ActiveSet.new([foo]) }
     it { expect(active_set.paginate(page: 1, size: 2)).to eq [foo, bar] }
     it { expect(active_set.paginate(page: 2, size: 1)).to eq [bar] }
     it { expect(active_set.paginate(page: 2, size: 2)).to eq [baz] }
     it { expect(active_set.paginate(page: 10, size: 2)).to eq [baz] }
-    it { expect(active_set.paginate(page: 10)).to eq [foo, bar, baz] }
+    it { expect(active_set.paginate(page: 10)).to eq ActiveSet.new([foo, bar, baz]) }
   end
 end

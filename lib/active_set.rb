@@ -7,12 +7,19 @@ require 'active_support/core_ext/hash/slice'
 class ActiveSet
   include Enumerable
 
+  attr_reader :set
+
   def initialize(set)
     @set = set
   end
 
   def each(&block)
     @set.each(&block)
+  end
+
+  def ==(other)
+    return @set == other unless other.is_a?(ActiveSet)
+    @set == other.set
   end
 
   def filter(structure)
