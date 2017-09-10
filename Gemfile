@@ -6,3 +6,8 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 # Specify your gem's dependencies in activeset.gemspec
 gemspec
+
+group :test do
+  gem 'activerecord'
+  gem 'sqlite3'
+end
