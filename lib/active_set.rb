@@ -24,6 +24,14 @@ class ActiveSet
     @set == other.set
   end
 
+  def method_missing(method_name, *args, &block)
+    @set.send(method_name, *args, &block) || super
+  end
+
+  def respond_to_missing?(method_name, include_private = false)
+    @set.respond_to?(method_name) || super
+  end
+
   def filter(structure)
     filterer = Filter::Processor.new(@set, structure)
     self.class.new(filterer.process)
