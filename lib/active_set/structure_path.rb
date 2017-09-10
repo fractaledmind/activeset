@@ -27,15 +27,19 @@ class StructurePath
   end
 
   def to_h
-    to_a.reverse.inject({}) { |a, e| { e => a } }
+    to_a.reverse.reduce({}) { |a, e| { e => a } }
   end
 
   def value_for(item:)
-    @path.inject(item, :try)
+    @path.reduce(item, :try)
+  rescue
+    nil
   end
 
   def resource_for(item:)
-    to_a.inject(item, :try)
+    to_a.reduce(item, :try)
+  rescue
+    nil
   end
 
   private
