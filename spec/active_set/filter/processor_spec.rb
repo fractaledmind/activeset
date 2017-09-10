@@ -7,7 +7,11 @@ RSpec.describe ActiveSet::FilterProcessor do
   let(:processor) { described_class.new(set, filter_structure) }
 
   context 'when set is simple Enumerable' do
-    let(:foo) { OpenStruct.new(key: 'foo', association: OpenStruct.new(key: 'oof')) }
+    let(:foo) do
+      OpenStruct.new(key: 'foo',
+                     date_on: 1.day.from_now,
+                     association: OpenStruct.new(key: 'oof'))
+    end
     let(:bar) { OpenStruct.new(key: 'bar', association: OpenStruct.new(key: 'rab')) }
     let(:baz) { OpenStruct.new(key: 'baz', association: OpenStruct.new(key: 'zab')) }
     let(:set) { [foo, bar, baz] }
@@ -26,6 +30,12 @@ RSpec.describe ActiveSet::FilterProcessor do
           let(:filter_structure) { { key: '___' } }
 
           it { should eq [] }
+        end
+
+        context 'with a typecast-able value' do
+          let(:filter_structure) { { date_on: foo.date_on.to_date.to_s } }
+
+          it { should eq [foo] }
         end
       end
 
