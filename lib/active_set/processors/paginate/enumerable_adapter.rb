@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require_relative '../base_adapter'
+require_relative '../base_processor'
 
 class ActiveSet
-  module Paginate
+  class PaginateProcessor < BaseProcessor
     class EnumerableAdapter < BaseAdapter
       def process(set)
         set.each_slice(pagesize).take(page_number).last

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require_relative '../base_adapter'
+require_relative '../base_processor'
 
 class ActiveSet
-  module Sort
+  class SortProcessor < BaseProcessor
     class EnumerableAdapter < BaseAdapter
       def process(set)
         set.sort_by do |item|

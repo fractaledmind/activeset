@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'ostruct'
 
-RSpec.describe ActiveSet::Sort::Processor do
+RSpec.describe ActiveSet::SortProcessor do
   let(:processor) { described_class.new(set, sort_structure) }
 
   context 'when set is simple Enumerable' do

@@ -2,9 +2,9 @@
 
 require 'active_set/version'
 
-require 'active_set/filter/processor'
-require 'active_set/sort/processor'
-require 'active_set/paginate/processor'
+require 'active_set/processors/filter_processor'
+require 'active_set/processors/sort_processor'
+require 'active_set/processors/paginate_processor'
 
 class ActiveSet
   include Enumerable
@@ -33,17 +33,17 @@ class ActiveSet
   end
 
   def filter(structure)
-    filterer = Filter::Processor.new(@set, structure)
+    filterer = FilterProcessor.new(@set, structure)
     self.class.new(filterer.process)
   end
 
   def sort(structure)
-    sorter = Sort::Processor.new(@set, structure)
+    sorter = SortProcessor.new(@set, structure)
     self.class.new(sorter.process)
   end
 
   def paginate(structure)
-    paginater = Paginate::Processor.new(@set, structure)
+    paginater = PaginateProcessor.new(@set, structure)
     self.class.new(paginater.process)
   end
 end

@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 require_relative '../base_adapter'
+require_relative '../base_processor'
 
 class ActiveSet
-  module Sort
+  class FilterProcessor < BaseProcessor
     class ActiveRecordAdapter < BaseAdapter
       def process(set)
         @set = set
         return @set unless @set.respond_to? :to_sql
         return @set unless attribute_is_field?
 
-        @set.order(@structure_path.attribute => @value)
         @set.includes(@structure_path.to_h)
             .references(@structure_path.to_h)
-            .merge(arel_operation)
+            .where(arel_operation)
       end
 
       private
@@ -25,7 +25,9 @@ class ActiveSet
       end
 
       def arel_operation
-        attribute_model.order(arel_column.lower.send(@value))
+        Arel::Nodes::InfixOperation.new(@structure_path.operator,
+                                        arel_column,
+                                        arel_value)
       end
 
       def attribute_model
@@ -37,6 +39,10 @@ class ActiveSet
 
       def arel_column
         arel_table[@structure_path.attribute]
+      end
+
+      def arel_value
+        Arel.sql(ActiveRecord::Base.connection.quote(@value))
       end
 
       def arel_table

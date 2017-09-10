@@ -3,7 +3,7 @@
 require_relative '../base_adapter'
 
 class ActiveSet
-  module Filter
+  class FilterProcessor < BaseProcessor
     class EnumerableAdapter < BaseAdapter
       def process(set)
         set.select do |item|
