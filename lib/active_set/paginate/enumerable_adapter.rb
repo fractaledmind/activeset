@@ -6,8 +6,7 @@ class ActiveSet
   module Paginate
     class EnumerableAdapter < BaseAdapter
       def process(set)
-        @set = set
-        @set.each_slice(pagesize).take(page_number).last
+        set.each_slice(pagesize).take(page_number).last
       end
 
       private
