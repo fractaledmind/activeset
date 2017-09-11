@@ -2,6 +2,8 @@
 
 module Structure
   class Value
+    attr_reader :raw
+
     def initialize(value)
       @raw = value
     end
@@ -10,7 +12,7 @@ module Structure
       adapters.map do |adapter|
         value = adapter.new(@raw, to).process
         return value if value
-      end
+      end.compact.first || @raw
     end
 
     private

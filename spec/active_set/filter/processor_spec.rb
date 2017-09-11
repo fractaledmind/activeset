@@ -9,7 +9,7 @@ RSpec.describe ActiveSet::FilterProcessor do
   context 'when set is simple Enumerable' do
     let(:foo) do
       OpenStruct.new(key: 'foo',
-                     date_on: 1.day.from_now,
+                     date_on: 1.day.from_now.to_date,
                      association: OpenStruct.new(key: 'oof'))
     end
     let(:bar) { OpenStruct.new(key: 'bar', association: OpenStruct.new(key: 'rab')) }

@@ -11,7 +11,6 @@ class ActiveSet
         return @set unless @set.respond_to? :to_sql
         return @set unless attribute_is_field?
 
-        @set.order(@structure_path.attribute => @value)
         @set.includes(@structure_path.to_h)
             .references(@structure_path.to_h)
             .merge(arel_operation)
@@ -26,7 +25,7 @@ class ActiveSet
       end
 
       def arel_operation
-        attribute_model.order(arel_column.lower.send(@value))
+        attribute_model.order(arel_column.lower.send(@structure_value.raw))
       end
 
       def attribute_model

@@ -9,7 +9,7 @@ class ActiveSet
         set.select do |item|
           attribute_value = @structure_path.value_for(item: item)
           attribute_value.send(@structure_path.operator,
-                               @value)
+                               @structure_value.cast(to: attribute_value.class))
         end
       end
     end
