@@ -5,6 +5,8 @@ require 'active_support/core_ext/object/try'
 
 module Structure
   class Path
+    attr_reader :path
+
     def initialize(path)
       # `path` can be an Array (e.g. [:parent, :child, :grandchild])
       # or a String (e.g. 'parent.child.grandchild')
