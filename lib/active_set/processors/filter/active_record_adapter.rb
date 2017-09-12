@@ -42,7 +42,7 @@ class ActiveSet
       end
 
       def arel_value
-        Arel.sql(ActiveRecord::Base.connection.quote(@structure_value.raw))
+        Arel.sql(ActiveRecord::Base.connection.quote(@value))
       end
 
       def arel_table

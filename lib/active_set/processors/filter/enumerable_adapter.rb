@@ -7,10 +7,26 @@ class ActiveSet
     class EnumerableAdapter < BaseAdapter
       def process(set)
         set.select do |item|
-          attribute_value = @structure_path.value_for(item: item)
-          attribute_value.send(@structure_path.operator,
-                               @structure_value.cast(to: attribute_value.class))
+          value_for(item).send(@structure_path.operator,
+                               passed_value)
         end
+      end
+
+      private
+
+      def value_for(item)
+        convert_datetime_values_to_integer(@structure_path.value_for(item: item))
+      end
+
+      def passed_value
+        convert_datetime_values_to_integer(@value)
+      end
+
+      def convert_datetime_values_to_integer(value)
+        # DateTimes (and Times) are tricky to compare, Integers are easier
+        # and I only care about second precision
+        return value unless value.is_a?(DateTime)
+        value.to_i
       end
     end
   end
