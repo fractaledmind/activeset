@@ -1,4 +1,4 @@
-# Activeset
+# ActiveSet
 
 ## Installation
 
@@ -30,6 +30,17 @@ When calling a convenience method on an instance of `ActiveSet`, you pass only 1
 
 e.g. `filter(attribute: 'value', association: { field: 'value' })` or `sort(attribute: :asc, association: { field: 'desc' })` or `paginate(page: 1, size: 10)`
 
+## Future Feature Ideas
+
+- allow for filtering thru `to-many` associations (maybe via `associations[any]` or `associations[all]` syntax)
+- allow for filtering without typecasting the value (maybe via `key*` syntax)
+
+## Notes
+
+This library does not deal with typecasting string values; the values of your structures must be of the appropriate data-type.
+
+This library does not work with `:time` fields in ActiveRecord relations.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -38,7 +49,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/activeset.
+Bug reports and pull requests are welcome on GitHub at https://github.com/fractaledmind/activeset.
 
 ## License
 
