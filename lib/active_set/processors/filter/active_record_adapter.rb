@@ -11,9 +11,7 @@ class ActiveSet
         return @set unless @set.respond_to? :to_sql
         return @set unless attribute_is_field?
 
-        @set.includes(@structure_path.to_h)
-            .references(@structure_path.to_h)
-            .where(arel_operation)
+        query
       end
 
       private
@@ -22,6 +20,12 @@ class ActiveSet
         return false unless attribute_model
         attribute_model.attribute_names
                        .include?(@structure_path.attribute)
+      end
+
+      def query
+        @set.includes(@structure_path.to_h)
+            .references(@structure_path.to_h)
+            .where(arel_operation)
       end
 
       def arel_operation
