@@ -11,7 +11,7 @@ module Structure
     def cast(to:)
       adapters.map do |adapter|
         value = adapter.new(@raw, to).process
-        return value if value
+        return value unless value.nil?
       end.compact.first || @raw
     end
 
@@ -28,6 +28,7 @@ module Structure
       end
 
       def process
+        return @raw if @raw.is_a? @target
         possible_values.find { |v| v.is_a? @target }
       end
 
@@ -61,10 +62,20 @@ module Structure
       end
 
       def process
+        return @raw if @raw.is_a? @target
+        # ActiveModel::Type::Boolean is too expansive in its casting; will get false positives
+        return to_bool if @target.eql?(TrueClass) || @target.eql?(FalseClass)
         possible_values.find { |v| v.is_a? @target }
       end
 
       private
+
+      def to_bool
+        return @raw if @raw.is_a?(TrueClass) || @raw.is_a?(FalseClass)
+        return true if %w[true yes 1 t].include? @raw.to_s.downcase
+        return false if %w[false no 0 f].include? @raw.to_s.downcase
+        @raw
+      end
 
       def possible_values
         possible_typecasters.map { |m| typecast(m, @raw) }
