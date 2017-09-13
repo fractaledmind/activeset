@@ -34,7 +34,7 @@ module Structure
     end
 
     def value_for(item:)
-      @path.reduce(item, :try)
+      resource_for(item: item).send(attribute)
     rescue
       nil
     end
