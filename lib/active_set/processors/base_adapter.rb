@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../structure/path'
-require_relative '../structure/value'
 
 class BaseAdapter
   def initialize(keypath, value)
