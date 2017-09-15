@@ -13,7 +13,7 @@ class ActiveSet
       private
 
       def pagesize
-        @structure_value.raw
+        @value
       end
 
       def page_number
