@@ -2,18 +2,18 @@
 
 require 'spec_helper'
 
-RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
-  include_context 'for enumerable sets'
+RSpec.describe ActiveSet::FilterProcessor::ActiveRecordAdapter do
+  include_context 'for active record sets'
 
   let(:adapter) { described_class.new(keypath, value) }
 
-  describe '#process with Integer type attribute value' do
-    subject { adapter.process(enumerable_set) }
+  describe '#process with :integer type attribute value' do
+    subject { adapter.process(active_record_set) }
 
     context 'on the base object' do
       before(:each) do
-        foo.integer = 1
-        bar.integer = 2
+        foo.tap { |foo| foo.integer = 1 }.tap(&:save)
+        bar.tap { |bar| bar.integer = 2 }.tap(&:save)
       end
 
       context 'with default == operator' do
@@ -155,8 +155,8 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
 
     context 'on an associated object' do
       before(:each) do
-        foo.assoc.integer = 1
-        bar.assoc.integer = 2
+        foo.assoc.tap { |foo_assoc| foo_assoc.integer = 1 }.tap(&:save)
+        bar.assoc.tap { |bar_assoc| bar_assoc.integer = 2 }.tap(&:save)
       end
 
       context 'with default == operator' do

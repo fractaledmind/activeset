@@ -2,151 +2,151 @@
 
 require 'spec_helper'
 
-RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
-  include_context 'for enumerable sets'
+RSpec.describe ActiveSet::FilterProcessor::ActiveRecordAdapter do
+  include_context 'for active record sets'
 
   let(:adapter) { described_class.new(keypath, value) }
 
-  describe '#process with Integer type attribute value' do
-    subject { adapter.process(enumerable_set) }
+  describe '#process with :text type attribute value' do
+    subject { adapter.process(active_record_set) }
 
     context 'on the base object' do
       before(:each) do
-        foo.integer = 1
-        bar.integer = 2
+        foo.tap { |foo| foo.text = 'aaa' * 256 }.tap(&:save)
+        bar.tap { |bar| bar.text = 'zzz' * 256 }.tap(&:save)
       end
 
       context 'with default == operator' do
-        let(:keypath) { [:integer] }
+        let(:keypath) { [:text] }
 
         context 'and the value matches' do
-          let(:value) { foo.integer }
+          let(:value) { foo.text }
 
           it { expect(subject.map(&:id)).to eq [foo.id] }
         end
 
-        context 'and the value does not matches' do
-          let(:value) { -1 }
+        context 'and the value does not match' do
+          let(:value) { '___' }
 
           it { expect(subject.map(&:id)).to eq [] }
         end
       end
 
       context 'with default > operator' do
-        let(:keypath) { ['integer(>)'] }
+        let(:keypath) { ['text(>)'] }
 
         context 'and the value matches' do
           context 'the lesser' do
-            let(:value) { foo.integer }
+            let(:value) { foo.text }
 
             it { expect(subject.map(&:id)).to eq [bar.id] }
           end
 
           context 'the greater' do
-            let(:value) { bar.integer }
+            let(:value) { bar.text }
 
             it { expect(subject.map(&:id)).to eq [] }
           end
         end
 
         context 'and the value does not match any' do
-          let(:value) { 100 }
+          let(:value) { '~~~' * 256 }
 
           it { expect(subject.map(&:id)).to eq [] }
         end
 
         context 'and the value matches all' do
-          let(:value) { -1 }
+          let(:value) { '___' * 256 }
 
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end
       end
 
       context 'with default < operator' do
-        let(:keypath) { ['integer(<)'] }
+        let(:keypath) { ['text(<)'] }
 
         context 'and the value matches' do
           context 'the lesser' do
-            let(:value) { foo.integer }
+            let(:value) { foo.text }
 
             it { expect(subject.map(&:id)).to eq [] }
           end
 
           context 'the greater' do
-            let(:value) { bar.integer }
+            let(:value) { bar.text }
 
             it { expect(subject.map(&:id)).to eq [foo.id] }
           end
         end
 
         context 'and the value does not match any' do
-          let(:value) { -1 }
+          let(:value) { '___' * 256 }
 
           it { expect(subject.map(&:id)).to eq [] }
         end
 
         context 'and the value matches all' do
-          let(:value) { 100 }
+          let(:value) { '~~~' * 256 }
 
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end
       end
 
       context 'with default >= operator' do
-        let(:keypath) { ['integer(>=)'] }
+        let(:keypath) { ['text(>=)'] }
 
         context 'and the value matches' do
           context 'the lesser' do
-            let(:value) { foo.integer }
+            let(:value) { foo.text }
 
             it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
           end
 
           context 'the greater' do
-            let(:value) { bar.integer }
+            let(:value) { bar.text }
 
             it { expect(subject.map(&:id)).to eq [bar.id] }
           end
         end
 
         context 'and the value does not match any' do
-          let(:value) { 100 }
+          let(:value) { '~~~' * 256 }
 
           it { expect(subject.map(&:id)).to eq [] }
         end
 
         context 'and the value matches all' do
-          let(:value) { -1 }
+          let(:value) { '___' * 256 }
 
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end
       end
 
       context 'with default <= operator' do
-        let(:keypath) { ['integer(<=)'] }
+        let(:keypath) { ['text(<=)'] }
 
         context 'and the value matches' do
           context 'the lesser' do
-            let(:value) { foo.integer }
+            let(:value) { foo.text }
 
             it { expect(subject.map(&:id)).to eq [foo.id] }
           end
 
           context 'the greater' do
-            let(:value) { bar.integer }
+            let(:value) { bar.text }
 
             it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
           end
         end
 
         context 'and the value does not match any' do
-          let(:value) { -1 }
+          let(:value) { '___' * 256 }
 
           it { expect(subject.map(&:id)).to eq [] }
         end
 
         context 'and the value matches all' do
-          let(:value) { 100 }
+          let(:value) { '~~~' * 256 }
 
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end
@@ -155,141 +155,141 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
 
     context 'on an associated object' do
       before(:each) do
-        foo.assoc.integer = 1
-        bar.assoc.integer = 2
+        foo.assoc.tap { |foo_assoc| foo_assoc.text = 'aaa' * 256 }.tap(&:save)
+        bar.assoc.tap { |bar_assoc| bar_assoc.text = 'zzz' * 256 }.tap(&:save)
       end
 
       context 'with default == operator' do
-        let(:keypath) { %w[assoc integer] }
+        let(:keypath) { %w[assoc text] }
 
         context 'and the value matches' do
-          let(:value) { foo.assoc.integer }
+          let(:value) { foo.assoc.text }
 
           it { expect(subject.map(&:id)).to eq [foo.id] }
         end
 
-        context 'and the value does not matches' do
-          let(:value) { -1 }
+        context 'and the value does not match' do
+          let(:value) { '___' }
 
           it { expect(subject.map(&:id)).to eq [] }
         end
       end
 
       context 'with default > operator' do
-        let(:keypath) { %w[assoc integer(>)] }
+        let(:keypath) { %w[assoc text(>)] }
 
         context 'and the value matches' do
           context 'the lesser' do
-            let(:value) { foo.assoc.integer }
+            let(:value) { foo.assoc.text }
 
             it { expect(subject.map(&:id)).to eq [bar.id] }
           end
 
           context 'the greater' do
-            let(:value) { bar.assoc.integer }
+            let(:value) { bar.assoc.text }
 
             it { expect(subject.map(&:id)).to eq [] }
           end
         end
 
         context 'and the value does not match any' do
-          let(:value) { 100 }
+          let(:value) { '~~~' * 256 }
 
           it { expect(subject.map(&:id)).to eq [] }
         end
 
         context 'and the value matches all' do
-          let(:value) { -1 }
+          let(:value) { '___' * 256 }
 
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end
       end
 
       context 'with default < operator' do
-        let(:keypath) { %w[assoc integer(<)] }
+        let(:keypath) { %w[assoc text(<)] }
 
         context 'and the value matches' do
           context 'the lesser' do
-            let(:value) { foo.assoc.integer }
+            let(:value) { foo.assoc.text }
 
             it { expect(subject.map(&:id)).to eq [] }
           end
 
           context 'the greater' do
-            let(:value) { bar.assoc.integer }
+            let(:value) { bar.assoc.text }
 
             it { expect(subject.map(&:id)).to eq [foo.id] }
           end
         end
 
         context 'and the value does not match any' do
-          let(:value) { -1 }
+          let(:value) { '___' * 256 }
 
           it { expect(subject.map(&:id)).to eq [] }
         end
 
         context 'and the value matches all' do
-          let(:value) { 100 }
+          let(:value) { '~~~' * 256 }
 
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end
       end
 
       context 'with default >= operator' do
-        let(:keypath) { %w[assoc integer(>=)] }
+        let(:keypath) { %w[assoc text(>=)] }
 
         context 'and the value matches' do
           context 'the lesser' do
-            let(:value) { foo.assoc.integer }
+            let(:value) { foo.assoc.text }
 
             it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
           end
 
           context 'the greater' do
-            let(:value) { bar.assoc.integer }
+            let(:value) { bar.assoc.text }
 
             it { expect(subject.map(&:id)).to eq [bar.id] }
           end
         end
 
         context 'and the value does not match any' do
-          let(:value) { 100 }
+          let(:value) { '~~~' * 256 }
 
           it { expect(subject.map(&:id)).to eq [] }
         end
 
         context 'and the value matches all' do
-          let(:value) { -1 }
+          let(:value) { '___' * 256 }
 
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end
       end
 
       context 'with default <= operator' do
-        let(:keypath) { %w[assoc integer(<=)] }
+        let(:keypath) { %w[assoc text(<=)] }
 
         context 'and the value matches' do
           context 'the lesser' do
-            let(:value) { foo.assoc.integer }
+            let(:value) { foo.assoc.text }
 
             it { expect(subject.map(&:id)).to eq [foo.id] }
           end
 
           context 'the greater' do
-            let(:value) { bar.assoc.integer }
+            let(:value) { bar.assoc.text }
 
             it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
           end
         end
 
         context 'and the value does not match any' do
-          let(:value) { -1 }
+          let(:value) { '___' * 256 }
 
           it { expect(subject.map(&:id)).to eq [] }
         end
 
         context 'and the value matches all' do
-          let(:value) { 100 }
+          let(:value) { '~~~' * 256 }
 
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end

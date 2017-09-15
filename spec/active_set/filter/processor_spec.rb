@@ -9,6 +9,36 @@ RSpec.describe ActiveSet::FilterProcessor do
   context 'when set is Enumerable' do
     include_context 'for enumerable sets'
 
+    before(:each) do
+      foo.tap do |foo|
+        foo.bignum = 2**64
+        foo.boolean = true
+        foo.date = 1.day.from_now.to_date
+        foo.datetime = 1.day.from_now.to_datetime
+        foo.float = 1.11
+        foo.integer = 1
+        foo.nil = nil
+        foo.string = 'aaa'
+        foo.symbol = :aaa
+        foo.time = 1.day.from_now.to_time
+      end
+      foo.assoc = foo
+
+      bar.tap do |bar|
+        bar.bignum = 3**64
+        bar.boolean = false
+        bar.date = 1.day.ago.to_date
+        bar.datetime = 1.day.ago.to_datetime
+        bar.float = 2.22
+        bar.integer = 2
+        bar.nil = ''
+        bar.string = 'zzz'
+        bar.symbol = :zzz
+        bar.time = 1.day.ago.to_time
+      end
+      bar.assoc = bar
+    end
+
     let(:set) { enumerable_set }
 
     describe '#process' do
