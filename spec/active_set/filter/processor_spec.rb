@@ -71,7 +71,7 @@ RSpec.describe ActiveSet::FilterProcessor do
             }
           end
 
-          it { should eq [foo] }
+          it { expect(subject.map(&:id)).to eq [foo.id] }
         end
 
         context 'that does not match' do
