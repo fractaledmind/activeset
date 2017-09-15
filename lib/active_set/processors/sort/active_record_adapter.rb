@@ -24,8 +24,13 @@ class ActiveSet
                        .include?(@structure_path.attribute)
       end
 
+      def case_insensitive?
+        @structure_path.operator.to_s == 'i'
+      end
+
       def arel_operation
-        attribute_model.order(arel_column.lower.send(@structure_value.raw))
+        column = case_insensitive? ? arel_column.lower : arel_column
+        attribute_model.order(column.send(@value))
       end
 
       def attribute_model
