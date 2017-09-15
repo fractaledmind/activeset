@@ -13,7 +13,11 @@ RSpec.describe ActiveSet do
     end
 
     describe 'an Array' do
-      it { expect(ActiveSet.new(Array.new)).to respond_to :index }
+      it { expect(ActiveSet.new([])).to respond_to :index }
+    end
+
+    it 'extends Enumberable' do
+      expect(ActiveSet.new([])).to respond_to :each
     end
   end
 end

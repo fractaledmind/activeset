@@ -27,6 +27,6 @@ ActiveRecord::Schema.define do
     t.string      :string
     t.text        :text
 
-    t.timestamps             null: false
+    t.timestamps null: false
   end
 end

@@ -19,8 +19,8 @@ RSpec.describe Hash do
       let(:result) do
         {
           [:a] => 'a',
-          %i(b c) => 'c',
-          %i(b d e) => 'e'
+          %i[b c] => 'c',
+          %i[b d e] => 'e'
         }
       end
       it 'returns a flat hash with array keys' do
@@ -81,8 +81,8 @@ RSpec.describe Hash do
       let(:result) do
         {
           [:a] => 'a',
-          %i(b c) => 'c',
-          %i(b d e) => 'e'
+          %i[b c] => 'c',
+          %i[b d e] => 'e'
         }
       end
       it 'returns a flat hash with array keys' do
