@@ -21,9 +21,17 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
         let(:keypath) { [:boolean] }
 
         context 'and the value matches' do
-          let(:value) { foo.boolean }
+          context 'as TRUE' do
+            let(:value) { foo.boolean }
 
-          it { expect(subject.map(&:id)).to eq [foo.id] }
+            it { expect(subject.map(&:id)).to eq [foo.id] }
+          end
+
+          context 'as FALSE' do
+            let(:value) { bar.boolean }
+
+            it { expect(subject.map(&:id)).to eq [bar.id] }
+          end
         end
 
         context 'and the value does not matches' do
