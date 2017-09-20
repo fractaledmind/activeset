@@ -37,13 +37,13 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
         let(:keypath) { ['datetime(>)'] }
 
         context 'and the value matches' do
-          context 'the lesser' do
+          context 'the greater' do
             let(:value) { foo.datetime }
 
             it { expect(subject.map(&:id)).to eq [] }
           end
 
-          context 'the greater' do
+          context 'the lesser' do
             let(:value) { bar.datetime }
 
             it { expect(subject.map(&:id)).to eq [foo.id] }
@@ -67,13 +67,13 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
         let(:keypath) { ['datetime(<)'] }
 
         context 'and the value matches' do
-          context 'the lesser' do
+          context 'the greater' do
             let(:value) { foo.datetime }
 
             it { expect(subject.map(&:id)).to eq [bar.id] }
           end
 
-          context 'the greater' do
+          context 'the lesser' do
             let(:value) { bar.datetime }
 
             it { expect(subject.map(&:id)).to eq [] }
@@ -97,13 +97,13 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
         let(:keypath) { ['datetime(>=)'] }
 
         context 'and the value matches' do
-          context 'the lesser' do
+          context 'the greater' do
             let(:value) { foo.datetime }
 
             it { expect(subject.map(&:id)).to eq [foo.id] }
           end
 
-          context 'the greater' do
+          context 'the lesser' do
             let(:value) { bar.datetime }
 
             it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
@@ -127,13 +127,13 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
         let(:keypath) { ['datetime(<=)'] }
 
         context 'and the value matches' do
-          context 'the lesser' do
+          context 'the greater' do
             let(:value) { foo.datetime }
 
             it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
           end
 
-          context 'the greater' do
+          context 'the lesser' do
             let(:value) { bar.datetime }
 
             it { expect(subject.map(&:id)).to eq [bar.id] }
@@ -180,13 +180,13 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
         let(:keypath) { %w[assoc datetime(>)] }
 
         context 'and the value matches' do
-          context 'the lesser' do
+          context 'the greater' do
             let(:value) { foo.assoc.datetime }
 
             it { expect(subject.map(&:id)).to eq [] }
           end
 
-          context 'the greater' do
+          context 'the lesser' do
             let(:value) { bar.assoc.datetime }
 
             it { expect(subject.map(&:id)).to eq [foo.id] }
@@ -210,13 +210,13 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
         let(:keypath) { %w[assoc datetime(<)] }
 
         context 'and the value matches' do
-          context 'the lesser' do
+          context 'the greater' do
             let(:value) { foo.assoc.datetime }
 
             it { expect(subject.map(&:id)).to eq [bar.id] }
           end
 
-          context 'the greater' do
+          context 'the lesser' do
             let(:value) { bar.assoc.datetime }
 
             it { expect(subject.map(&:id)).to eq [] }
@@ -240,13 +240,13 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
         let(:keypath) { %w[assoc datetime(>=)] }
 
         context 'and the value matches' do
-          context 'the lesser' do
+          context 'the greater' do
             let(:value) { foo.assoc.datetime }
 
             it { expect(subject.map(&:id)).to eq [foo.id] }
           end
 
-          context 'the greater' do
+          context 'the lesser' do
             let(:value) { bar.assoc.datetime }
 
             it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
@@ -270,13 +270,13 @@ RSpec.describe ActiveSet::FilterProcessor::EnumerableAdapter do
         let(:keypath) { %w[assoc datetime(<=)] }
 
         context 'and the value matches' do
-          context 'the lesser' do
+          context 'the greater' do
             let(:value) { foo.assoc.datetime }
 
             it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
           end
 
-          context 'the greater' do
+          context 'the lesser' do
             let(:value) { bar.assoc.datetime }
 
             it { expect(subject.map(&:id)).to eq [bar.id] }
