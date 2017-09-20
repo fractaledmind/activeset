@@ -12,11 +12,10 @@ class ActiveSet
     end
 
     def process_adapter(set:, adapter:)
-      @flattened_hash.reject { |_, v| v.blank? }
-                     .reduce(set) do |inner_set, (keypath, value)|
-                       instruction = Entry.new(keypath, value)
-                       adapter.new(instruction).process(inner_set)
-                     end
+      @flattened_hash.reduce(set) do |inner_set, (keypath, value)|
+        instruction = Entry.new(keypath, value)
+        adapter.new(instruction).process(inner_set)
+      end
     end
 
     def get(keypath)
