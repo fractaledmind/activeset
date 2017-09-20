@@ -7,7 +7,7 @@ class ActiveSet
   class PaginateProcessor < BaseProcessor
     def process
       return @set if @set.count < pagesize
-      adapter.new(page_number, pagesize).process(@set)
+      adapter.new(instruction).process(@set)
     end
 
     private
@@ -16,12 +16,16 @@ class ActiveSet
       EnumerableAdapter
     end
 
+    def instruction
+      Instructions::Entry.new(page_number, pagesize)
+    end
+
     def page_number
-      @structure[[:page]] || 1
+      @instructions.get(:page) || 1
     end
 
     def pagesize
-      @structure[[:size]] || 25
+      @instructions.get(:size) || 25
     end
   end
 end

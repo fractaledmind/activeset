@@ -11,8 +11,8 @@ class ActiveSet
         return @set unless @set.respond_to? :to_sql
         return @set unless attribute_is_field?
 
-        @set.includes(@structure_path.to_h)
-            .references(@structure_path.to_h)
+        @set.includes(@instruction.associations_hash)
+            .references(@instruction.associations_hash)
             .merge(arel_operation)
       end
 
@@ -21,31 +21,31 @@ class ActiveSet
       def attribute_is_field?
         return false unless attribute_model
         attribute_model.attribute_names
-                       .include?(@structure_path.attribute)
-      end
-
-      def case_insensitive?
-        @structure_path.operator.to_s == 'i'
+                       .include?(@instruction.attribute)
       end
 
       def arel_operation
         column = case_insensitive? ? arel_column.lower : arel_column
-        attribute_model.order(column.send(@value))
+        attribute_model.order(column.send(@instruction.value))
       end
 
       def attribute_model
-        @structure_path.to_a
-                       .reduce(@set) do |obj, assoc|
-                         obj.reflections[assoc.to_s]&.klass
-                       end
+        @instruction.associations_array
+                    .reduce(@set) do |obj, assoc|
+                      obj.reflections[assoc.to_s]&.klass
+                    end
       end
 
       def arel_column
-        arel_table[@structure_path.attribute]
+        arel_table[@instruction.attribute]
       end
 
       def arel_table
         Arel::Table.new(attribute_model.table_name)
+      end
+
+      def case_insensitive?
+        @instruction.operator.to_s == 'i'
       end
     end
   end

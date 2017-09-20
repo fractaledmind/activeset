@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/array/wrap'
+
 class Hash
   # Returns a flat hash where all nested keys are collapsed into a an array of keys.
   #
@@ -24,7 +26,7 @@ class Hash
 
   def _flatten_keys(h, keys = [], res = {})
     return res.merge!(keys => h) unless h.is_a? Hash
-    h.each { |k, r| _flatten_keys(r, keys + [k], res) }
+    h.each { |k, r| _flatten_keys(r, keys + Array.wrap(k), res) }
     res
   end
 end

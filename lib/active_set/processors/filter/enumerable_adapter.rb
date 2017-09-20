@@ -7,7 +7,7 @@ class ActiveSet
     class EnumerableAdapter < BaseAdapter
       def process(set)
         set.select do |item|
-          value_for(item).send(@structure_path.operator,
+          value_for(item).send(@instruction.operator,
                                passed_value)
         end
       end
@@ -15,11 +15,11 @@ class ActiveSet
       private
 
       def value_for(item)
-        convert_datetime_values_to_integer(@structure_path.value_for(item: item))
+        convert_datetime_values_to_integer(@instruction.value_for(item: item))
       end
 
       def passed_value
-        convert_datetime_values_to_integer(@value)
+        convert_datetime_values_to_integer(@instruction.value)
       end
 
       def convert_datetime_values_to_integer(value)

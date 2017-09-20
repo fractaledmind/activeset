@@ -77,13 +77,20 @@ RSpec.describe ActiveSet::SortProcessor do
   context 'when set is ActiveRecord::Relation' do
     include_context 'for active record sets'
 
+    before(:each) do
+      foo.tap { |foo| foo.string = 'aaa' }.tap(&:save)
+      bar.tap { |bar| bar.string = 'ZZZ' }.tap(&:save)
+      foo.assoc.tap { |foo_assoc| foo_assoc.string = 'aaa' }.tap(&:save)
+      bar.assoc.tap { |bar_assoc| bar_assoc.string = 'ZZZ' }.tap(&:save)
+    end
+
     let(:set) { active_record_set }
 
     describe '#process' do
       subject { processor.process }
 
       context 'with a complex query' do
-        context do
+        context 'both ASC and both case-sensitive' do
           let(:filter_structure) do
             {
               string: :asc,
@@ -93,20 +100,33 @@ RSpec.describe ActiveSet::SortProcessor do
             }
           end
 
-          it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
+          it { expect(subject.map(&:id)).to eq [bar.id, foo.id] }
         end
 
-        context do
+        context 'both ASC and both case-insensitive' do
           let(:filter_structure) do
             {
-              string: :asc,
+              'string(i)': :asc,
               assoc: {
-                string: :desc
+                'string(i)': :asc
               }
             }
           end
 
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
+        end
+
+        context 'one ASC and one DESC and both case-insensitive' do
+          let(:filter_structure) do
+            {
+              'string(i)': :asc,
+              assoc: {
+                'string(i)': :desc
+              }
+            }
+          end
+
+          it { expect(subject.map(&:id)).to eq [bar.id, foo.id] }
         end
       end
     end

@@ -13,11 +13,11 @@ class ActiveSet
       private
 
       def pagesize
-        @value
+        @instruction.value
       end
 
       def page_number
-        @structure_path.attribute.to_i
+        @instruction.attribute.to_i
       end
     end
   end

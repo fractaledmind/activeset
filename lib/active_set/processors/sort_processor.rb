@@ -13,10 +13,7 @@ class ActiveSet
 
     def process
       adapters.reduce(@set) do |outer_set, adapter|
-        @structure.reject { |_, v| v.blank? }
-                  .reduce(outer_set) do |inner_set, (keypath, value)|
-                    adapter.new(keypath, value).process(inner_set)
-                  end
+        @instructions.process_adapter(set: outer_set, adapter: adapter)
       end
     end
   end

@@ -19,34 +19,34 @@ class ActiveSet
       def attribute_is_field?
         return false unless attribute_model
         attribute_model.attribute_names
-                       .include?(@structure_path.attribute)
+                       .include?(@instruction.attribute)
       end
 
       def query
-        @set.includes(@structure_path.to_h)
-            .references(@structure_path.to_h)
+        @set.includes(@instruction.associations_hash)
+            .references(@instruction.associations_hash)
             .where(arel_operation)
       end
 
       def arel_operation
-        Arel::Nodes::InfixOperation.new(@structure_path.operator,
+        Arel::Nodes::InfixOperation.new(@instruction.operator,
                                         arel_column,
                                         arel_value)
       end
 
       def attribute_model
-        @structure_path.to_a
-                       .reduce(@set) do |obj, assoc|
-                         obj.reflections[assoc.to_s]&.klass
-                       end
+        @instruction.associations_array
+                    .reduce(@set) do |obj, assoc|
+                      obj.reflections[assoc.to_s]&.klass
+                    end
       end
 
       def arel_column
-        arel_table[@structure_path.attribute]
+        arel_table[@instruction.attribute]
       end
 
       def arel_value
-        Arel.sql(ActiveRecord::Base.connection.quote(@value))
+        Arel.sql(ActiveRecord::Base.connection.quote(@instruction.value))
       end
 
       def arel_table

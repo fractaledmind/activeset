@@ -5,7 +5,8 @@ require 'spec_helper'
 RSpec.describe ActiveSet::SortProcessor::ActiveRecordAdapter do
   include_context 'for active record sets'
 
-  let(:adapter) { described_class.new(keypath, value) }
+  let(:adapter) { described_class.new(instruction) }
+  let(:instruction) { ActiveSet::Instructions::Entry.new(keypath, value) }
 
   describe '#process with :float type attribute value' do
     subject { adapter.process(active_record_set) }

@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require_relative '../structure/path'
-
-class BaseAdapter
-  def initialize(keypath, value)
-    @structure_path = Structure::Path.new(keypath)
-    @value = value
+class ActiveSet
+  class BaseAdapter
+    def initialize(instruction)
+      @instruction = instruction
+    end
   end
 end
