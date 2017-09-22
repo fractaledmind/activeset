@@ -10,7 +10,8 @@ class ActiveSet
     class Entry
       attr_reader :keypath
 
-      delegate :attribute, :operator, :associations_array, :associations_hash, :value_for, :resource_for,
+      delegate :path, :attribute, :operator, :associations_array,
+               :associations_hash, :value_for, :resource_for,
                to: :keypath
 
       def initialize(keypath, value)
