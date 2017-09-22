@@ -5,11 +5,11 @@ require 'spec_helper'
 RSpec.describe ActiveSet::FilterProcessor::ActiveRecordAdapter do
   include_context 'for active record sets'
 
-  let(:adapter) { described_class.new(instruction) }
+  let(:adapter) { described_class.new(active_record_set, instruction) }
   let(:instruction) { ActiveSet::Instructions::Entry.new(keypath, value) }
 
   describe '#process with :binary type attribute value' do
-    subject { adapter.process(active_record_set) }
+    subject { adapter.process[:set] }
 
     context 'on the base object' do
       before(:each) do

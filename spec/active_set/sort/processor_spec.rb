@@ -45,7 +45,7 @@ RSpec.describe ActiveSet::SortProcessor do
       subject { processor.process }
 
       context 'with a complex query' do
-        context do
+        context 'both ASC and both case-sensitive' do
           let(:filter_structure) do
             {
               string: :asc,
@@ -58,12 +58,38 @@ RSpec.describe ActiveSet::SortProcessor do
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end
 
-        context do
+        context 'both ASC and both case-insensitive' do
           let(:filter_structure) do
             {
-              string: :asc,
+              'string(i)': :asc,
               assoc: {
-                string: :desc
+                'string(i)': :asc
+              }
+            }
+          end
+
+          it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
+        end
+
+        context 'one ASC and one DESC and both case-sensitive' do
+          let(:filter_structure) do
+            {
+              'string(i)': :asc,
+              assoc: {
+                'string(i)': :desc
+              }
+            }
+          end
+
+          it { expect(subject.map(&:id)).to eq [bar.id, foo.id] }
+        end
+
+        context 'one ASC and one DESC and both case-insensitive' do
+          let(:filter_structure) do
+            {
+              'string(i)': :asc,
+              assoc: {
+                'string(i)': :desc
               }
             }
           end
@@ -116,6 +142,19 @@ RSpec.describe ActiveSet::SortProcessor do
           it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end
 
+        context 'one ASC and one DESC and both case-sensitive' do
+          let(:filter_structure) do
+            {
+              'string(i)': :asc,
+              assoc: {
+                'string(i)': :desc
+              }
+            }
+          end
+
+          it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
+        end
+
         context 'one ASC and one DESC and both case-insensitive' do
           let(:filter_structure) do
             {
@@ -126,7 +165,7 @@ RSpec.describe ActiveSet::SortProcessor do
             }
           end
 
-          it { expect(subject.map(&:id)).to eq [bar.id, foo.id] }
+          it { expect(subject.map(&:id)).to eq [foo.id, bar.id] }
         end
       end
     end
