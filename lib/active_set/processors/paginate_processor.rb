@@ -6,8 +6,7 @@ require_relative './paginate/enumerable_adapter'
 class ActiveSet
   class PaginateProcessor < BaseProcessor
     def process
-      return @set if @set.count < pagesize
-      adapter.new(instruction).process(@set)
+      adapter.new(@set, instruction).process
     end
 
     private

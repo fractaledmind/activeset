@@ -6,14 +6,11 @@ require_relative '../base_processor'
 class ActiveSet
   class SortProcessor < BaseProcessor
     class ActiveRecordAdapter < BaseAdapter
-      def process(set)
-        @set = set
-        return @set unless @set.respond_to? :to_sql
-        return @set unless attribute_is_field?
+      def process
+        return return_set unless @set.respond_to? :to_sql
+        return return_set unless attribute_is_field?
 
-        @set.includes(@instruction.associations_hash)
-            .references(@instruction.associations_hash)
-            .merge(arel_operation)
+        return_set(processed_set)
       end
 
       private
@@ -22,6 +19,12 @@ class ActiveSet
         return false unless attribute_model
         attribute_model.attribute_names
                        .include?(@instruction.attribute)
+      end
+
+      def processed_set
+        @set.includes(@instruction.associations_hash)
+            .references(@instruction.associations_hash)
+            .merge(arel_operation)
       end
 
       def arel_operation

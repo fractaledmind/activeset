@@ -6,12 +6,11 @@ require_relative '../base_processor'
 class ActiveSet
   class FilterProcessor < BaseProcessor
     class ActiveRecordAdapter < BaseAdapter
-      def process(set)
-        @set = set
-        return @set unless @set.respond_to? :to_sql
-        return @set unless attribute_is_field?
+      def process
+        return return_set unless @set.respond_to? :to_sql
+        return return_set unless attribute_is_field?
 
-        query
+        return_set(processed_set)
       end
 
       private
@@ -22,7 +21,7 @@ class ActiveSet
                        .include?(@instruction.attribute)
       end
 
-      def query
+      def processed_set
         @set.includes(@instruction.associations_hash)
             .references(@instruction.associations_hash)
             .where(arel_operation)
