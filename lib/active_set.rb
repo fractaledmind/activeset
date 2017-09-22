@@ -32,18 +32,18 @@ class ActiveSet
     @set.respond_to?(method_name) || super
   end
 
-  def filter(structure)
-    filterer = FilterProcessor.new(@set, structure)
+  def filter(instructions)
+    filterer = FilterProcessor.new(@set, instructions)
     self.class.new(filterer.process)
   end
 
-  def sort(structure)
-    sorter = SortProcessor.new(@set, structure)
+  def sort(instructions)
+    sorter = SortProcessor.new(@set, instructions)
     self.class.new(sorter.process)
   end
 
-  def paginate(structure)
-    paginater = PaginateProcessor.new(@set, structure)
+  def paginate(instructions)
+    paginater = PaginateProcessor.new(@set, instructions)
     self.class.new(paginater.process)
   end
 end
