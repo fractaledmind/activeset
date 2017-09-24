@@ -8,12 +8,23 @@ class ActiveSet
     class ActiveRecordAdapter < BaseAdapter
       def process
         return return_set unless @set.respond_to? :to_sql
-        return return_set unless attribute_is_field?
+        return return_set(processed_query_set) if attribute_is_field?
+        return return_set(processed_scope_set) if attribute_is_class_method? && attribute_is_method_with_params?
 
-        return_set(processed_set)
+        return_set
       end
 
       private
+
+      def processed_query_set
+        arel_eager_load_associations.where(arel_operation)
+      end
+
+      def processed_scope_set
+        tmp_results = attribute_model.public_send(@instruction.attribute, @instruction.value)
+        return @set unless tmp_results.is_a?(ActiveRecord::Relation)
+        arel_eager_load_associations.merge(tmp_results)
+      end
 
       def attribute_is_field?
         return false unless attribute_model
@@ -21,10 +32,14 @@ class ActiveSet
                        .include?(@instruction.attribute)
       end
 
-      def processed_set
-        @set.includes(@instruction.associations_hash)
-            .references(@instruction.associations_hash)
-            .where(arel_operation)
+      def attribute_is_class_method?
+        return false unless attribute_model
+        attribute_model.respond_to?(@instruction.attribute)
+      end
+
+      def attribute_is_method_with_params?
+        return false unless attribute_model
+        attribute_model.method(@instruction.attribute).arity != 0
       end
 
       def arel_operation
@@ -38,6 +53,11 @@ class ActiveSet
                     .reduce(@set) do |obj, assoc|
                       obj.reflections[assoc.to_s]&.klass
                     end
+      end
+
+      def arel_eager_load_associations
+        @set.includes(@instruction.associations_hash)
+            .references(@instruction.associations_hash)
       end
 
       def arel_column
