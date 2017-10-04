@@ -1,3 +1,9 @@
+v 0.4.0
+  - fix bug with filtering against falsey values
+  - remove hack of casting DateTime and Time objects to Integer for filtering
+  - add support for ActiveRecord :time columns
+  - ensure that an adapter is only run if necessary for a particular instruction; that is, try to process the instruction with the first adapter, if it succeeds, don't run any other adapters, if it doesn't, try the next adapter, etc.
+  - allow ActiveRecord sets to be filtered by a scope method
 v 0.3.1
   - Implement an Instructions object layer for handling the hashes passed into Processors
 v 0.3.0
