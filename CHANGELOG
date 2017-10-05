@@ -1,3 +1,7 @@
+v 0.4.1
+  - Soften the constraint on the ActiveSupport dependency
+  - Don't require ActiveSupport methods that are no longer used in the processors
+  - Add a `titleized` method to the KeyPath object
 v 0.4.0
   - fix bug with filtering against falsey values
   - remove hack of casting DateTime and Time objects to Integer for filtering
