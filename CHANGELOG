@@ -1,3 +1,7 @@
+v 0.4.2
+  - Ensure that the `transform_keys` method is available for Hashes by bringing in the ActiveSupport module
+  - Fix bug in handling string keypaths passed in from Processors
+  - Set the Ruby version for this project
 v 0.4.1
   - Soften the constraint on the ActiveSupport dependency
   - Don't require ActiveSupport methods that are no longer used in the processors
