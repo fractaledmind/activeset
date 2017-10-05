@@ -12,7 +12,7 @@ class ActiveSet
         def initialize(path)
           # `path` can be an Array (e.g. [:parent, :child, :grandchild])
           # or a String (e.g. 'parent.child.grandchild')
-          @path = path.is_a?(String) ? path.split('.') : Array.wrap(path).map(&:to_s)
+          @path = Array.wrap(path).map(&:to_s).flat_map { |x| x.split('.') }
         end
 
         def attribute
