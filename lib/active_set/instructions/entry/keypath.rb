@@ -47,6 +47,10 @@ class ActiveSet
           nil
         end
 
+        def titleized
+          @path.map(&:titleize).join(' ')
+        end
+
         private
 
         def operator_regex
