@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/object/blank'
-
 require_relative './base_processor'
 require_relative './sort/enumerable_adapter'
 require_relative './sort/active_record_adapter'
