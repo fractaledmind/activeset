@@ -1,3 +1,5 @@
+v 0.4.3
+  - Properly specify the version dependency on ActiveSupport
 v 0.4.2
   - Ensure that the `transform_keys` method is available for Hashes by bringing in the ActiveSupport module
   - Fix bug in handling string keypaths passed in from Processors
