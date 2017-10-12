@@ -49,10 +49,12 @@ class ActiveSet
       end
 
       def attribute_model
-        @instruction.associations_array
-                    .reduce(@set) do |obj, assoc|
-                      obj.reflections[assoc.to_s]&.klass
-                    end
+        tmp_model = @instruction.associations_array
+                                .reduce(@set) do |obj, assoc|
+                                  obj.reflections[assoc.to_s]&.klass
+                                end
+        return tmp_model.klass if tmp_model.is_a?(ActiveRecord::Relation)
+        tmp_model
       end
 
       def arel_eager_load_associations
