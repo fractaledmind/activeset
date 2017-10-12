@@ -1,3 +1,6 @@
+v 0.4.4
+  - Ensure that the ActiveRecord filterer can handle Rails4 AR::Relations not responding to :methods on the underlying class
+  - Test scopes defined using the helper but also as simply class methods
 v 0.4.3
   - Properly specify the version dependency on ActiveSupport
 v 0.4.2
