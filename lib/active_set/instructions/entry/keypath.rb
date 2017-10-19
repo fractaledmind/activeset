@@ -17,21 +17,23 @@ class ActiveSet
 
         def attribute
           attribute = @path.last
-          return attribute.sub(operator_regex, '') if attribute.match operator_regex
+          return attribute.sub(operator_regex, '') if attribute&.match operator_regex
           attribute
         end
 
         def operator
           attribute = @path.last
-          return attribute[operator_regex, 1] if attribute.match operator_regex
+          return attribute[operator_regex, 1] if attribute&.match operator_regex
           '=='
         end
 
         def associations_array
+          return [] unless @path.any?
           @path.slice(0, @path.length - 1)
         end
 
         def associations_hash
+          return {} unless @path.any?
           associations_array.reverse.reduce({}) { |a, e| { e => a } }
         end
 
