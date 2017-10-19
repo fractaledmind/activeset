@@ -1,3 +1,16 @@
+v 0.5.0
+ - Ensure the titleized method is delegated from the Instructions::Entry class
+ - Make the Instructions Keypath class more resilient against nils
+ - Add a new Transfrom processor
+    This allows users to transform a dataset into (right now only) CSV using hash column definitions of the sort:
+
+    ```
+    [
+      { key: ‘Explit Column Header’,
+         value: ‘path.to.resource.from.dataset.instance’ },
+      { value: ->(item) { mutate(item.attribute(=) } }
+    ]
+    ```
 v 0.4.4
   - Ensure that the ActiveRecord filterer can handle Rails4 AR::Relations not responding to :methods on the underlying class
   - Test scopes defined using the helper but also as simply class methods
