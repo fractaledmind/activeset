@@ -5,6 +5,7 @@ require 'active_set/version'
 require 'active_set/processors/filter_processor'
 require 'active_set/processors/sort_processor'
 require 'active_set/processors/paginate_processor'
+require 'active_set/processors/transform_processor'
 
 class ActiveSet
   include Enumerable
@@ -45,5 +46,10 @@ class ActiveSet
   def paginate(instructions)
     paginater = PaginateProcessor.new(@set, instructions)
     self.class.new(paginater.process)
+  end
+
+  def transform(instructions)
+    transformer = TransformProcessor.new(@set, instructions)
+    self.class.new(transformer.process)
   end
 end
