@@ -6,7 +6,11 @@ require_relative './transform/csv_adapter'
 class ActiveSet
   class TransformProcessor < BaseProcessor
     def process
-      adapter_for(format: format).new(@set, columns).process
+      fail "Format #{format} is not currently supported as option for tranform" unless %w[csv].include?(format)
+
+      adapter = adapter_for(format: format)
+      output = adapter.new(@set, columns).process
+      output[:set]
     end
 
     private
