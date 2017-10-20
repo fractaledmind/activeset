@@ -6,7 +6,8 @@ require_relative './paginate/enumerable_adapter'
 class ActiveSet
   class PaginateProcessor < BaseProcessor
     def process
-      adapter.new(@set, instruction).process
+      output = adapter.new(@set, instruction).process
+      output[:set]
     end
 
     private
