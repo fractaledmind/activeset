@@ -1,3 +1,8 @@
+v 0.5.1
+  - Fix bug where `transform` method tried to return a new instance of ActiveSet. It should simply returned the transformed value.
+  - Fail if tranformer can’t handle passed format
+  - Fix bug where Paginator wasn’t returning the proper result
+  - Ensure the `String#titleize` method is available for the Instruction::Entry
 v 0.5.0
  - Ensure the titleized method is delegated from the Instructions::Entry class
  - Make the Instructions Keypath class more resilient against nils
