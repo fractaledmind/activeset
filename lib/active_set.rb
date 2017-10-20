@@ -50,6 +50,6 @@ class ActiveSet
 
   def transform(instructions)
     transformer = TransformProcessor.new(@set, instructions)
-    self.class.new(transformer.process)
+    transformer.process
   end
 end
