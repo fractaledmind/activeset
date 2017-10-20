@@ -12,7 +12,8 @@ RSpec.describe ActiveSet::TransformProcessor do
   let(:processor) { described_class.new(set, instructions) }
 
   describe '#process' do
-    subject { processor.process[:set] }
+    subject { processor.process }
+
     let(:instructions) do
       {
         format: format,

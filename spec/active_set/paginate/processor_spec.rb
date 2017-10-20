@@ -12,7 +12,7 @@ RSpec.describe ActiveSet::PaginateProcessor do
   let(:processor) { described_class.new(set, paginate_structure) }
 
   describe '#process' do
-    subject { processor.process[:set] }
+    subject { processor.process }
 
     context 'when page size is smaller than set size' do
       context 'when set is divisible by page size' do
