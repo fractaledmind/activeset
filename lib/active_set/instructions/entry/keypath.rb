@@ -2,6 +2,7 @@
 
 require 'active_support/core_ext/array/wrap'
 require 'active_support/core_ext/object/try'
+require 'active_support/core_ext/string/inflections'
 
 class ActiveSet
   class Instructions
