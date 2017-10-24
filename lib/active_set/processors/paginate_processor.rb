@@ -2,6 +2,7 @@
 
 require_relative './base_processor'
 require_relative './paginate/enumerable_adapter'
+require_relative './paginate/active_record_adapter'
 
 class ActiveSet
   class PaginateProcessor < BaseProcessor
