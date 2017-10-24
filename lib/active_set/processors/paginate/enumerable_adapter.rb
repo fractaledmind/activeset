@@ -7,22 +7,34 @@ class ActiveSet
   class PaginateProcessor < BaseProcessor
     class EnumerableAdapter < BaseAdapter
       def process
-        return return_set if @set.count < pagesize
         return_set(paginated_set)
       end
 
       private
 
       def paginated_set
-        @set.each_slice(pagesize).take(page_number).last
+        return [] if @set.count <= page_size && page_number > 1
+
+        @set[page_start..page_end] || []
       end
 
-      def pagesize
+      def page_start
+        return 0 if page_number == 1
+        page_size * (page_number - 1)
+      end
+
+      def page_end
+        return page_start if page_size == 1
+        page_start + page_size - 1
+      end
+
+      def page_size
         @instruction.value
       end
 
       def page_number
-        @instruction.attribute.to_i
+        num = @instruction.attribute.to_i
+        (num.to_i - 1).negative? ? 0 : num
       end
     end
   end
