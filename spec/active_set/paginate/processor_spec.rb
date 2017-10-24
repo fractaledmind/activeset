@@ -25,9 +25,15 @@ RSpec.describe ActiveSet::PaginateProcessor do
         end
 
         context 'when on last page' do
-          let(:paginate_structure) { { page: 10, size: size } }
+          let(:paginate_structure) { { page: 3, size: size } }
 
           it { should eq [baz] }
+        end
+
+        context 'when on irrational page' do
+          let(:paginate_structure) { { page: 10, size: size } }
+
+          it { should eq [] }
         end
       end
 
@@ -41,9 +47,15 @@ RSpec.describe ActiveSet::PaginateProcessor do
         end
 
         context 'when on last page' do
-          let(:paginate_structure) { { page: 10, size: size } }
+          let(:paginate_structure) { { page: 2, size: size } }
 
           it { should eq [baz] }
+        end
+
+        context 'when on irrational page' do
+          let(:paginate_structure) { { page: 10, size: size } }
+
+          it { should eq [] }
         end
       end
     end
@@ -51,32 +63,32 @@ RSpec.describe ActiveSet::PaginateProcessor do
     context 'when page size is equal to set size' do
       let(:size) { set.count }
 
-      context 'when on first page' do
+      context 'when on only page' do
         let(:paginate_structure) { { page: 1, size: size } }
 
         it { should eq [foo, bar, baz] }
       end
 
-      context 'when on last page' do
+      context 'when on irrational page' do
         let(:paginate_structure) { { page: 10, size: size } }
 
-        it { should eq [foo, bar, baz] }
+        it { should eq [] }
       end
     end
 
     context 'when page size is greater than set size' do
       let(:size) { set.count + 1 }
 
-      context 'when on first page' do
+      context 'when on only page' do
         let(:paginate_structure) { { page: 1, size: size } }
 
         it { should eq [foo, bar, baz] }
       end
 
-      context 'when on last page' do
+      context 'when on irrational page' do
         let(:paginate_structure) { { page: 10, size: size } }
 
-        it { should eq [foo, bar, baz] }
+        it { should eq [] }
       end
     end
   end
