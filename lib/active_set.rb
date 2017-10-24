@@ -10,10 +10,12 @@ require 'active_set/processors/transform_processor'
 class ActiveSet
   include Enumerable
 
-  attr_reader :set
+  attr_reader :set, :instructions, :total_count
 
-  def initialize(set)
+  def initialize(set, instructions: {}, total_count: nil)
     @set = set
+    @instructions = instructions
+    @total_count = total_count || @set.count
   end
 
   def each(&block)
@@ -35,17 +37,23 @@ class ActiveSet
 
   def filter(instructions)
     filterer = FilterProcessor.new(@set, instructions)
-    self.class.new(filterer.process)
+    self.class.new(filterer.process,
+                   instructions: @instructions.merge(filter: instructions),
+                   total_count: @total_count)
   end
 
   def sort(instructions)
     sorter = SortProcessor.new(@set, instructions)
-    self.class.new(sorter.process)
+    self.class.new(sorter.process,
+                   instructions: @instructions.merge(sort: instructions),
+                   total_count: @total_count)
   end
 
   def paginate(instructions)
     paginater = PaginateProcessor.new(@set, instructions)
-    self.class.new(paginater.process)
+    self.class.new(paginater.process,
+                   instructions: @instructions.merge(paginate: instructions),
+                   total_count: @total_count)
   end
 
   def transform(instructions)
