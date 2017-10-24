@@ -1,3 +1,8 @@
+v 0.5.2
+  - Add an ActiveRecord adapter for the PaginateProcessor
+  - Update the EnumerableAdapter for the PaginateProcessor to more consistently handle edgecases
+      When asking for a page number that is outside of the meaningful range (e.g. page 10 of a collection that would only have 5 meaningful pages), should return an empty collection.
+  - Ensure that the built up intstruction and the base size of the original set are readable from any chained instance of ActiveSet
 v 0.5.1
   - Fix bug where `transform` method tried to return a new instance of ActiveSet. It should simply returned the transformed value.
   - Fail if tranformer can’t handle passed format
