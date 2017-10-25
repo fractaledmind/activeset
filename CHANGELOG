@@ -1,3 +1,6 @@
+v 0.5.3
+  - Extract logic for creating new ActiveSet instance after an operation into separate method
+  - Ensure that the instructions logged for the paginate operation handle defaults
 v 0.5.2
   - Add an ActiveRecord adapter for the PaginateProcessor
   - Update the EnumerableAdapter for the PaginateProcessor to more consistently handle edgecases
