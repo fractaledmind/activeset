@@ -37,27 +37,31 @@ class ActiveSet
 
   def filter(instructions)
     filterer = FilterProcessor.new(@set, instructions)
-    self.class.new(filterer.process,
-                   instructions: @instructions.merge(filter: instructions),
-                   total_count: @total_count)
+    new_active_set(filterer.process, :filter, instructions)
   end
 
   def sort(instructions)
     sorter = SortProcessor.new(@set, instructions)
-    self.class.new(sorter.process,
-                   instructions: @instructions.merge(sort: instructions),
-                   total_count: @total_count)
+    new_active_set(sorter.process, :sort, instructions)
   end
 
   def paginate(instructions)
     paginater = PaginateProcessor.new(@set, instructions)
-    self.class.new(paginater.process,
-                   instructions: @instructions.merge(paginate: instructions),
-                   total_count: @total_count)
+    full_instructions = instructions.reverse_merge(page: paginater.send(:page_number),
+                                                   size: paginater.send(:page_size))
+    new_active_set(paginater.process, :paginate, full_instructions)
   end
 
   def transform(instructions)
     transformer = TransformProcessor.new(@set, instructions)
     transformer.process
+  end
+
+  private
+
+  def new_active_set(set, method, instructions)
+    self.class.new(set,
+                   instructions: @instructions.merge(method => instructions),
+                   total_count: @total_count)
   end
 end

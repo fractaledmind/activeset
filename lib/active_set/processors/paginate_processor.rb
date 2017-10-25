@@ -18,14 +18,14 @@ class ActiveSet
     end
 
     def instruction
-      Instructions::Entry.new(page_number, pagesize)
+      Instructions::Entry.new(page_number, page_size)
     end
 
     def page_number
       @instructions.get(:page) || 1
     end
 
-    def pagesize
+    def page_size
       @instructions.get(:size) || 25
     end
   end
