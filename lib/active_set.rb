@@ -47,6 +47,8 @@ class ActiveSet
 
   def paginate(instructions)
     paginater = PaginateProcessor.new(@set, instructions)
+    full_instructions = instructions.reverse_merge(page: paginater.send(:page_number),
+                                                   size: paginater.send(:page_size))
     new_active_set(paginater.process, :paginate, full_instructions)
   end
 
