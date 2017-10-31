@@ -6,16 +6,20 @@ require_relative './paginate/active_record_adapter'
 
 class ActiveSet
   class PaginateProcessor < BaseProcessor
+    queue_adapter ActiveRecordAdapter
+    queue_adapter EnumerableAdapter
+
     def process
-      output = adapter.new(@set, instruction).process
-      output[:set]
+      adapters.each do |adapter|
+        output = adapter.new(@set, instruction).process
+
+        return output[:set] if output[:processed]
+      end
+
+      @set
     end
 
     private
-
-    def adapter
-      EnumerableAdapter
-    end
 
     def instruction
       Instructions::Entry.new(page_number, page_size)
