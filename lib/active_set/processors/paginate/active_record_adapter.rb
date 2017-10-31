@@ -21,7 +21,7 @@ class ActiveSet
 
       def page_offset
         return 0 if page_number == 1
-        page_size * page_number
+        page_size * (page_number - 1)
       end
 
       def page_size
