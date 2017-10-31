@@ -22,7 +22,7 @@ RSpec.describe ActiveSet::PaginateProcessor::ActiveRecordAdapter do
     context 'when on last page' do
       let(:page) { 2 }
 
-      it { expect(subject.pluck(:id)).to eq [] }
+      it { expect(subject.pluck(:id)).to eq [bar.id] }
     end
 
     context 'when on irrational page' do
