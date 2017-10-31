@@ -1,3 +1,7 @@
+v 0.5.4
+  - Ensure that Instructions wrap a Hash with indifferent access
+  - Wire up both adapters for the PaginateProcessor
+  - Fix bug where ActiveRecord Paginator didn’t offset pages correctly
 v 0.5.3
   - Extract logic for creating new ActiveSet instance after an operation into separate method
   - Ensure that the instructions logged for the paginate operation handle defaults
