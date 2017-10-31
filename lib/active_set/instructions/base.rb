@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext/hash/keys'
+require 'active_support/core_ext/hash/indifferent_access'
 
 require_relative './entry'
 
@@ -9,7 +10,7 @@ class ActiveSet
     attr_reader :hash
 
     def initialize(hash)
-      @hash = hash
+      @hash = hash.with_indifferent_access
       @flattened_hash = hash.flatten_keys.transform_keys { |k| k.map(&:to_s) }
     end
 
