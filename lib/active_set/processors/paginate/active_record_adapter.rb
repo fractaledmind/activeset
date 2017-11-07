@@ -15,7 +15,7 @@ class ActiveSet
       private
 
       def paginated_set
-        return @set.none if @set.count <= page_size && page_number > 1
+        return @set.none if @set.length <= page_size && page_number > 1
         @set.limit(page_size).offset(page_offset)
       end
 
