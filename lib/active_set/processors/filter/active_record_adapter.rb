@@ -43,7 +43,7 @@ class ActiveSet
       end
 
       def arel_operation
-        Arel::Nodes::InfixOperation.new(@instruction.operator,
+        Arel::Nodes::InfixOperation.new(@instruction.operator(default: '='),
                                         arel_column,
                                         arel_value)
       end
