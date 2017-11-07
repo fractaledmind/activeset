@@ -22,10 +22,10 @@ class ActiveSet
           attribute
         end
 
-        def operator
+        def operator(default: '==')
           attribute = @path.last
           return attribute[operator_regex, 1] if attribute&.match operator_regex
-          '=='
+          default
         end
 
         def associations_array
