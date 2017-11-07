@@ -1,3 +1,5 @@
+v 0.5.5
+  - In the ActiveRecord adapter for pagination, avoid an odd low-level AR bug when counting complex queries by using a simple Enumerable `length` call instead of the AR `count` method
 v 0.5.4
   - Ensure that Instructions wrap a Hash with indifferent access
   - Wire up both adapters for the PaginateProcessor
