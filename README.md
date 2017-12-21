@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-The `ActiveSet` class is an extension of `Enumerable` that adds methods for filtering, sorting, and paginating (right now; other methods are sure to follow).
+The `ActiveSet` class is an extension of `Enumerable` that adds methods for filtering, sorting, paginating, and transforming (right now; other methods are sure to follow).
 
 Every convenience method added to the `ActiveSet` class is handled via a `Processor` class, and that `Processor` class will then use 1 or more `Adapter` classes to actually fulfill the functional contract.
 
