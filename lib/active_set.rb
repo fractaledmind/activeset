@@ -37,7 +37,8 @@ class ActiveSet
 
   def filter(instructions)
     filterer = FilterProcessor.new(@set, instructions)
-    new_active_set(filterer.process, :filter, instructions)
+    filtered_set = filterer.process
+    new_active_set(filtered_set, :filter, instructions, filtered_set.count)
   end
 
   def sort(instructions)
@@ -59,9 +60,9 @@ class ActiveSet
 
   private
 
-  def new_active_set(set, method, instructions)
+  def new_active_set(set, method, instructions, total_count = nil)
     self.class.new(set,
                    instructions: @instructions.merge(method => instructions),
-                   total_count: @total_count)
+                   total_count: total_count || @total_count)
   end
 end
