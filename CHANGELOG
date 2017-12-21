@@ -1,3 +1,6 @@
+v 0.5.7
+  - Fix bug where filtering wasn't updating the new ActiveSet instances #total_count
+  - Add that this gem now does transformations to the README
 v 0.5.6
   - Ensure that the default value for instructions when building filtering queries is '=' and not '=='
   - Allow the default value for the instructions keypath's operator to be passed in
