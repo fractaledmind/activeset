@@ -9,7 +9,7 @@ class ActiveSet
     class ActiveRecordAdapter < Adapter::ActiveRecord
       def process
         @instructions.reduce(@set) do |set, instruction|
-          # set Adapter::ActiveRecord#instruction, which many method depend on
+          # set Adapter::Base#instruction, which many methods depend on
           self.instruction = instruction
 
           return false unless can_process_with_active_record?
@@ -33,7 +33,7 @@ class ActiveSet
       end
 
       def case_insensitive?
-        instruction.operator.to_s == 'i'
+        instruction.operator.to_s.downcase == 'i'
       end
     end
   end

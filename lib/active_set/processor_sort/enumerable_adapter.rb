@@ -9,11 +9,14 @@ class ActiveSet
       def process
         @set.sort do |left, right|
           @instructions.reduce(0) do |diff, instruction|
+            # set Adapter::Base#instruction, which many methods depend on
+            self.instruction = instruction
+
             # `left` and `right` differed at an earlier order entry
             next diff if diff != 0
 
-            left_value = sortable_attribute_for(left, instruction)
-            right_value = sortable_attribute_for(right, instruction)
+            left_value = sortable_attribute_for(left)
+            right_value = sortable_attribute_for(right)
 
             # handle `nil` values
             next  0 if left_value.nil? && right_value.nil?
@@ -29,16 +32,16 @@ class ActiveSet
 
       private
 
-      def sortable_attribute_for(item, instruction)
+      def sortable_attribute_for(item)
         value = instruction.value_for(item: item)
 
-        return value.to_s.downcase if case_insensitive?(instruction)
+        return value.to_s.downcase if case_insensitive?
 
         value
       end
 
-      def case_insensitive?(instruction)
-        instruction.operator.to_s == 'i'
+      def case_insensitive?
+        instruction.operator.to_s.downcase == 'i'
       end
 
       def direction_multiplier(direction)
