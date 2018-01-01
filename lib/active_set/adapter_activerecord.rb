@@ -4,8 +4,6 @@ require_relative './adapter_base'
 
 class ActiveSet
   class Adapter::ActiveRecord < Adapter::Base
-    attr_accessor :instruction
-
     private
 
     def instruction
