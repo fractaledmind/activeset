@@ -3,15 +3,13 @@
 require 'active_support/core_ext/array/wrap'
 
 class Instruction
+  attr_reader :keypath, :value
+
   def initialize(keypath, value)
     # `keypath` can be an Array (e.g. [:parent, :child, :grandchild])
     # or a String (e.g. 'parent.child.grandchild')
     @keypath = Array.wrap(keypath).map(&:to_s).flat_map { |x| x.split('.') }
     @value = value
-  end
-
-  def value
-    @value
   end
 
   def attribute

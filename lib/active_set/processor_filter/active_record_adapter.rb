@@ -21,6 +21,10 @@ class ActiveSet
 
       private
 
+      def instruction
+        @instructions.first
+      end
+
       def arel_operation
         Arel::Nodes::InfixOperation.new(arel_operator,
                                         arel_column,

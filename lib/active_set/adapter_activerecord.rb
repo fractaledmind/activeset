@@ -6,10 +6,6 @@ class ActiveSet
   class Adapter::ActiveRecord < Adapter::Base
     private
 
-    def instruction
-      @instructions.first
-    end
-
     def can_process_with_active_record?
       @set.respond_to?(:to_sql) && attribute_is_field?
     end

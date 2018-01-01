@@ -8,9 +8,9 @@ class ActiveSet
   class Processor::Sort < Processor::Base
     class ActiveRecordAdapter < Adapter::ActiveRecord
       def process
-        @instructions.reduce(@set) do |set, instruction|
+        @instructions.reduce(@set) do |set, _instruction|
           # set Adapter::Base#instruction, which many methods depend on
-          self.instruction = instruction
+          self.instruction = _instruction
 
           return false unless can_process_with_active_record?
 
