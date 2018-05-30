@@ -34,7 +34,7 @@ class ActiveSet
 
       def attribute_model
         @instruction.associations_array
-                    .reduce(@set) do |obj, assoc|
+                    .reduce(@set.klass) do |obj, assoc|
                       obj.reflections[assoc.to_s]&.klass
                     end
       end
