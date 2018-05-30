@@ -1,3 +1,5 @@
+v 0.5.8
+  - Avoid a possible error path where relations with a '#union' would blow up when using '#merge' because the '#order' operation was being built with the relation and not with the relation's base class
 v 0.5.7
   - Fix bug where filtering wasn't updating the new ActiveSet instances #total_count
   - Add that this gem now does transformations to the README
