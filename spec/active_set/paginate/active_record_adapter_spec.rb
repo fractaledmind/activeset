@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe ActiveSet::PaginateProcessor::ActiveRecordAdapter do
+RSpec.describe ActiveSet::Processor::Paginate::ActiveRecordAdapter do
   include_context 'for active record sets'
 
   let(:adapter) { described_class.new(active_record_set, instruction) }

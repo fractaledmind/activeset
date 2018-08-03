@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'ostruct'
 
-RSpec.describe ActiveSet::PaginateProcessor do
+RSpec.describe ActiveSet::Processor::Paginate do
   let(:processor) { described_class.new(set, paginate_structure) }
 
   context 'when set is Enumerable and instructions hash has Symbol keys' do

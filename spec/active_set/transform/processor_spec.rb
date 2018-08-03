@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'ostruct'
 
-RSpec.describe ActiveSet::TransformProcessor do
+RSpec.describe ActiveSet::Processor::Transform do
   let(:foo) { OpenStruct.new(key: 'foo', association: OpenStruct.new(key: 'oof')) }
   let(:bar) { OpenStruct.new(key: 'bar', association: OpenStruct.new(key: 'rab')) }
   let(:baz) { OpenStruct.new(key: 'baz', association: OpenStruct.new(key: 'zab')) }

@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'ostruct'
 
-RSpec.describe ActiveSet::FilterProcessor do
+RSpec.describe ActiveSet::Processor::Filter do
   let(:processor) { described_class.new(set, filter_structure) }
 
   context 'when set is Enumerable' do

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe ActiveSet::PaginateProcessor::EnumerableAdapter do
+RSpec.describe ActiveSet::Processor::Paginate::EnumerableAdapter do
   include_context 'for enumerable sets'
 
   let(:adapter) { described_class.new(enumerable_set, instruction) }
