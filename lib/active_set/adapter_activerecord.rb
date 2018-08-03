@@ -25,6 +25,8 @@ class ActiveSet
     end
 
     def attribute_is_field?
+      return false unless attribute_model
+
       attribute_model.attribute_names
                      .include?(instruction.attribute)
     end
