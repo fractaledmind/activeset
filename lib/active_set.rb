@@ -2,67 +2,65 @@
 
 require 'active_set/version'
 
-require 'active_set/processors/filter_processor'
-require 'active_set/processors/sort_processor'
-require 'active_set/processors/paginate_processor'
-require 'active_set/processors/transform_processor'
+require 'active_set/processor_filter'
+require 'active_set/processor_sort'
+require 'active_set/processor_paginate'
+require 'active_set/processor_transform'
 
 class ActiveSet
   include Enumerable
 
-  attr_reader :set, :instructions, :total_count
+  attr_reader :set, :view, :instructions
 
-  def initialize(set, instructions: {}, total_count: nil)
+  def initialize(set, view: nil, instructions: {})
     @set = set
+    @view = view || set
     @instructions = instructions
-    @total_count = total_count || @set.count
   end
 
   def each(&block)
-    @set.each(&block)
+    @view.each(&block)
   end
 
   def ==(other)
-    return @set == other unless other.is_a?(ActiveSet)
-    @set == other.set
+    return @view == other unless other.is_a?(ActiveSet)
+    @view == other.view
   end
 
   def method_missing(method_name, *args, &block)
-    @set.send(method_name, *args, &block) || super
+    @view.send(method_name, *args, &block) || super
   end
 
   def respond_to_missing?(method_name, include_private = false)
-    @set.respond_to?(method_name) || super
+    @view.respond_to?(method_name) || super
   end
 
   def filter(instructions)
-    filterer = FilterProcessor.new(@set, instructions)
-    filtered_set = filterer.process
-    new_active_set(filtered_set, :filter, instructions, filtered_set.count)
+    filterer = Processor::Filter.new(@view, instructions)
+    reinitialize(filterer.process, :filter, instructions)
   end
 
   def sort(instructions)
-    sorter = SortProcessor.new(@set, instructions)
-    new_active_set(sorter.process, :sort, instructions)
+    sorter = Processor::Sort.new(@view, instructions)
+    reinitialize(sorter.process, :sort, instructions)
   end
 
   def paginate(instructions)
-    paginater = PaginateProcessor.new(@set, instructions)
-    full_instructions = instructions.reverse_merge(page: paginater.send(:page_number),
-                                                   size: paginater.send(:page_size))
-    new_active_set(paginater.process, :paginate, full_instructions)
+    paginater = Processor::Paginate.new(@view, instructions)
+    reinitialize(paginater.process, :paginate, instructions)
   end
 
   def transform(instructions)
-    transformer = TransformProcessor.new(@set, instructions)
+    transformer = Processor::Transform.new(@view, instructions)
     transformer.process
   end
 
   private
 
-  def new_active_set(set, method, instructions, total_count = nil)
-    self.class.new(set,
-                   instructions: @instructions.merge(method => instructions),
-                   total_count: total_count || @total_count)
+  def reinitialize(processed_set, method, instructions)
+    self.class.new(@set,
+                   view: processed_set,
+                   instructions: @instructions.merge(
+                     method => instructions))
   end
 end

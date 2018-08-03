@@ -3,19 +3,13 @@
 require 'csv'
 require 'active_support/core_ext/hash/indifferent_access'
 
-require_relative '../base_adapter'
-require_relative '../base_processor'
+require_relative '../adapter_base'
+require_relative '../processor_base'
 
 class ActiveSet
-  class TransformProcessor < BaseProcessor
-    class CSVAdapter < BaseAdapter
+  class Processor::Transform < Processor::Base
+    class CSVAdapter < Adapter::Base
       def process
-        return_set(transformed_set)
-      end
-
-      private
-
-      def transformed_set
         ::CSV.generate do |output|
           output << column_keys_for(item: @set.first)
           @set.each do |item|
@@ -23,6 +17,8 @@ class ActiveSet
           end
         end
       end
+
+      private
 
       def column_keys_for(item:)
         columns.map do |column|

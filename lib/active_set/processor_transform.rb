@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
-require_relative './base_processor'
-require_relative './transform/csv_adapter'
+require_relative './processor_base'
+require_relative './processor_transform/csv_adapter'
 
 class ActiveSet
-  class TransformProcessor < BaseProcessor
+  class Processor::Transform < Processor::Base
     def process
       fail "Format #{format} is not currently supported as option for tranform" unless %w[csv].include?(format)
 
       adapter = adapter_for(format: format)
-      output = adapter.new(@set, columns).process
-      output[:set]
+      adapter.new(@set, columns).process
     end
 
     private
