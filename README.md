@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-The `ActiveSet` class is an extension of `Enumerable` that adds methods for filtering, sorting, paginating, and transforming (right now; other methods are sure to follow).
+The `ActiveSet` class is an extension of `Enumerable` that adds methods for filtering, sorting, paginating, and transforming (as of right now).
 
 Every convenience method added to the `ActiveSet` class is handled via a `Processor` class, and that `Processor` class will then use 1 or more `Adapter` classes to actually fulfill the functional contract.
 
@@ -38,8 +38,6 @@ e.g. `filter(attribute: 'value', association: { field: 'value' })` or `sort(attr
 ## Notes
 
 This library does not deal with typecasting string values; the values of your structures must be of the appropriate data-type.
-
-This library does not work with `:time` fields in ActiveRecord relations.
 
 ## Development
 
