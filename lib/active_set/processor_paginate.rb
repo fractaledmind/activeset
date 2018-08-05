@@ -17,9 +17,15 @@ class ActiveSet
 
     def validate_instructions(instructions)
       {
-        page:   (instructions[:page   || 'page']    || 1).to_i,
-        size:   (instructions[:size   || 'size']    || 25).to_i,
-        outset: (instructions[:outset || 'outset']  || 0).to_i
+        page:   (instructions[:page] ||
+                 instructions['page'] ||
+                 1).to_i,
+        size:   (instructions[:size] ||
+                 instructions['size'] ||
+                 25).to_i,
+        outset: (instructions[:outset] ||
+                 instructions['outset'] ||
+                 0).to_i
       }
     end
 
