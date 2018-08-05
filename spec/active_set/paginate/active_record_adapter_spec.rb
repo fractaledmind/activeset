@@ -5,10 +5,10 @@ require 'spec_helper'
 RSpec.describe ActiveSet::Processor::Paginate::ActiveRecordAdapter do
   include_context 'for active record sets'
 
-  let(:adapter) { described_class.new(active_record_set, instruction) }
-  let(:instruction) { ActiveSet::Instructions::Entry.new(page, size) }
+  let(:adapter) { described_class.new(active_record_set, instructions) }
+  let(:instructions) { ActiveSet::Instructions.new(page: page, size: size) }
 
-  subject { adapter.process[:set] }
+  subject { adapter.process }
 
   context 'when page size is smaller than set size' do
     let(:size) { 1 }

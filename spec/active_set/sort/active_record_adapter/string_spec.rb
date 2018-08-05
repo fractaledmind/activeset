@@ -5,11 +5,11 @@ require 'spec_helper'
 RSpec.describe ActiveSet::Processor::Sort::ActiveRecordAdapter do
   include_context 'for active record sets'
 
-  let(:adapter) { described_class.new(active_record_set, instruction) }
-  let(:instruction) { ActiveSet::Instructions::Entry.new(keypath, value) }
+  let(:adapter) { described_class.new(active_record_set, instructions) }
+  let(:instructions) { ActiveSet::Instructions.new(keypath => value) }
 
   describe '#process with :string type attribute value' do
-    subject { adapter.process[:set] }
+    subject { adapter.process }
 
     context 'on the base object' do
       before(:each) do
