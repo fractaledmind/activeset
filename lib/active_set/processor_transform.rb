@@ -8,8 +8,9 @@ class ActiveSet
     def process
       fail "Format #{format} is not currently supported as option for tranform" unless %w[csv].include?(format)
 
-      adapter = adapter_for(format: format)
-      adapter.new(@set, columns).process
+      adapter_for(format: format)
+        .new(@set, columns)
+        .process
     end
 
     private

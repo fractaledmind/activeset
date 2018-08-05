@@ -2,6 +2,7 @@
 
 require 'csv'
 require 'active_support/core_ext/hash/indifferent_access'
+require 'active_support/core_ext/string/inflections'
 
 require_relative '../adapter_base'
 require_relative '../processor_base'
@@ -33,7 +34,7 @@ class ActiveSet
       end
 
       def columns
-        @instruction.compact
+        @instructions.compact
       end
 
       class ColumnInstruction
@@ -44,8 +45,8 @@ class ActiveSet
 
         def key
           return @hash[:key] if @hash.key? :key
-          return attribute_model.human_attribute_name(instruction_entry.attribute) if attribute_model.respond_to? :human_attribute_name
-          instruction_entry.titleized
+          return attribute_model.human_attribute_name(instructions_entry.attribute) if attribute_model.respond_to? :human_attribute_name
+          instruction_entry.keypath.map(&:titleize).join(' ')
         end
 
         def value
@@ -57,7 +58,7 @@ class ActiveSet
         private
 
         def instruction_entry
-          Instructions::Entry.new(@hash[:value], nil)
+          Instruction.new(@hash[:value], nil)
         end
 
         def attribute_model
