@@ -35,12 +35,16 @@ class ActiveSet
       def sortable_attribute_for(item)
         value = instruction.value_for(item: item)
 
-        return value.to_s.downcase if case_insensitive?
+        return value.to_s.downcase if case_insensitive?(value)
 
         value
       end
 
-      def case_insensitive?
+      def case_insensitive?(value)
+        # Cannot sort pure Booleans or Nils, so we _must_ cast to Strings
+        return true if value.is_a?(TrueClass) || value.is_a?(FalseClass)
+        return true if value.is_a?(NilClass)
+
         instruction.operator.to_s.downcase == 'i'
       end
 
