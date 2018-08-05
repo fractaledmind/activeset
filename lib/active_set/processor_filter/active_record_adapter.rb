@@ -8,11 +8,18 @@ class ActiveSet
   class Processor::Filter < Processor::Base
     class ActiveRecordAdapter < Adapter::ActiveRecord
       def process
-        return false unless can_process_with_active_record?
+        return false unless @set.respond_to?(:to_sql)
 
-        statement = @set.includes(instruction.associations_hash)
-                        .references(instruction.associations_hash)
+        if can_query_with_active_record?
+          statement = arel_eager_load_associations
                         .where(arel_operation)
+        elsif can_merge_with_active_record?
+          statement = arel_eager_load_associations
+                        .merge(attribute_model.public_send(instruction.attribute,
+                                                           instruction.value))
+        else
+          return false
+        end
 
         return false if throws?(ActiveRecord::StatementInvalid) { statement.load }
 
