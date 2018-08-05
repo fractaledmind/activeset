@@ -12,11 +12,11 @@ class ActiveSet
           # set Adapter::Base#instruction, which many methods depend on
           self.instruction = _instruction
 
-          return false unless can_process_with_active_record?
+          return false unless @set.respond_to?(:to_sql)
+          return false unless can_query_with_active_record?
 
-          statement = set.includes(instruction.associations_hash)
-                         .references(instruction.associations_hash)
-                         .merge(arel_operation)
+          statement = arel_eager_load_associations
+                        .merge(arel_operation)
 
           return false if throws?(ActiveRecord::StatementInvalid) { statement.load }
 
