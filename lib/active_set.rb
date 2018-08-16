@@ -28,7 +28,9 @@ class ActiveSet
   end
 
   def method_missing(method_name, *args, &block)
-    @view.send(method_name, *args, &block) || super
+    return @view.send(method_name, *args, &block) if @view.respond_to?(method_name)
+
+    super
   end
 
   def respond_to_missing?(method_name, include_private = false)
