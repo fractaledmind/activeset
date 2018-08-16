@@ -49,7 +49,7 @@ class ActiveSet
       end
 
       def direction_multiplier(direction)
-        return -1 if direction.to_s.start_with? 'desc'
+        return -1 if direction.to_s.downcase.start_with? 'desc'
 
         1
       end

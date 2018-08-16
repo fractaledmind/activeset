@@ -27,13 +27,23 @@ class ActiveSet
       private
 
       def arel_operation
-        column = case_insensitive? ? arel_column.lower : arel_column
+        arel_direction = arel_direction(instruction.value)
 
-        attribute_model.order(column.send(instruction.value))
+        attribute_model.order(arel_column.send(arel_direction))
+      end
+
+      def arel_column
+        case_insensitive? ? super.lower : super
       end
 
       def case_insensitive?
         instruction.operator.to_s.downcase == 'i'
+      end
+
+      def arel_direction(direction)
+        return 'desc' if direction.to_s.downcase.start_with? 'desc'
+
+        'asc'
       end
     end
   end
