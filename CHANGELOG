@@ -1,3 +1,5 @@
+v 0.6.1
+  - fix bug with ActiveSet#method_missing blowing up when the delegated method properly returned a false Boolean
 v 0.6.0
   - rewrite from the ground up
 v 0.5.8
