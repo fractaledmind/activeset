@@ -2,6 +2,7 @@
 
 require 'active_set/version'
 
+require 'active_support/core_ext/hash/reverse_merge'
 require 'active_set/processor_filter'
 require 'active_set/processor_sort'
 require 'active_set/processor_paginate'
@@ -49,7 +50,9 @@ class ActiveSet
 
   def paginate(instructions)
     paginater = Processor::Paginate.new(@view, instructions)
-    reinitialize(paginater.process, :paginate, instructions)
+    full_instructions = instructions.reverse_merge(page: paginater.instructions.get(:page),
+                                                   size: paginater.instructions.get(:size))
+    reinitialize(paginater.process, :paginate, full_instructions)
   end
 
   def transform(instructions)

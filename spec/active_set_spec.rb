@@ -76,5 +76,25 @@ RSpec.describe ActiveSet do
     it 'keeps the original set as the `set`' do
       expect(paginated_set.set).to eq set
     end
+
+    it 'saves the passed instructions' do
+      expect(paginated_set.instructions).to eq({ paginate: paginate_instructions })
+    end
+
+    context 'with no instructions' do
+      let(:paginate_instructions) { {} }
+
+      it 'returns the paginated set' do
+        expect(paginated_set).to eq [1, 2, 3]
+      end
+
+      it 'presents the paginated set as the `view`' do
+        expect(paginated_set.view).to eq [1, 2, 3]
+      end
+
+      it 'saves the default instructions' do
+        expect(paginated_set.instructions).to eq({ paginate: { page: 1, size: 25 } })
+      end
+    end
   end
 end
