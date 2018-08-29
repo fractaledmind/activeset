@@ -45,7 +45,7 @@ class ActiveSet
 
         def key
           return @hash[:key] if @hash.key? :key
-          return attribute_model.human_attribute_name(instructions_entry.attribute) if attribute_model.respond_to? :human_attribute_name
+          return attribute_model.human_attribute_name(instruction_entry.attribute) if attribute_model.respond_to? :human_attribute_name
           instruction_entry.keypath.map(&:titleize).join(' ')
         end
 
