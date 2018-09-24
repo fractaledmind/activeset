@@ -275,7 +275,7 @@ RSpec.describe ActiveSet::Processor::Sort do
 
             it { expect(subject).to be_a ActiveRecord::Relation }
             it { expect(subject.map { |x| [x.string, x.integer] })
-                   .to eq [['a', 1], ['z', 1], ['A', 1], ['Z', 1], ['a', 2], ['z', 2], ['A', 2], ['Z', 2]] }
+                   .to eq [['A', 1], ['A', 2], ['Z', 1], ['Z', 2], ['a', 1], ['a', 2], ['z', 1], ['z', 2]] }
           end
 
           context 'string field ASC CASE-SENSITIVE and integer field DESC' do
@@ -285,7 +285,7 @@ RSpec.describe ActiveSet::Processor::Sort do
 
             it { expect(subject).to be_a ActiveRecord::Relation }
             it { expect(subject.map { |x| [x.string, x.integer] })
-                   .to eq [['a', 2], ['z', 2], ['A', 2], ['Z', 2], ['a', 1], ['z', 1], ['A', 1], ['Z', 1]] }
+                   .to eq [['A', 2], ['A', 1], ['Z', 2], ['Z', 1], ['a', 2], ['a', 1], ['z', 2], ['z', 1]] }
           end
 
           context 'string field DESC CASE-INSENSITIVE and integer field ASC' do
@@ -295,7 +295,7 @@ RSpec.describe ActiveSet::Processor::Sort do
 
             it { expect(subject).to be_a ActiveRecord::Relation }
             it { expect(subject.map { |x| [x.string, x.integer] })
-                   .to eq [['a', 1], ['z', 1], ['A', 1], ['Z', 1], ['a', 2], ['z', 2], ['A', 2], ['Z', 2]] }
+                   .to eq [['z', 1], ['Z', 1], ['z', 2], ['Z', 2], ['a', 1], ['A', 1], ['a', 2], ['A', 2]] }
           end
 
           context 'string field DESC CASE-INSENSITIVE and integer field DESC' do
@@ -305,7 +305,7 @@ RSpec.describe ActiveSet::Processor::Sort do
 
             it { expect(subject).to be_a ActiveRecord::Relation }
             it { expect(subject.map { |x| [x.string, x.integer] })
-                   .to eq [['a', 2], ['z', 2], ['A', 2], ['Z', 2], ['a', 1], ['z', 1], ['A', 1], ['Z', 1]] }
+                   .to eq [['z', 2], ['Z', 2], ['z', 1], ['Z', 1], ['a', 2], ['A', 2], ['a', 1], ['A', 1]] }
           end
         end
       end
@@ -361,7 +361,7 @@ RSpec.describe ActiveSet::Processor::Sort do
 
             it { expect(subject).to be_a ActiveRecord::Relation }
             it { expect(subject.map { |x| [x.assoc.string, x.assoc.integer] })
-                   .to eq [['ra', 8], ['rz', 8], ['rA', 8], ['rZ', 8], ['ra', 9], ['rz', 9], ['rA', 9], ['rZ', 9]] }
+                   .to eq [['rA', 8], ['rA', 9], ['rZ', 8], ['rZ', 9], ['ra', 8], ['ra', 9], ['rz', 8], ['rz', 9]] }
           end
 
           context 'string field ASC CASE-SENSITIVE and integer field DESC' do
@@ -371,7 +371,7 @@ RSpec.describe ActiveSet::Processor::Sort do
 
             it { expect(subject).to be_a ActiveRecord::Relation }
             it { expect(subject.map { |x| [x.assoc.string, x.assoc.integer] })
-                   .to eq [['ra', 9], ['rz', 9], ['rA', 9], ['rZ', 9], ['ra', 8], ['rz', 8], ['rA', 8], ['rZ', 8]] }
+                   .to eq [['rA', 9], ['rA', 8], ['rZ', 9], ['rZ', 8], ['ra', 9], ['ra', 8], ['rz', 9], ['rz', 8]] }
           end
 
           context 'string field DESC CASE-INSENSITIVE and integer field ASC' do
@@ -381,7 +381,7 @@ RSpec.describe ActiveSet::Processor::Sort do
 
             it { expect(subject).to be_a ActiveRecord::Relation }
             it { expect(subject.map { |x| [x.assoc.string, x.assoc.integer] })
-                   .to eq [['ra', 8], ['rz', 8], ['rA', 8], ['rZ', 8], ['ra', 9], ['rz', 9], ['rA', 9], ['rZ', 9]] }
+                   .to eq [['rz', 8], ['rZ', 8], ['rz', 9], ['rZ', 9], ['ra', 8], ['rA', 8], ['ra', 9], ['rA', 9]] }
           end
 
           context 'string field DESC CASE-INSENSITIVE and integer field DESC' do
@@ -391,7 +391,7 @@ RSpec.describe ActiveSet::Processor::Sort do
 
             it { expect(subject).to be_a ActiveRecord::Relation }
             it { expect(subject.map { |x| [x.assoc.string, x.assoc.integer] })
-                   .to eq [['ra', 9], ['rz', 9], ['rA', 9], ['rZ', 9], ['ra', 8], ['rz', 8], ['rA', 8], ['rZ', 8]] }
+                   .to eq [['rz', 9], ['rZ', 9], ['rz', 8], ['rZ', 8], ['ra', 9], ['rA', 9], ['ra', 8], ['rA', 8]] }
           end
         end
       end
