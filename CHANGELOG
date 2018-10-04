@@ -1,3 +1,6 @@
+v 0.6.4
+  - Add multi-column sorting for ActiveRecord collections
+  - Fix the ActiveRecord `attribute_model` method to always return the class, and not an ActiveRecord::Relation object
 v 0.6.3
   - Fix a typo in the CSV transform adapter
 v 0.6.2
