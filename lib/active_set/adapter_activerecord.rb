@@ -51,8 +51,8 @@ class ActiveSet
                              .reduce(@set) do |obj, assoc|
                                obj.reflections[assoc.to_s]&.klass
                              end
-      # return tmp_model.klass if tmp_model.is_a?(ActiveRecord::Relation)
-      # tmp_model
+      return tmp_model.klass if tmp_model.is_a?(ActiveRecord::Relation)
+      tmp_model
     end
   end
 end
