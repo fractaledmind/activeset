@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-require 'active_set/version'
-
 require 'active_support/core_ext/hash/reverse_merge'
-require 'active_set/processor_filter'
-require 'active_set/processor_sort'
-require 'active_set/processor_paginate'
-require 'active_set/processor_transform'
+require 'patches/core_ext/hash/flatten_keys'
+require 'helpers/throws'
+require 'active_set/attribute_instruction'
+require 'active_set/filtering/operation'
+require 'active_set/sorting/operation'
+require 'active_set/paginating/operation'
+# require 'active_set/transforming/operation'
 
 class ActiveSet
   include Enumerable
@@ -25,6 +26,7 @@ class ActiveSet
 
   def ==(other)
     return @view == other unless other.is_a?(ActiveSet)
+
     @view == other.view
   end
 
@@ -38,26 +40,20 @@ class ActiveSet
     @view.respond_to?(method_name) || super
   end
 
-  def filter(instructions)
-    filterer = Processor::Filter.new(@view, instructions)
-    reinitialize(filterer.process, :filter, instructions)
+  def filter(instructions_hash)
+    filterer = Filtering::Operation.new(@view, instructions_hash)
+    reinitialize(filterer.execute, :filter, instructions_hash)
   end
 
-  def sort(instructions)
-    sorter = Processor::Sort.new(@view, instructions)
-    reinitialize(sorter.process, :sort, instructions)
+  def sort(instructions_hash)
+    sorter = Sorting::Operation.new(@view, instructions_hash)
+    reinitialize(sorter.execute, :sort, instructions_hash)
   end
 
-  def paginate(instructions)
-    paginater = Processor::Paginate.new(@view, instructions)
-    full_instructions = instructions.reverse_merge(page: paginater.instructions.get(:page),
-                                                   size: paginater.instructions.get(:size))
-    reinitialize(paginater.process, :paginate, full_instructions)
-  end
-
-  def transform(instructions)
-    transformer = Processor::Transform.new(@view, instructions)
-    transformer.process
+  def paginate(instructions_hash)
+    paginater = Paginating::Operation.new(@view, instructions_hash)
+    full_instructions_hash = instructions_hash.reverse_merge(paginater.operation_instructions)
+    reinitialize(paginater.execute, :paginate, full_instructions_hash)
   end
 
   private

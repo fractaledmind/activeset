@@ -10,4 +10,10 @@ class Foo < ApplicationRecord
   def self.string_starts_with(substr)
     where(Arel::Table.new(table_name)[:string].matches("#{substr}%"))
   end
+
+  # computed associations
+
+  def computed_assoc
+    assoc
+  end
 end

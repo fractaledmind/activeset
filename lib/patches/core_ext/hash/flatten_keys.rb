@@ -18,9 +18,11 @@ class Hash
   #   hash = { person: { name: { first: 'Rob' }, age: '28' } }
   #   hash.flatten_keys!   # => {[:person, :name, :first]=>"Rob", [:person, :age]=>"28"}
   #   hash                 # => {[:person, :name, :first]=>"Rob", [:person, :age]=>"28"}
+  # :nocov:
   def flatten_keys!
     replace(_flatten_keys(self))
   end
+  # :nocov:
 
   private
 
