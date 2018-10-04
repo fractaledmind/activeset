@@ -6,7 +6,6 @@ module Filtering
     end
 
     def execute
-      p ['~', Foo.count]
       attribute_instructions = @instructions_hash
                                  .flatten_keys
                                  .map { |k, v| AttributeInstruction.new(k, v) }
