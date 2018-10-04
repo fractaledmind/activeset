@@ -17,12 +17,20 @@ class ActiveSet
       @instructions.each(&block)
     end
 
+    # :nocov:
     def method_missing(method_name, *args, &block)
       @instructions.send(method_name, *args, &block) || super
     end
+    # :nocov:
 
+    # :nocov:
     def respond_to_missing?(method_name, include_private = false)
       @instructions.respond_to?(method_name) || super
+    end
+    # :nocov:
+
+    def associations_hash
+      @instructions.reduce({}) { |h, i| h.merge(i.associations_hash) }
     end
 
     def get(key)

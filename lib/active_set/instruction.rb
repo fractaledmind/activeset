@@ -44,7 +44,9 @@ class ActiveSet
     def value_for(item:)
       resource_for(item: item).public_send(attribute)
     rescue
+      # :nocov:
       nil
+      # :nocov:
     end
 
     def resource_for(item:)
@@ -54,7 +56,9 @@ class ActiveSet
         resource.public_send(association)
       end
     rescue
+      # :nocov:
       nil
+      # :nocov:
     end
 
     private
