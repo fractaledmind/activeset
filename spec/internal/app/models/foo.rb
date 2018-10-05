@@ -7,8 +7,8 @@ class Foo < ApplicationRecord
     where(Arel::Table.new(table_name)[:datetime].between(start..finish))
   end)
 
-  def self.string_starts_with(substr)
-    where(Arel::Table.new(table_name)[:string].matches("#{substr}%"))
+  def self.string_ends_with(substr)
+    where(Arel::Table.new(table_name)[:string].matches("%#{substr}"))
   end
 
   # computed associations
