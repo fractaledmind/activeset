@@ -24,6 +24,7 @@ class ActiveSet
     @view.each(&block)
   end
 
+  # :nocov:
   def ==(other)
     return @view == other unless other.is_a?(ActiveSet)
 
@@ -39,6 +40,7 @@ class ActiveSet
   def respond_to_missing?(method_name, include_private = false)
     @view.respond_to?(method_name) || super
   end
+  # :nocov:
 
   def filter(instructions_hash)
     filterer = Filtering::Operation.new(@view, instructions_hash)

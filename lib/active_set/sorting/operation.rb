@@ -46,10 +46,10 @@ module Sorting
         return string_value.split('').map { |char| char.ord.to_s.rjust(3, '0') }.insert(1, '.').reduce(&:+).to_r
       elsif value.respond_to?(:to_time)
         return (value.to_time.to_f * 1000).round
-      elsif value.respond_to?(:to_i)
-        return value.to_i
       else
+        # :nocov:
         return value
+        # :nocov:
       end
     end
 
