@@ -34,10 +34,91 @@ module Filtering
       return false unless @set.respond_to? :select
 
       @set.select do |item|
-        @attribute_instruction.value_for(item: item)
-                              .send(@attribute_instruction.operator,
-                                    @attribute_instruction.value)
+        if execute_attribute_comparison_for?(item)
+          next attribute_comparison_for(item)
+        elsif execute_instance_method_call_for?(item)
+          next instance_method_call_for(item)
+        elsif execute_class_method_call_for?(item)
+          next class_method_call_for(item)
+        else
+          next false
+        end
       end
+    end
+
+    private
+
+    def execute_attribute_comparison_for?(item)
+      attribute_item = attribute_item_for(item)
+
+      return false unless attribute_item
+      return false unless attribute_item.respond_to?(@attribute_instruction.attribute)
+      return false unless attribute_item.method(@attribute_instruction.attribute).arity.zero?
+
+      true
+    end
+
+    def execute_instance_method_call_for?(item)
+      attribute_item = attribute_item_for(item)
+
+      return false unless attribute_item
+      return false unless attribute_item.respond_to?(@attribute_instruction.attribute)
+      return false if attribute_item.method(@attribute_instruction.attribute).arity.zero?
+
+      true
+    end
+
+    def execute_class_method_call_for?(item)
+      attribute_item = attribute_item_for(item)
+
+      return false unless attribute_item
+      return false unless attribute_item.class
+      return false unless attribute_item.class.respond_to?(@attribute_instruction.attribute)
+      return false if attribute_item.class.method(@attribute_instruction.attribute).arity.zero?
+
+      true
+    end
+
+    def attribute_comparison_for(item)
+      @attribute_instruction
+        .value_for(item: item)
+        .public_send(
+          @attribute_instruction.operator,
+          @attribute_instruction.value)
+    end
+
+    def instance_method_call_for(item)
+      maybe_item_or_collection_or_nil = attribute_item_for(item)
+                                          .public_send(
+                                            @attribute_instruction.attribute,
+                                            @attribute_instruction.value)
+      if maybe_item_or_collection_or_nil.nil?
+        false
+      elsif maybe_item_or_collection_or_nil.respond_to?(:each)
+        maybe_item_or_collection_or_nil.include? attribute_item_for(item)
+      else
+        maybe_item_or_collection_or_nil.present?
+      end
+    end
+
+    def class_method_call_for(item)
+      maybe_item_or_collection_or_nil = attribute_item_for(item)
+                                          .class
+                                          .public_send(
+                                            @attribute_instruction.attribute,
+                                            @attribute_instruction.value)
+      if maybe_item_or_collection_or_nil.nil?
+        false
+      elsif maybe_item_or_collection_or_nil.respond_to?(:each)
+        maybe_item_or_collection_or_nil.include? attribute_item_for(item)
+      else
+        maybe_item_or_collection_or_nil.present?
+      end
+    end
+
+    def attribute_item_for(item)
+      @attribute_instruction
+        .resource_for(item: item)
     end
   end
 
@@ -49,25 +130,71 @@ module Filtering
 
     def execute
       return false unless @set.respond_to? :to_sql
-      attribute_model = @attribute_instruction.associations_array
-                                              .reduce(@set) do |obj, assoc|
-                                                obj.reflections[assoc.to_s]&.klass
-                                              end
-      return false unless attribute_model && attribute_model.respond_to?(:attribute_names)
-      return false unless attribute_model.attribute_names.include?(@attribute_instruction.attribute)
 
-      statement = @set.eager_load(@attribute_instruction.associations_hash)
-                      .where(
-                        Arel::Nodes::InfixOperation.new(
-                          @attribute_instruction.operator,
-                          Arel::Table.new(attribute_model.table_name)[@attribute_instruction.attribute],
-                          Arel.sql(ActiveRecord::Base.connection.quote(@attribute_instruction.value))
-                        )
-                      )
+      if execute_where_operation?
+        statement = where_operation
+      elsif execute_merge_operation?
+        statement = merge_operation
+      else
+        return false
+      end
 
       return false if throws?(ActiveRecord::StatementInvalid) { statement.load }
 
       statement
+    end
+
+    private
+
+    def execute_where_operation?
+      return false unless attribute_model
+      return false unless attribute_model.respond_to?(:attribute_names)
+      return false unless attribute_model.attribute_names.include?(@attribute_instruction.attribute)
+
+      true
+    end
+
+    def execute_merge_operation?
+      return false unless attribute_model
+      return false unless attribute_model.respond_to?(@attribute_instruction.attribute)
+      return false if attribute_model.method(@attribute_instruction.attribute).arity.zero?
+
+      true
+    end
+
+    def where_operation
+      arel_operator = @attribute_instruction.operator(default: '=')
+      arel_column = Arel::Table.new(attribute_model.table_name)[@attribute_instruction.attribute]
+      arel_value = Arel.sql(ActiveRecord::Base.connection.quote(@attribute_instruction.value))
+
+      @set.eager_load(@attribute_instruction.associations_hash)
+          .where(
+            Arel::Nodes::InfixOperation.new(
+              arel_operator,
+              arel_column,
+              arel_value
+            )
+          )
+    end
+
+    def merge_operation
+      @set.eager_load(@attribute_instruction.associations_hash)
+          .merge(
+            attribute_model.public_send(
+              @attribute_instruction.attribute,
+              @attribute_instruction.value
+            )
+          )
+    end
+
+    def attribute_model
+      return @set.klass if @attribute_instruction.associations_array.empty?
+
+      @attribute_instruction
+        .associations_array
+        .reduce(@set) do |obj, assoc|
+          obj.reflections[assoc.to_s]&.klass
+        end
     end
   end
 end
