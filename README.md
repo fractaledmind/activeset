@@ -18,15 +18,35 @@ Or install it yourself as:
 
 ## Usage
 
-The `ActiveSet` class is an extension of `Enumerable` that adds methods for filtering, sorting, paginating, and transforming (as of right now).
+The `ActiveSet` class provides convenience methods for filtering, sorting, paginating, and transforming collections of data-objects, whether `ActiveRecord::Relation`s or Ruby `Array`s or custom classes that extend the `Enumerable` module.
 
-Every convenience method added to the `ActiveSet` class is handled via a `Processor` class, and that `Processor` class will then use 1 or more `Adapter` classes to actually fulfill the functional contract.
+When calling a convenience method on an instance of `ActiveSet`, you pass only 1 argument: a plain-old-Ruby-hash that encodes the instructions for that operation. Each convenience method works with hashes of differing signatures.
 
-an `Adapter` for a particular `Processor` simply handles doing the job of the processor for a particular kind of Set.
+## Filtering
 
-So, for example, the `Filter::Processor` will have an `EnumerableAdapter` (to work with generic enumerable sets) and an `ActiveRecordAdapter` (to work with active record relations).
+`ActiveSet` allows for you to filter your collection by:
 
-When calling a convenience method on an instance of `ActiveSet`, you pass only 1 argument: what I am currently calling a `structure`, which is a plain-old-Ruby-hash. Each convenience method works with hashes of differing signatures.
+- "direct" attributes (i.e. for an `ActiveRecord` model, a database attribute)
+- "computed" attributes (i.e. Ruby getter-methods on your data-objects)
+- "associated" attributes (i.e. either direct or computed attributes on objects associated with  your data-objects)
+- "called" attributes (i.e. Ruby methods with non-zero arity)
+
+The syntax for the instructions hash is relatively simple:
+
+```ruby
+{
+    attribute: 'value',
+    association: {
+        field: 'value'
+    }
+}
+```
+
+Every entry in the instructions hash is treated and processed as an independent operation, and all operations are _conjoined_ ("AND"-ed). At the moment, you cannot use disjointed ("OR"-ed) operations.
+
+## Sorting
+
+## Paginating
 
 e.g. `filter(attribute: 'value', association: { field: 'value' })` or `sort(attribute: :asc, association: { field: 'desc' })` or `paginate(page: 1, size: 10)`
 
@@ -52,3 +72,6 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/fracta
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
+
+attribute_types = %i[binary boolean date datetime decimal float integer string text time]
