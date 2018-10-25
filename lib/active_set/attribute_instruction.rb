@@ -1,13 +1,20 @@
 class AttributeInstruction
+  attr_accessor :processed
+
   def initialize(keypath, value)
     # `keypath` can be an Array (e.g. [:parent, :child, :grandchild, :attribute])
     # or a String (e.g. 'parent.child.grandchild.attribute')
     @keypath = Array(keypath).map(&:to_s).flat_map { |x| x.split('.') }
     @value = value
+    @processed = false
   end
 
   def value
     @value
+  end
+
+  def processed?
+    @processed
   end
 
   def attribute
