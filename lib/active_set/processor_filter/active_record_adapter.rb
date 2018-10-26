@@ -43,7 +43,7 @@ class ActiveSet
       end
 
       def arel_operator
-        instruction.operator
+        instruction.operator(default: '=')
       end
     end
   end
