@@ -1,3 +1,5 @@
+v 0.6.5
+  - Fix the ActiveRecord filtering adapter to use the correct operator (=) for Oracle WHERE clauses
 v 0.6.4
   - Add multi-column sorting for ActiveRecord collections
   - Fix the ActiveRecord `attribute_model` method to always return the class, and not an ActiveRecord::Relation object
