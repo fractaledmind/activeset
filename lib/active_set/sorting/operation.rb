@@ -19,6 +19,10 @@ module Sorting
 
       EnumerableStrategy.new(@set, attribute_instructions).execute
     end
+
+    def operation_instructions
+      @instructions_hash
+    end
   end
 
   class EnumerableStrategy

@@ -24,6 +24,10 @@ module Filtering
         maybe_set_or_false.presence || set
       end
     end
+
+    def operation_instructions
+      @instructions_hash
+    end
   end
 
   class EnumerableStrategy

@@ -48,18 +48,17 @@ class ActiveSet
 
   def filter(instructions_hash)
     filterer = Filtering::Operation.new(@view, instructions_hash)
-    reinitialize(filterer.execute, :filter, instructions_hash)
+    reinitialize(filterer.execute, :filter, filterer.operation_instructions)
   end
 
   def sort(instructions_hash)
     sorter = Sorting::Operation.new(@view, instructions_hash)
-    reinitialize(sorter.execute, :sort, instructions_hash)
+    reinitialize(sorter.execute, :sort, sorter.operation_instructions)
   end
 
   def paginate(instructions_hash)
     paginater = Paginating::Operation.new(@view, instructions_hash)
-    full_instructions_hash = instructions_hash.reverse_merge(paginater.operation_instructions)
-    reinitialize(paginater.execute, :paginate, full_instructions_hash)
+    reinitialize(paginater.execute, :paginate, paginater.operation_instructions)
   end
 
   private
