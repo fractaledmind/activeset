@@ -38,8 +38,6 @@ module Filtering
       @set.select do |item|
         if execute_attribute_comparison_for?(item)
           next attribute_comparison_for(item)
-        elsif execute_instance_method_call_for?(item)
-          next instance_method_call_for(item)
         elsif execute_class_method_call_for?(item)
           next class_method_call_for(item)
         else
@@ -56,16 +54,6 @@ module Filtering
       return false unless attribute_item
       return false unless attribute_item.respond_to?(@attribute_instruction.attribute)
       return false unless attribute_item.method(@attribute_instruction.attribute).arity.zero?
-
-      true
-    end
-
-    def execute_instance_method_call_for?(item)
-      attribute_item = attribute_item_for(item)
-
-      return false unless attribute_item
-      return false unless attribute_item.respond_to?(@attribute_instruction.attribute)
-      return false if attribute_item.method(@attribute_instruction.attribute).arity.zero?
 
       true
     end
@@ -87,20 +75,6 @@ module Filtering
         .public_send(
           @attribute_instruction.operator,
           @attribute_instruction.value)
-    end
-
-    def instance_method_call_for(item)
-      maybe_item_or_collection_or_nil = attribute_item_for(item)
-                                          .public_send(
-                                            @attribute_instruction.attribute,
-                                            @attribute_instruction.value)
-      if maybe_item_or_collection_or_nil.nil?
-        false
-      elsif maybe_item_or_collection_or_nil.respond_to?(:each)
-        maybe_item_or_collection_or_nil.include? attribute_item_for(item)
-      else
-        maybe_item_or_collection_or_nil.present?
-      end
     end
 
     def class_method_call_for(item)
