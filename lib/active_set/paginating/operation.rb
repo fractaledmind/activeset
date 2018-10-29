@@ -15,7 +15,7 @@ module Paginating
     def operation_instructions
       @instructions_hash.symbolize_keys.tap do |h|
         num = (h[:page] || 1).to_i
-        h[:page] = num <= 0 ? 1: num
+        h[:page] = num <= 0 ? 1 : num
         h[:size] = (h[:size] || 25).to_i
       end
     end
