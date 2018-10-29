@@ -25,6 +25,10 @@ class ActiveSet
   end
 
   # :nocov:
+  def inspect
+    "#<ActiveSet:#{"0x00%x" % (object_id << 1)} @instructions=#{@instructions.inspect}>"
+  end
+
   def ==(other)
     return @view == other unless other.is_a?(ActiveSet)
 
