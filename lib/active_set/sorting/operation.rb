@@ -43,7 +43,18 @@ module Sorting
                        else
                          value.to_s
                        end
-        return string_value.split('').map { |char| char.ord.to_s.rjust(3, '0') }.insert(1, '.').reduce(&:+).to_r
+        # 'aB09ü'
+        # -> ["a", "B", "0", "9", "ü"]
+        # -> ["097", "066", "048", "057", "252"]
+        # -> ["097", ".", "066", "048", "057", "252"]
+        # -> "097.066048057252"
+        # -> (24266512014313/250000000000)
+        return string_value
+                 .split('')
+                 .map { |char| char.ord.to_s.rjust(3, '0') }
+                 .insert(1, '.')
+                 .reduce(&:concat)
+                 .to_r
       elsif value.respond_to?(:to_time)
         return (value.to_time.to_f * 1000).round
       else
