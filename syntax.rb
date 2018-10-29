@@ -188,5 +188,5 @@
   #   end)
   # )
 
-# set.filter => { itself[select]: value}
+# set.filter => { itself[select]: value }
 # filterer = Operation::Enumerate.new(Operand::Enumerable.new([1,2,3]), Operand::Signal.new(:select), Operand::Executable.new(->(i) { Operation::Compare.new(Operand::Object.new(i), Operand::Signal.new('>'), Operand::Object.new(1)).visit }))
