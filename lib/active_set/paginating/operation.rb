@@ -38,8 +38,12 @@ module Paginating
 
     def count_operation_instruction(set)
       if set.is_a?(ActiveRecord::Relation)
-        count = set.count(:all)
-        count = count.count if count.is_a?(Hash)
+        maybe_count_or_hash = set.count(:all)
+        count = if maybe_count_or_hash.is_a?(Hash)
+                  maybe_count_or_hash.count
+                else
+                  maybe_count_or_hash
+                end
         return count
       end
 
