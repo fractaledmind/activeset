@@ -7,6 +7,7 @@ Combustion.initialize! :active_record
 
 require 'bundler/setup'
 require 'ostruct'
+require 'csv'
 require 'active_set'
 
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }

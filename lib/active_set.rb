@@ -7,7 +7,7 @@ require 'active_set/attribute_instruction'
 require 'active_set/filtering/operation'
 require 'active_set/sorting/operation'
 require 'active_set/paginating/operation'
-# require 'active_set/transforming/operation'
+require 'active_set/exporting/operation'
 
 class ActiveSet
   include Enumerable
@@ -59,6 +59,11 @@ class ActiveSet
   def paginate(instructions_hash)
     paginater = Paginating::Operation.new(@view, instructions_hash)
     reinitialize(paginater.execute, :paginate, paginater.operation_instructions)
+  end
+
+  def export(instructions_hash)
+    exporter = Exporting::Operation.new(@view, instructions_hash)
+    exporter.execute
   end
 
   private
