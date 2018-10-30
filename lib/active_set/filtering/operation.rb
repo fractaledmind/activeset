@@ -26,7 +26,7 @@ module Filtering
     end
 
     def operation_instructions
-      @instructions_hash
+      @instructions_hash.symbolize_keys
     end
   end
 
