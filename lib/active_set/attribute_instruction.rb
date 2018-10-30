@@ -1,5 +1,6 @@
 class AttributeInstruction
   attr_accessor :processed
+  attr_reader :keypath, :value
 
   def initialize(keypath, value)
     # `keypath` can be an Array (e.g. [:parent, :child, :grandchild, :attribute])
@@ -7,10 +8,6 @@ class AttributeInstruction
     @keypath = Array(keypath).map(&:to_s).flat_map { |x| x.split('.') }
     @value = value
     @processed = false
-  end
-
-  def value
-    @value
   end
 
   def processed?
