@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AttributeInstruction
   attr_accessor :processed
   attr_reader :keypath, :value
@@ -44,7 +46,7 @@ class AttributeInstruction
 
   def value_for(item:)
     resource_for(item: item).public_send(attribute)
-  rescue
+  rescue StandardError
     # :nocov:
     nil
     # :nocov:
@@ -56,7 +58,7 @@ class AttributeInstruction
 
       resource.public_send(association)
     end
-  rescue
+  rescue StandardError
     # :nocov:
     nil
     # :nocov:

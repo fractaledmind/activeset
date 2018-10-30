@@ -13,7 +13,7 @@
 
 def throws?(exception) # &block
   yield
-  return false
+  false
 rescue Exception => e
-  return e.is_a? exception
+  e.is_a? exception
 end

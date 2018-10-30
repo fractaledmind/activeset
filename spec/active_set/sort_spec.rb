@@ -5,37 +5,37 @@ require 'spec_helper'
 RSpec.describe ActiveSet do
   before(:all) do
     @foo_1 = FactoryBot.create(:foo, string: 'a', integer: 1, boolean: true,
-                                date: 1.day.from_now.to_date, datetime: 1.day.from_now.to_datetime,
-                                decimal: 1.1, float: 1.1, time: 1.hour.from_now.to_time.to_s[12..-1],
-                                assoc: FactoryBot.create(:assoc, string: 'ra', integer: 9))
+                                     date: 1.day.from_now.to_date, datetime: 1.day.from_now.to_datetime,
+                                     decimal: 1.1, float: 1.1, time: 1.hour.from_now.to_time.to_s[12..-1],
+                                     assoc: FactoryBot.create(:assoc, string: 'ra', integer: 9))
     @foo_2 = FactoryBot.create(:foo, string: 'a', integer: 2, boolean: true,
-                                date: 1.day.ago.to_date, datetime: 1.day.ago.to_datetime,
-                                decimal: 2.2, float: 2.2, time: 2.hours.from_now.to_time.to_s[12..-1],
-                                assoc: FactoryBot.create(:assoc, string: 'ra', integer: 8))
+                                     date: 1.day.ago.to_date, datetime: 1.day.ago.to_datetime,
+                                     decimal: 2.2, float: 2.2, time: 2.hours.from_now.to_time.to_s[12..-1],
+                                     assoc: FactoryBot.create(:assoc, string: 'ra', integer: 8))
     @foo_3 = FactoryBot.create(:foo, string: 'z', integer: 1, boolean: true,
-                                date: 1.day.from_now.to_date, datetime: 1.day.from_now.to_datetime,
-                                decimal: 1.1, float: 1.1, time: 1.hour.ago.to_time.to_s[12..-1],
-                                assoc: FactoryBot.create(:assoc, string: 'rz', integer: 9))
+                                     date: 1.day.from_now.to_date, datetime: 1.day.from_now.to_datetime,
+                                     decimal: 1.1, float: 1.1, time: 1.hour.ago.to_time.to_s[12..-1],
+                                     assoc: FactoryBot.create(:assoc, string: 'rz', integer: 9))
     @foo_4 = FactoryBot.create(:foo, string: 'z', integer: 2, boolean: true,
-                                date: 1.day.ago.to_date, datetime: 1.day.ago.to_datetime,
-                                decimal: 2.2, float: 2.2, time: 2.hours.ago.to_time.to_s[12..-1],
-                                assoc: FactoryBot.create(:assoc, string: 'rz', integer: 8))
+                                     date: 1.day.ago.to_date, datetime: 1.day.ago.to_datetime,
+                                     decimal: 2.2, float: 2.2, time: 2.hours.ago.to_time.to_s[12..-1],
+                                     assoc: FactoryBot.create(:assoc, string: 'rz', integer: 8))
     @foo_5 = FactoryBot.create(:foo, string: 'A', integer: 1, boolean: false,
-                                date: 1.week.from_now.to_date, datetime: 1.week.from_now.to_datetime,
-                                decimal: 1.1, float: 1.1, time: 1.hour.from_now.to_time.to_s[12..-1],
-                                assoc: FactoryBot.create(:assoc, string: 'rA', integer: 9))
+                                     date: 1.week.from_now.to_date, datetime: 1.week.from_now.to_datetime,
+                                     decimal: 1.1, float: 1.1, time: 1.hour.from_now.to_time.to_s[12..-1],
+                                     assoc: FactoryBot.create(:assoc, string: 'rA', integer: 9))
     @foo_6 = FactoryBot.create(:foo, string: 'A', integer: 2, boolean: false,
-                                date: 1.week.ago.to_date, datetime: 1.week.ago.to_datetime,
-                                decimal: 2.2, float: 2.2, time: 2.hours.from_now.to_time.to_s[12..-1],
-                                assoc: FactoryBot.create(:assoc, string: 'rA', integer: 8))
+                                     date: 1.week.ago.to_date, datetime: 1.week.ago.to_datetime,
+                                     decimal: 2.2, float: 2.2, time: 2.hours.from_now.to_time.to_s[12..-1],
+                                     assoc: FactoryBot.create(:assoc, string: 'rA', integer: 8))
     @foo_7 = FactoryBot.create(:foo, string: 'Z', integer: 1, boolean: false,
-                                date: 1.week.from_now.to_date, datetime: 1.week.from_now.to_datetime,
-                                decimal: 1.1, float: 1.1, time: 1.hour.ago.to_time.to_s[12..-1],
-                                assoc: FactoryBot.create(:assoc, string: 'rZ', integer: 9))
+                                     date: 1.week.from_now.to_date, datetime: 1.week.from_now.to_datetime,
+                                     decimal: 1.1, float: 1.1, time: 1.hour.ago.to_time.to_s[12..-1],
+                                     assoc: FactoryBot.create(:assoc, string: 'rZ', integer: 9))
     @foo_8 = FactoryBot.create(:foo, string: 'Z', integer: 2, boolean: false,
-                                date: 1.week.ago.to_date, datetime: 1.week.ago.to_datetime,
-                                decimal: 2.2, float: 2.2, time: 2.hours.ago.to_time.to_s[12..-1],
-                                assoc: FactoryBot.create(:assoc, string: 'rZ', integer: 8))
+                                     date: 1.week.ago.to_date, datetime: 1.week.ago.to_datetime,
+                                     decimal: 2.2, float: 2.2, time: 2.hours.ago.to_time.to_s[12..-1],
+                                     assoc: FactoryBot.create(:assoc, string: 'rZ', integer: 8))
     @active_set = ActiveSet.new(Foo.all)
     @all_foos = Foo.all.to_a
   end
@@ -1660,9 +1660,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be <= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.integer == right_result.integer
           end
         end
       end
@@ -1676,9 +1674,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be >= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.integer == right_result.integer
           end
         end
       end
@@ -1692,9 +1688,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be <= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.integer == right_result.integer
           end
         end
       end
@@ -1708,13 +1702,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be >= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.integer == right_result.integer
           end
         end
       end
-
 
       context '{ computed_integer: :asc, computed_string: :asc }' do
         let(:instructions) do
@@ -2151,7 +2142,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with BINARY and DATE type' do
       context '{ binary: :asc, date: :asc }' do
         let(:instructions) do
@@ -2162,9 +2152,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.date).to be <= right_result.date
-            end
+            expect(left_result.date).to be <= right_result.date if left_result.binary == right_result.binary
           end
         end
       end
@@ -2178,9 +2166,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.date).to be >= right_result.date
-            end
+            expect(left_result.date).to be >= right_result.date if left_result.binary == right_result.binary
           end
         end
       end
@@ -2194,9 +2180,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.date).to be >= right_result.date
-            end
+            expect(left_result.date).to be >= right_result.date if left_result.binary == right_result.binary
           end
         end
       end
@@ -2210,13 +2194,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.date).to be <= right_result.date
-            end
+            expect(left_result.date).to be <= right_result.date if left_result.binary == right_result.binary
           end
         end
       end
-
 
       context '{ computed_binary: :asc, computed_date: :asc }' do
         let(:instructions) do
@@ -2245,9 +2226,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.datetime).to be <= right_result.datetime
-            end
+            expect(left_result.datetime).to be <= right_result.datetime if left_result.binary == right_result.binary
           end
         end
       end
@@ -2261,9 +2240,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.datetime).to be >= right_result.datetime
-            end
+            expect(left_result.datetime).to be >= right_result.datetime if left_result.binary == right_result.binary
           end
         end
       end
@@ -2277,9 +2254,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.datetime).to be >= right_result.datetime
-            end
+            expect(left_result.datetime).to be >= right_result.datetime if left_result.binary == right_result.binary
           end
         end
       end
@@ -2293,13 +2268,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.datetime).to be <= right_result.datetime
-            end
+            expect(left_result.datetime).to be <= right_result.datetime if left_result.binary == right_result.binary
           end
         end
       end
-
 
       context '{ binary: :desc, computed_datetime: :desc }' do
         let(:instructions) do
@@ -2328,9 +2300,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.decimal).to be <= right_result.decimal
-            end
+            expect(left_result.decimal).to be <= right_result.decimal if left_result.binary == right_result.binary
           end
         end
       end
@@ -2344,9 +2314,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.decimal).to be >= right_result.decimal
-            end
+            expect(left_result.decimal).to be >= right_result.decimal if left_result.binary == right_result.binary
           end
         end
       end
@@ -2360,9 +2328,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.decimal).to be >= right_result.decimal
-            end
+            expect(left_result.decimal).to be >= right_result.decimal if left_result.binary == right_result.binary
           end
         end
       end
@@ -2376,13 +2342,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.decimal).to be <= right_result.decimal
-            end
+            expect(left_result.decimal).to be <= right_result.decimal if left_result.binary == right_result.binary
           end
         end
       end
-
 
       context '{ computed_binary: :asc, decimal: :desc }' do
         let(:instructions) do
@@ -2411,9 +2374,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.float).to be <= right_result.float
-            end
+            expect(left_result.float).to be <= right_result.float if left_result.binary == right_result.binary
           end
         end
       end
@@ -2427,9 +2388,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.float).to be >= right_result.float
-            end
+            expect(left_result.float).to be >= right_result.float if left_result.binary == right_result.binary
           end
         end
       end
@@ -2443,9 +2402,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.float).to be >= right_result.float
-            end
+            expect(left_result.float).to be >= right_result.float if left_result.binary == right_result.binary
           end
         end
       end
@@ -2459,13 +2416,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.float).to be <= right_result.float
-            end
+            expect(left_result.float).to be <= right_result.float if left_result.binary == right_result.binary
           end
         end
       end
-
 
       context '{ assoc: { binary: :desc, float: :asc } }' do
         let(:instructions) do
@@ -2494,9 +2448,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.binary == right_result.binary
           end
         end
       end
@@ -2510,9 +2462,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.binary == right_result.binary
           end
         end
       end
@@ -2526,9 +2476,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.binary == right_result.binary
           end
         end
       end
@@ -2542,13 +2490,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.binary == right_result.binary
           end
         end
       end
-
 
       context '{ assoc: { computed_binary: :asc, computed_integer: :asc } }' do
         let(:instructions) do
@@ -2577,9 +2522,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.binary == right_result.binary
           end
         end
       end
@@ -2593,9 +2536,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.binary == right_result.binary
           end
         end
       end
@@ -2609,9 +2550,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.binary == right_result.binary
           end
         end
       end
@@ -2625,13 +2564,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.binary == right_result.binary
           end
         end
       end
-
 
       context '{ assoc: { binary: :desc, computed_string: :desc } }' do
         let(:instructions) do
@@ -2660,9 +2596,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.binary == right_result.binary
           end
         end
       end
@@ -2676,9 +2610,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.binary == right_result.binary
           end
         end
       end
@@ -2692,9 +2624,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.binary == right_result.binary
           end
         end
       end
@@ -2708,13 +2638,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.binary == right_result.binary
           end
         end
       end
-
 
       context '{ assoc: { computed_binary: :asc, text: :desc } }' do
         let(:instructions) do
@@ -2743,9 +2670,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.binary == right_result.binary
           end
         end
       end
@@ -2759,9 +2684,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.binary == right_result.binary
           end
         end
       end
@@ -2775,9 +2698,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be <= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.binary == right_result.binary
           end
         end
       end
@@ -2791,13 +2712,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.binary).to be >= right_result.binary
 
-            if left_result.binary == right_result.binary
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.binary == right_result.binary
           end
         end
       end
-
 
       context '{ binary: :desc, assoc: { time: :asc } }' do
         let(:instructions) do
@@ -2816,7 +2734,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with BOOLEAN and DATE type' do
       context '{ boolean: :asc, date: :asc }' do
         let(:instructions) do
@@ -2827,9 +2744,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.date).to be <= right_result.date
-            end
+            expect(left_result.date).to be <= right_result.date if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -2843,9 +2758,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.date).to be >= right_result.date
-            end
+            expect(left_result.date).to be >= right_result.date if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -2859,9 +2772,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.date).to be >= right_result.date
-            end
+            expect(left_result.date).to be >= right_result.date if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -2875,13 +2786,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.date).to be <= right_result.date
-            end
+            expect(left_result.date).to be <= right_result.date if left_result.boolean == right_result.boolean
           end
         end
       end
-
 
       context '{ computed_boolean: :asc, assoc: { date: :asc } }' do
         let(:instructions) do
@@ -2910,9 +2818,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.datetime).to be <= right_result.datetime
-            end
+            expect(left_result.datetime).to be <= right_result.datetime if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -2926,9 +2832,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.datetime).to be >= right_result.datetime
-            end
+            expect(left_result.datetime).to be >= right_result.datetime if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -2942,9 +2846,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.datetime).to be >= right_result.datetime
-            end
+            expect(left_result.datetime).to be >= right_result.datetime if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -2958,13 +2860,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.datetime).to be <= right_result.datetime
-            end
+            expect(left_result.datetime).to be <= right_result.datetime if left_result.boolean == right_result.boolean
           end
         end
       end
-
 
       context '{ boolean: :desc, assoc: { computed_datetime: :desc } }' do
         let(:instructions) do
@@ -2993,9 +2892,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.decimal).to be <= right_result.decimal
-            end
+            expect(left_result.decimal).to be <= right_result.decimal if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3009,9 +2906,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.decimal).to be >= right_result.decimal
-            end
+            expect(left_result.decimal).to be >= right_result.decimal if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3025,9 +2920,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.decimal).to be >= right_result.decimal
-            end
+            expect(left_result.decimal).to be >= right_result.decimal if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3041,13 +2934,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.decimal).to be <= right_result.decimal
-            end
+            expect(left_result.decimal).to be <= right_result.decimal if left_result.boolean == right_result.boolean
           end
         end
       end
-
 
       context '{ computed_boolean: :asc, assoc: { computed_decimal: :desc } }' do
         let(:instructions) do
@@ -3076,9 +2966,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.float).to be <= right_result.float
-            end
+            expect(left_result.float).to be <= right_result.float if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3092,9 +2980,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.float).to be >= right_result.float
-            end
+            expect(left_result.float).to be >= right_result.float if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3108,9 +2994,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.float).to be >= right_result.float
-            end
+            expect(left_result.float).to be >= right_result.float if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3124,13 +3008,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.float).to be <= right_result.float
-            end
+            expect(left_result.float).to be <= right_result.float if left_result.boolean == right_result.boolean
           end
         end
       end
-
 
       context '{ assoc: { boolean: :desc }, float: :asc }' do
         let(:instructions) do
@@ -3159,9 +3040,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3175,9 +3054,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3191,9 +3068,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3207,13 +3082,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.boolean == right_result.boolean
           end
         end
       end
-
 
       context '{ assoc: { computed_boolean: :asc }, computed_integer: :asc }' do
         let(:instructions) do
@@ -3242,9 +3114,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3258,9 +3128,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3274,9 +3142,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3290,13 +3156,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.boolean == right_result.boolean
           end
         end
       end
-
 
       context '{ assoc: { boolean: :asc }, computed_string: :desc }' do
         let(:instructions) do
@@ -3325,9 +3188,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3341,9 +3202,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3357,9 +3216,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3373,13 +3230,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.boolean == right_result.boolean
           end
         end
       end
-
 
       context '{ assoc: { computed_boolean: :desc }, text: :asc }' do
         let(:instructions) do
@@ -3408,9 +3262,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3424,9 +3276,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3440,9 +3290,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be <= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.boolean == right_result.boolean
           end
         end
       end
@@ -3456,13 +3304,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.boolean.to_s).to be >= right_result.boolean.to_s
 
-            if left_result.boolean == right_result.boolean
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.boolean == right_result.boolean
           end
         end
       end
-
 
       context '{ computed_assoc: { boolean: :desc, time: :asc } }' do
         let(:instructions) do
@@ -3481,7 +3326,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with DATE and DATETIME type' do
       context '{ date: :asc, datetime: :asc }' do
         let(:instructions) do
@@ -3492,9 +3336,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.datetime).to be <= right_result.datetime
-            end
+            expect(left_result.datetime).to be <= right_result.datetime if left_result.date == right_result.date
           end
         end
       end
@@ -3508,9 +3350,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.datetime).to be >= right_result.datetime
-            end
+            expect(left_result.datetime).to be >= right_result.datetime if left_result.date == right_result.date
           end
         end
       end
@@ -3524,9 +3364,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.datetime).to be >= right_result.datetime
-            end
+            expect(left_result.datetime).to be >= right_result.datetime if left_result.date == right_result.date
           end
         end
       end
@@ -3540,13 +3378,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.datetime).to be <= right_result.datetime
-            end
+            expect(left_result.datetime).to be <= right_result.datetime if left_result.date == right_result.date
           end
         end
       end
-
 
       context '{ computed_assoc: { computed_date: :asc, computed_datetime: :asc } }' do
         let(:instructions) do
@@ -3575,9 +3410,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.decimal).to be <= right_result.decimal
-            end
+            expect(left_result.decimal).to be <= right_result.decimal if left_result.date == right_result.date
           end
         end
       end
@@ -3591,9 +3424,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.decimal).to be >= right_result.decimal
-            end
+            expect(left_result.decimal).to be >= right_result.decimal if left_result.date == right_result.date
           end
         end
       end
@@ -3607,9 +3438,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.decimal).to be >= right_result.decimal
-            end
+            expect(left_result.decimal).to be >= right_result.decimal if left_result.date == right_result.date
           end
         end
       end
@@ -3623,13 +3452,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.decimal).to be <= right_result.decimal
-            end
+            expect(left_result.decimal).to be <= right_result.decimal if left_result.date == right_result.date
           end
         end
       end
-
 
       context '{ computed_assoc: { date: :desc, computed_decimal: :desc } }' do
         let(:instructions) do
@@ -3658,9 +3484,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.float).to be <= right_result.float
-            end
+            expect(left_result.float).to be <= right_result.float if left_result.date == right_result.date
           end
         end
       end
@@ -3674,9 +3498,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.float).to be >= right_result.float
-            end
+            expect(left_result.float).to be >= right_result.float if left_result.date == right_result.date
           end
         end
       end
@@ -3690,9 +3512,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.float).to be >= right_result.float
-            end
+            expect(left_result.float).to be >= right_result.float if left_result.date == right_result.date
           end
         end
       end
@@ -3706,13 +3526,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.float).to be <= right_result.float
-            end
+            expect(left_result.float).to be <= right_result.float if left_result.date == right_result.date
           end
         end
       end
-
 
       context '{ computed_assoc: { computed_date: :asc, float: :desc } }' do
         let(:instructions) do
@@ -3741,9 +3558,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.date == right_result.date
           end
         end
       end
@@ -3757,9 +3572,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.date == right_result.date
           end
         end
       end
@@ -3773,9 +3586,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.date == right_result.date
           end
         end
       end
@@ -3789,13 +3600,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.date == right_result.date
           end
         end
       end
-
 
       context '{ date: :desc, computed_assoc: { integer: :asc } }' do
         let(:instructions) do
@@ -3824,9 +3632,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.date == right_result.date
           end
         end
       end
@@ -3840,9 +3646,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.date == right_result.date
           end
         end
       end
@@ -3856,9 +3660,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.date == right_result.date
           end
         end
       end
@@ -3872,13 +3674,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.date == right_result.date
           end
         end
       end
-
 
       context '{ computed_date: :asc, computed_assoc: { string: :asc } }' do
         let(:instructions) do
@@ -3907,9 +3706,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.date == right_result.date
           end
         end
       end
@@ -3923,9 +3720,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.date == right_result.date
           end
         end
       end
@@ -3939,9 +3734,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.date == right_result.date
           end
         end
       end
@@ -3955,13 +3748,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.date == right_result.date
           end
         end
       end
-
 
       context '{ date: :desc, computed_assoc: { computed_text: :desc } }' do
         let(:instructions) do
@@ -3990,9 +3780,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.date == right_result.date
           end
         end
       end
@@ -4006,9 +3794,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.date == right_result.date
           end
         end
       end
@@ -4022,9 +3808,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be <= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.date == right_result.date
           end
         end
       end
@@ -4038,13 +3822,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.date).to be >= right_result.date
 
-            if left_result.date == right_result.date
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.date == right_result.date
           end
         end
       end
-
 
       context '{ computed_date: :asc, computed_assoc: { computed_time: :desc } }' do
         let(:instructions) do
@@ -4063,7 +3844,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with DATETIME and DECIMAL type' do
       context '{ datetime: :asc, decimal: :asc }' do
         let(:instructions) do
@@ -4074,9 +3854,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.decimal).to be <= right_result.decimal
-            end
+            expect(left_result.decimal).to be <= right_result.decimal if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4090,9 +3868,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.decimal).to be >= right_result.decimal
-            end
+            expect(left_result.decimal).to be >= right_result.decimal if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4106,9 +3882,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.decimal).to be >= right_result.decimal
-            end
+            expect(left_result.decimal).to be >= right_result.decimal if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4122,13 +3896,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.decimal).to be <= right_result.decimal
-            end
+            expect(left_result.decimal).to be <= right_result.decimal if left_result.datetime == right_result.datetime
           end
         end
       end
-
 
       context '{ computed_assoc: { datetime: :desc }, decimal: :asc }' do
         let(:instructions) do
@@ -4157,9 +3928,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.float).to be <= right_result.float
-            end
+            expect(left_result.float).to be <= right_result.float if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4173,9 +3942,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.float).to be >= right_result.float
-            end
+            expect(left_result.float).to be >= right_result.float if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4189,9 +3956,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.float).to be >= right_result.float
-            end
+            expect(left_result.float).to be >= right_result.float if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4205,13 +3970,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.float).to be <= right_result.float
-            end
+            expect(left_result.float).to be <= right_result.float if left_result.datetime == right_result.datetime
           end
         end
       end
-
 
       context '{ computed_assoc: { computed_datetime: :asc }, computed_float: :asc }' do
         let(:instructions) do
@@ -4240,9 +4002,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4256,9 +4016,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4272,9 +4030,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4288,13 +4044,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.datetime == right_result.datetime
           end
         end
       end
-
 
       context '{ computed_assoc: { datetime: :asc }, computed_integer: :desc }' do
         let(:instructions) do
@@ -4323,9 +4076,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4339,9 +4090,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4355,9 +4104,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4371,13 +4118,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.datetime == right_result.datetime
           end
         end
       end
-
 
       context '{ computed_assoc: { computed_datetime: :desc }, string: :asc }' do
         let(:instructions) do
@@ -4406,9 +4150,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4422,9 +4164,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4438,9 +4178,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4454,13 +4192,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.datetime == right_result.datetime
           end
         end
       end
-
 
       context '{ computed_datetime: :asc, computed_text: :asc }' do
         let(:instructions) do
@@ -4489,9 +4224,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4505,9 +4238,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4521,9 +4252,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be <= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.datetime == right_result.datetime
           end
         end
       end
@@ -4537,13 +4266,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.datetime).to be >= right_result.datetime
 
-            if left_result.datetime == right_result.datetime
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.datetime == right_result.datetime
           end
         end
       end
-
 
       context '{ datetime: :desc, computed_time: :desc }' do
         let(:instructions) do
@@ -4562,7 +4288,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with DECIMAL and FLOAT type' do
       context '{ decimal: :asc, float: :asc }' do
         let(:instructions) do
@@ -4573,9 +4298,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be <= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.float).to be <= right_result.float
-            end
+            expect(left_result.float).to be <= right_result.float if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4589,9 +4312,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be >= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.float).to be >= right_result.float
-            end
+            expect(left_result.float).to be >= right_result.float if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4605,9 +4326,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be <= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.float).to be >= right_result.float
-            end
+            expect(left_result.float).to be >= right_result.float if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4621,13 +4340,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be >= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.float).to be <= right_result.float
-            end
+            expect(left_result.float).to be <= right_result.float if left_result.decimal == right_result.decimal
           end
         end
       end
-
 
       context '{ computed_decimal: :asc, float: :desc }' do
         let(:instructions) do
@@ -4656,9 +4372,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be <= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4672,9 +4386,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be >= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4688,9 +4400,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be <= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4704,13 +4414,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be >= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.decimal == right_result.decimal
           end
         end
       end
-
 
       context '{ assoc: { decimal: :desc, integer: :asc } }' do
         let(:instructions) do
@@ -4739,9 +4446,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be <= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4755,9 +4460,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be >= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4771,9 +4474,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be <= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4787,13 +4488,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be >= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.decimal == right_result.decimal
           end
         end
       end
-
 
       context '{ assoc: { computed_decimal: :asc, computed_string: :asc } }' do
         let(:instructions) do
@@ -4822,9 +4520,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be <= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4838,9 +4534,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be >= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4854,9 +4548,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be <= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4870,13 +4562,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be >= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.decimal == right_result.decimal
           end
         end
       end
-
 
       context '{ assoc: { decimal: :desc, computed_text: :desc } }' do
         let(:instructions) do
@@ -4905,9 +4594,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be <= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4921,9 +4608,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be >= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4937,9 +4622,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be <= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.decimal == right_result.decimal
           end
         end
       end
@@ -4953,13 +4636,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.decimal).to be >= right_result.decimal
 
-            if left_result.decimal == right_result.decimal
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.decimal == right_result.decimal
           end
         end
       end
-
 
       context '{ assoc: { computed_decimal: :asc, time: :desc } }' do
         let(:instructions) do
@@ -4978,7 +4658,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with FLOAT and INTEGER type' do
       context '{ float: :asc, integer: :asc }' do
         let(:instructions) do
@@ -4989,9 +4668,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be <= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.float == right_result.float
           end
         end
       end
@@ -5005,9 +4682,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be >= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.float == right_result.float
           end
         end
       end
@@ -5021,9 +4696,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be <= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.integer).to be >= right_result.integer
-            end
+            expect(left_result.integer).to be >= right_result.integer if left_result.float == right_result.float
           end
         end
       end
@@ -5037,13 +4710,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be >= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.integer).to be <= right_result.integer
-            end
+            expect(left_result.integer).to be <= right_result.integer if left_result.float == right_result.float
           end
         end
       end
-
 
       context '{ float: :desc, assoc: { integer: :asc } }' do
         let(:instructions) do
@@ -5072,9 +4742,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be <= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.float == right_result.float
           end
         end
       end
@@ -5088,9 +4756,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be >= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.float == right_result.float
           end
         end
       end
@@ -5104,9 +4770,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be <= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.string).to be >= right_result.string
-            end
+            expect(left_result.string).to be >= right_result.string if left_result.float == right_result.float
           end
         end
       end
@@ -5120,13 +4784,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be >= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.string).to be <= right_result.string
-            end
+            expect(left_result.string).to be <= right_result.string if left_result.float == right_result.float
           end
         end
       end
-
 
       context '{ computed_float: :asc, assoc: { string: :asc } }' do
         let(:instructions) do
@@ -5155,9 +4816,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be <= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.float == right_result.float
           end
         end
       end
@@ -5171,9 +4830,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be >= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.float == right_result.float
           end
         end
       end
@@ -5187,9 +4844,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be <= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.float == right_result.float
           end
         end
       end
@@ -5203,13 +4858,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be >= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.float == right_result.float
           end
         end
       end
-
 
       context '{ float: :desc, assoc: { computed_text: :desc } }' do
         let(:instructions) do
@@ -5238,9 +4890,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be <= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.float == right_result.float
           end
         end
       end
@@ -5254,9 +4904,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be >= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.float == right_result.float
           end
         end
       end
@@ -5270,9 +4918,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be <= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.float == right_result.float
           end
         end
       end
@@ -5286,13 +4932,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.float).to be >= right_result.float
 
-            if left_result.float == right_result.float
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.float == right_result.float
           end
         end
       end
-
 
       context '{ computed_float: :asc, assoc: { computed_time: :desc } }' do
         let(:instructions) do
@@ -5321,9 +4964,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be <= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.integer == right_result.integer
           end
         end
       end
@@ -5337,9 +4978,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be >= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.integer == right_result.integer
           end
         end
       end
@@ -5353,9 +4992,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be <= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.integer == right_result.integer
           end
         end
       end
@@ -5369,13 +5006,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be >= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.integer == right_result.integer
           end
         end
       end
-
 
       context '{ assoc: { integer: :desc }, text: :asc }' do
         let(:instructions) do
@@ -5404,9 +5038,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be <= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.integer == right_result.integer
           end
         end
       end
@@ -5420,9 +5052,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be >= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.integer == right_result.integer
           end
         end
       end
@@ -5436,9 +5066,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be <= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.integer == right_result.integer
           end
         end
       end
@@ -5452,13 +5080,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.integer).to be >= right_result.integer
 
-            if left_result.integer == right_result.integer
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.integer == right_result.integer
           end
         end
       end
-
 
       context '{ assoc: { computed_integer: :asc }, computed_time: :asc }' do
         let(:instructions) do
@@ -5477,7 +5102,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with STRING and TEXT type' do
       context '{ string: :asc, text: :asc }' do
         let(:instructions) do
@@ -5488,9 +5112,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.string).to be <= right_result.string
 
-            if left_result.string == right_result.string
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.string == right_result.string
           end
         end
       end
@@ -5504,9 +5126,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.string).to be >= right_result.string
 
-            if left_result.string == right_result.string
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.string == right_result.string
           end
         end
       end
@@ -5520,9 +5140,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.string).to be <= right_result.string
 
-            if left_result.string == right_result.string
-              expect(left_result.text).to be >= right_result.text
-            end
+            expect(left_result.text).to be >= right_result.text if left_result.string == right_result.string
           end
         end
       end
@@ -5536,13 +5154,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.string).to be >= right_result.string
 
-            if left_result.string == right_result.string
-              expect(left_result.text).to be <= right_result.text
-            end
+            expect(left_result.text).to be <= right_result.text if left_result.string == right_result.string
           end
         end
       end
-
 
       context '{ assoc: { string: :asc }, computed_text: :desc }' do
         let(:instructions) do
@@ -5571,9 +5186,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.string).to be <= right_result.string
 
-            if left_result.string == right_result.string
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.string == right_result.string
           end
         end
       end
@@ -5587,9 +5200,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.string).to be >= right_result.string
 
-            if left_result.string == right_result.string
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.string == right_result.string
           end
         end
       end
@@ -5603,9 +5214,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.string).to be <= right_result.string
 
-            if left_result.string == right_result.string
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.string == right_result.string
           end
         end
       end
@@ -5619,13 +5228,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.string).to be >= right_result.string
 
-            if left_result.string == right_result.string
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.string == right_result.string
           end
         end
       end
-
 
       context '{ assoc: { computed_string: :desc }, time: :asc }' do
         let(:instructions) do
@@ -5644,7 +5250,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with TEXT and TIME type' do
       context '{ text: :asc, time: :asc }' do
         let(:instructions) do
@@ -5655,9 +5260,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.text).to be <= right_result.text
 
-            if left_result.text == right_result.text
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.text == right_result.text
           end
         end
       end
@@ -5671,9 +5274,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.text).to be >= right_result.text
 
-            if left_result.text == right_result.text
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.text == right_result.text
           end
         end
       end
@@ -5687,9 +5288,7 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.text).to be <= right_result.text
 
-            if left_result.text == right_result.text
-              expect(left_result.time).to be >= right_result.time
-            end
+            expect(left_result.time).to be >= right_result.time if left_result.text == right_result.text
           end
         end
       end
@@ -5703,13 +5302,10 @@ RSpec.describe ActiveSet do
           result.each_cons(2) do |left_result, right_result|
             expect(left_result.text).to be >= right_result.text
 
-            if left_result.text == right_result.text
-              expect(left_result.time).to be <= right_result.time
-            end
+            expect(left_result.time).to be <= right_result.time if left_result.text == right_result.text
           end
         end
       end
-
 
       context '{ computed_assoc: { text: :desc, time: :asc } }' do
         let(:instructions) do

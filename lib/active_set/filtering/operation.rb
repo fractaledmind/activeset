@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../attribute_instruction'
 
 module Filtering
@@ -9,12 +11,13 @@ module Filtering
 
     def execute
       attribute_instructions = @instructions_hash
-                                 .flatten_keys
-                                 .map { |k, v| AttributeInstruction.new(k, v) }
+                               .flatten_keys
+                               .map { |k, v| AttributeInstruction.new(k, v) }
 
       activerecord_filtered_set = attribute_instructions.reduce(@set) do |set, attribute_instruction|
         maybe_set_or_false = ActiveRecordStrategy.new(set, attribute_instruction).execute
         next set unless maybe_set_or_false
+
         attribute_instruction.processed = true
         maybe_set_or_false
       end
@@ -80,15 +83,17 @@ module Filtering
         .value_for(item: item)
         .public_send(
           @attribute_instruction.operator,
-          @attribute_instruction.value)
+          @attribute_instruction.value
+        )
     end
 
     def class_method_call_for(item)
       maybe_item_or_collection_or_nil = attribute_item_for(item)
-                                          .class
-                                          .public_send(
-                                            @attribute_instruction.attribute,
-                                            @attribute_instruction.value)
+                                        .class
+                                        .public_send(
+                                          @attribute_instruction.attribute,
+                                          @attribute_instruction.value
+                                        )
       if maybe_item_or_collection_or_nil.nil?
         false
       elsif maybe_item_or_collection_or_nil.respond_to?(:each)

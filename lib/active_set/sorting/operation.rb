@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../attribute_instruction'
 
 module Sorting
@@ -9,8 +11,8 @@ module Sorting
 
     def execute
       attribute_instructions = @instructions_hash
-                                 .flatten_keys
-                                 .map { |k, v| AttributeInstruction.new(k, v) }
+                               .flatten_keys
+                               .map { |k, v| AttributeInstruction.new(k, v) }
 
       activerecord_strategy = ActiveRecordStrategy.new(@set, attribute_instructions)
       if activerecord_strategy.executable_instructions == attribute_instructions
@@ -63,11 +65,11 @@ module Sorting
         # -> "097.066048057252"
         # -> (24266512014313/250000000000)
         return string_value
-                 .split('')
-                 .map { |char| char.ord.to_s.rjust(3, '0') }
-                 .insert(1, '.')
-                 .reduce(&:concat)
-                 .to_r
+               .split('')
+               .map { |char| char.ord.to_s.rjust(3, '0') }
+               .insert(1, '.')
+               .reduce(&:concat)
+               .to_r
       elsif value.respond_to?(:to_time)
         return (value.to_time.to_f * 1000).round
       else
@@ -77,8 +79,8 @@ module Sorting
       end
     end
 
-    def case_insensitive?(instruction, value)
-      instruction.operator.to_s.downcase == 'i'
+    def case_insensitive?(instruction, _value)
+      instruction.operator.to_s.casecmp('i').zero?
     end
 
     def direction_multiplier(direction)
@@ -149,7 +151,7 @@ module Sorting
     end
 
     def case_insensitive?(attribute_instruction)
-      attribute_instruction.operator.to_s.downcase == 'i'
+      attribute_instruction.operator.to_s.casecmp('i').zero?
     end
 
     def direction_operator(direction)

@@ -74,7 +74,7 @@ RSpec.describe ActiveSet do
     end
 
     it 'saves the passed instructions' do
-      expect(paginated_set.instructions).to eq({ paginate: paginate_instructions })
+      expect(paginated_set.instructions).to eq(paginate: paginate_instructions)
     end
 
     context 'with no instructions' do
@@ -89,7 +89,7 @@ RSpec.describe ActiveSet do
       end
 
       it 'saves the default instructions' do
-        expect(paginated_set.instructions).to eq({ paginate: { page: 1, size: 25, count: 3 } })
+        expect(paginated_set.instructions).to eq(paginate: { page: 1, size: 25, count: 3 })
       end
     end
   end

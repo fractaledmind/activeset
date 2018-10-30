@@ -15,11 +15,11 @@ RSpec.describe ActiveSet do
       before(:all) { @active_set = ActiveSet.new(Foo.all) }
       let(:result) { @active_set.export(instructions) }
 
-      context "{ format: :csv, columns: [{}] }" do
+      context '{ format: :csv, columns: [{}] }' do
         let(:instructions) do
           { format: :csv,
             columns: [
-              {  }
+              {}
             ] }
         end
         let(:expected_csv) do
@@ -34,12 +34,12 @@ RSpec.describe ActiveSet do
         it { expect(result).to eq expected_csv }
       end
 
-      context "{ format: :csv, columns: [{}, {}] }" do
+      context '{ format: :csv, columns: [{}, {}] }' do
         let(:instructions) do
           { format: :csv,
             columns: [
-              {  },
-              {  }
+              {},
+              {}
             ] }
         end
         let(:expected_csv) do
@@ -122,7 +122,7 @@ RSpec.describe ActiveSet do
         end
         let(:expected_csv) do
           ::CSV.generate do |output|
-            output << ['Id', 'String']
+            output << %w[Id String]
             @active_set.each do |item|
               output << [item.id, item.assoc.string]
             end

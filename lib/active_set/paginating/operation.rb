@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Paginating
   class Operation
     def initialize(set, instructions_hash)

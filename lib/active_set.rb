@@ -26,7 +26,7 @@ class ActiveSet
 
   # :nocov:
   def inspect
-    "#<ActiveSet:#{"0x00%x" % (object_id << 1)} @instructions=#{@instructions.inspect}>"
+    "#<ActiveSet:#{format('0x00%x', (object_id << 1))} @instructions=#{@instructions.inspect}>"
   end
 
   def ==(other)
@@ -72,6 +72,7 @@ class ActiveSet
     self.class.new(@set,
                    view: processed_set,
                    instructions: @instructions.merge(
-                     method => instructions))
+                     method => instructions
+                   ))
   end
 end

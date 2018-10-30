@@ -28,6 +28,7 @@ class Hash
 
   def _flatten_keys(h, keys = [], res = {})
     return res.merge!(keys => h) unless h.is_a? Hash
+
     h.each { |k, r| _flatten_keys(r, keys + Array.wrap(k), res) }
     res
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './attribute_instruction'
 
 class ColumnInstruction
@@ -8,8 +10,10 @@ class ColumnInstruction
 
   def key
     return @instructions_hash[:key] if @instructions_hash.key? :key
+
     titleized = attribute_instruction.keypath.map(&:titleize).join(' ')
     return titleized unless attribute_instruction.attribute
+
     attribute_resource = attribute_instruction.resource_for(item: @item)
     return titleized unless attribute_resource
     return titleized unless attribute_resource.class.respond_to?(:human_attribute_name)

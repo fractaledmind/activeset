@@ -1092,9 +1092,9 @@ RSpec.describe ActiveSet do
         context '{ datetime_between: [] }' do
           let(:instructions) do
             { 'datetime_between': [
-                (matching_item.datetime - 1.day),
-                (matching_item.datetime + 1.day)
-              ] }
+              (matching_item.datetime - 1.day),
+              (matching_item.datetime + 1.day)
+            ] }
           end
 
           it_behaves_like 'a successful filter'
@@ -1111,12 +1111,11 @@ RSpec.describe ActiveSet do
         context '{ assoc: { datetime_between: [] } }' do
           let(:instructions) do
             { assoc: {
-                'datetime_between': [
-                  (matching_item.assoc.datetime - 1.day),
-                  (matching_item.assoc.datetime + 1.day)
-                ]
-              }
-            }
+              'datetime_between': [
+                (matching_item.assoc.datetime - 1.day),
+                (matching_item.assoc.datetime + 1.day)
+              ]
+            } }
           end
 
           it_behaves_like 'a successful filter'
@@ -1133,12 +1132,11 @@ RSpec.describe ActiveSet do
         context '{ computed_assoc: { datetime_between: [] } }' do
           let(:instructions) do
             { computed_assoc: {
-                'datetime_between': [
-                  (matching_item.computed_assoc.datetime - 1.day),
-                  (matching_item.computed_assoc.datetime + 1.day)
-                ]
-              }
-            }
+              'datetime_between': [
+                (matching_item.computed_assoc.datetime - 1.day),
+                (matching_item.computed_assoc.datetime + 1.day)
+              ]
+            } }
           end
 
           it_behaves_like 'a successful filter'
@@ -1159,9 +1157,9 @@ RSpec.describe ActiveSet do
         context '{ datetime_between: [] }' do
           let(:instructions) do
             { 'datetime_between': [
-                (matching_item.datetime - 1.day),
-                (matching_item.datetime + 1.day)
-              ] }
+              (matching_item.datetime - 1.day),
+              (matching_item.datetime + 1.day)
+            ] }
           end
 
           it_behaves_like 'a successful filter'
@@ -1178,12 +1176,11 @@ RSpec.describe ActiveSet do
         context '{ assoc: { datetime_between: [] } }' do
           let(:instructions) do
             { assoc: {
-                'datetime_between': [
-                  (matching_item.assoc.datetime - 1.day),
-                  (matching_item.assoc.datetime + 1.day)
-                ]
-              }
-            }
+              'datetime_between': [
+                (matching_item.assoc.datetime - 1.day),
+                (matching_item.assoc.datetime + 1.day)
+              ]
+            } }
           end
 
           it_behaves_like 'a successful filter'
@@ -1200,12 +1197,11 @@ RSpec.describe ActiveSet do
         context '{ computed_assoc: { datetime_between: [] } }' do
           let(:instructions) do
             { computed_assoc: {
-                'datetime_between': [
-                  (matching_item.computed_assoc.datetime - 1.day),
-                  (matching_item.computed_assoc.datetime + 1.day)
-                ]
-              }
-            }
+              'datetime_between': [
+                (matching_item.computed_assoc.datetime - 1.day),
+                (matching_item.computed_assoc.datetime + 1.day)
+              ]
+            } }
           end
 
           it_behaves_like 'a successful filter'
@@ -1871,7 +1867,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with BOOLEAN and DATE type' do
       context 'matching @foo_2' do
         let(:matching_item) { @foo_2 }
@@ -2048,7 +2043,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with DATE and DATETIME type' do
       context 'matching @foo_2' do
         let(:matching_item) { @foo_2 }
@@ -2203,7 +2197,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with DATETIME and DECIMAL type' do
       context 'matching @foo_2' do
         let(:matching_item) { @foo_2 }
@@ -2336,7 +2329,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with DECIMAL and FLOAT type' do
       context 'matching @foo_2' do
         let(:matching_item) { @foo_2 }
@@ -2447,7 +2439,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with FLOAT and INTEGER type' do
       context 'matching @foo_1' do
         let(:matching_item) { @foo_1 }
@@ -2536,7 +2527,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with INTEGER and TEXT type' do
       context 'matching @foo_1' do
         let(:matching_item) { @foo_1 }
@@ -2581,7 +2571,6 @@ RSpec.describe ActiveSet do
       end
     end
 
-
     context 'with STRING and TEXT type' do
       context 'matching @foo_1' do
         let(:matching_item) { @foo_1 }
@@ -2625,7 +2614,6 @@ RSpec.describe ActiveSet do
         end
       end
     end
-
 
     context 'with TEXT and TIME type' do
       context 'matching @foo_1' do
