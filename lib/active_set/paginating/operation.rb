@@ -14,11 +14,36 @@ module Paginating
 
     def operation_instructions
       @instructions_hash.symbolize_keys.tap do |h|
-        num = (h[:page] || 1).to_i
-        h[:page] = num <= 0 ? 1 : num
-        h[:size] = (h[:size] || 25).to_i
-        h[:count] = @set.count
+        h[:page] = page_operation_instruction(h[:page])
+        h[:size] = size_operation_instruction(h[:size])
+        h[:count] = count_operation_instruction(@set)
       end
+    end
+
+    private
+
+    def page_operation_instruction(initial)
+      return 1 unless initial
+      return 1 if initial.to_i <= 0
+
+      initial.to_i
+    end
+
+    def size_operation_instruction(initial)
+      return 25 unless initial
+      return 25 if initial.to_i <= 0
+
+      initial.to_i
+    end
+
+    def count_operation_instruction(set)
+      if set.is_a?(ActiveRecord::Relation)
+        count = set.count(:all)
+        count = count.count if count.is_a?(Hash)
+        return count
+      end
+
+      set.count
     end
   end
 
