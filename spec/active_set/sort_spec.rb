@@ -4,38 +4,38 @@ require 'spec_helper'
 
 RSpec.describe ActiveSet do
   before(:all) do
-    @foo_1 = FactoryGirl.create(:foo, string: 'a', integer: 1, boolean: true,
+    @foo_1 = FactoryBot.create(:foo, string: 'a', integer: 1, boolean: true,
                                 date: 1.day.from_now.to_date, datetime: 1.day.from_now.to_datetime,
                                 decimal: 1.1, float: 1.1, time: 1.hour.from_now.to_time.to_s[12..-1],
-                                assoc: FactoryGirl.create(:assoc, string: 'ra', integer: 9))
-    @foo_2 = FactoryGirl.create(:foo, string: 'a', integer: 2, boolean: true,
+                                assoc: FactoryBot.create(:assoc, string: 'ra', integer: 9))
+    @foo_2 = FactoryBot.create(:foo, string: 'a', integer: 2, boolean: true,
                                 date: 1.day.ago.to_date, datetime: 1.day.ago.to_datetime,
                                 decimal: 2.2, float: 2.2, time: 2.hours.from_now.to_time.to_s[12..-1],
-                                assoc: FactoryGirl.create(:assoc, string: 'ra', integer: 8))
-    @foo_3 = FactoryGirl.create(:foo, string: 'z', integer: 1, boolean: true,
+                                assoc: FactoryBot.create(:assoc, string: 'ra', integer: 8))
+    @foo_3 = FactoryBot.create(:foo, string: 'z', integer: 1, boolean: true,
                                 date: 1.day.from_now.to_date, datetime: 1.day.from_now.to_datetime,
                                 decimal: 1.1, float: 1.1, time: 1.hour.ago.to_time.to_s[12..-1],
-                                assoc: FactoryGirl.create(:assoc, string: 'rz', integer: 9))
-    @foo_4 = FactoryGirl.create(:foo, string: 'z', integer: 2, boolean: true,
+                                assoc: FactoryBot.create(:assoc, string: 'rz', integer: 9))
+    @foo_4 = FactoryBot.create(:foo, string: 'z', integer: 2, boolean: true,
                                 date: 1.day.ago.to_date, datetime: 1.day.ago.to_datetime,
                                 decimal: 2.2, float: 2.2, time: 2.hours.ago.to_time.to_s[12..-1],
-                                assoc: FactoryGirl.create(:assoc, string: 'rz', integer: 8))
-    @foo_5 = FactoryGirl.create(:foo, string: 'A', integer: 1, boolean: false,
+                                assoc: FactoryBot.create(:assoc, string: 'rz', integer: 8))
+    @foo_5 = FactoryBot.create(:foo, string: 'A', integer: 1, boolean: false,
                                 date: 1.week.from_now.to_date, datetime: 1.week.from_now.to_datetime,
                                 decimal: 1.1, float: 1.1, time: 1.hour.from_now.to_time.to_s[12..-1],
-                                assoc: FactoryGirl.create(:assoc, string: 'rA', integer: 9))
-    @foo_6 = FactoryGirl.create(:foo, string: 'A', integer: 2, boolean: false,
+                                assoc: FactoryBot.create(:assoc, string: 'rA', integer: 9))
+    @foo_6 = FactoryBot.create(:foo, string: 'A', integer: 2, boolean: false,
                                 date: 1.week.ago.to_date, datetime: 1.week.ago.to_datetime,
                                 decimal: 2.2, float: 2.2, time: 2.hours.from_now.to_time.to_s[12..-1],
-                                assoc: FactoryGirl.create(:assoc, string: 'rA', integer: 8))
-    @foo_7 = FactoryGirl.create(:foo, string: 'Z', integer: 1, boolean: false,
+                                assoc: FactoryBot.create(:assoc, string: 'rA', integer: 8))
+    @foo_7 = FactoryBot.create(:foo, string: 'Z', integer: 1, boolean: false,
                                 date: 1.week.from_now.to_date, datetime: 1.week.from_now.to_datetime,
                                 decimal: 1.1, float: 1.1, time: 1.hour.ago.to_time.to_s[12..-1],
-                                assoc: FactoryGirl.create(:assoc, string: 'rZ', integer: 9))
-    @foo_8 = FactoryGirl.create(:foo, string: 'Z', integer: 2, boolean: false,
+                                assoc: FactoryBot.create(:assoc, string: 'rZ', integer: 9))
+    @foo_8 = FactoryBot.create(:foo, string: 'Z', integer: 2, boolean: false,
                                 date: 1.week.ago.to_date, datetime: 1.week.ago.to_datetime,
                                 decimal: 2.2, float: 2.2, time: 2.hours.ago.to_time.to_s[12..-1],
-                                assoc: FactoryGirl.create(:assoc, string: 'rZ', integer: 8))
+                                assoc: FactoryBot.create(:assoc, string: 'rZ', integer: 8))
     @active_set = ActiveSet.new(Foo.all)
     @all_foos = Foo.all.to_a
   end

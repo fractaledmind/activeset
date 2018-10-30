@@ -8,8 +8,8 @@ end
 
 RSpec.describe ActiveSet do
   before(:all) do
-    @foo_1 = FactoryGirl.create(:foo, assoc: FactoryGirl.create(:assoc))
-    @foo_2 = FactoryGirl.create(:foo, assoc: FactoryGirl.create(:assoc))
+    @foo_1 = FactoryBot.create(:foo, assoc: FactoryBot.create(:assoc))
+    @foo_2 = FactoryBot.create(:foo, assoc: FactoryBot.create(:assoc))
     @active_set = ActiveSet.new(Foo.all)
   end
   after(:all) { Foo.delete_all }

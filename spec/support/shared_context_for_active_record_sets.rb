@@ -4,15 +4,15 @@ require 'spec_helper'
 
 RSpec.shared_context 'for active record sets' do
   let!(:foo) do
-    FactoryGirl.create(:foo,
+    FactoryBot.create(:foo,
       boolean: true,
-      assoc: FactoryGirl.create(:assoc, boolean: true)
+      assoc: FactoryBot.create(:assoc, boolean: true)
     )
   end
   let!(:bar) do
-    FactoryGirl.create(:foo,
+    FactoryBot.create(:foo,
       boolean: false,
-      assoc: FactoryGirl.create(:assoc, boolean: false)
+      assoc: FactoryBot.create(:assoc, boolean: false)
     )
   end
 

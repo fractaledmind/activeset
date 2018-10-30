@@ -25,12 +25,12 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   config.before(:suite) do
     begin
-      FactoryGirl.find_definitions
-    rescue FactoryGirl::DuplicateDefinitionError
+      FactoryBot.find_definitions
+    rescue FactoryBot::DuplicateDefinitionError
     end
   end
 end

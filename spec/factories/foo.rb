@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :foo do
     sequence(:binary)   { |n| Base64.encode64 [Faker::Crypto.sha256, n].join('-') }
     sequence(:boolean)  { |n| n.even? }
