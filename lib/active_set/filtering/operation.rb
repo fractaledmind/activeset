@@ -1,3 +1,5 @@
+require_relative '../attribute_instruction'
+
 module Filtering
   class Operation
     def initialize(set, instructions_hash)
