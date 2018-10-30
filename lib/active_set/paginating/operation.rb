@@ -17,6 +17,7 @@ module Paginating
         num = (h[:page] || 1).to_i
         h[:page] = num <= 0 ? 1 : num
         h[:size] = (h[:size] || 25).to_i
+        h[:count] = @set.count
       end
     end
   end
