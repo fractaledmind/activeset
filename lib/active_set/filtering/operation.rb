@@ -11,8 +11,8 @@ module Filtering
 
     def execute
       attribute_instructions = @instructions_hash
-                               .flatten_keys
-                               .map { |k, v| AttributeInstruction.new(k, v) }
+                                 .flatten_keys
+                                 .map { |k, v| AttributeInstruction.new(k, v) }
 
       activerecord_filtered_set = attribute_instructions.reduce(@set) do |set, attribute_instruction|
         maybe_set_or_false = ActiveRecordStrategy.new(set, attribute_instruction).execute
