@@ -20,6 +20,10 @@ class ActiveSet
     @instructions = instructions
   end
 
+  def inspect
+    "#<ActiveSet:#{"0x00%x" % (object_id << 1)} @instructions=#{@instructions.inspect}>"
+  end
+
   def each(&block)
     @view.each(&block)
   end
