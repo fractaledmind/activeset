@@ -145,7 +145,7 @@ class ActiveSet
       def execute_merge_operation?
         return false unless attribute_model
         return false unless attribute_model.respond_to?(@attribute_instruction.attribute)
-        return false if attribute_model.method(@attribute_instruction.attribute).arity.zero?
+        return false if attribute_model.method(@attribute_instruction.attribute).arity <= 0
 
         true
       end
