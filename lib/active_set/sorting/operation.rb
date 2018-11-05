@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../attribute_instruction'
+require_relative '../../helpers/transform_to_sortable_numeric'
 
 class ActiveSet
   module Sorting
@@ -47,38 +48,15 @@ class ActiveSet
 
       def sortable_numeric_for(instruction, item)
         value = instruction.value_for(item: item)
-
-        if value == true
-          return 1
-        elsif value == false
-          return 0
-        elsif value.is_a?(Numeric)
-          return value
-        elsif value.is_a?(String) || value.is_a?(Symbol)
-          string_value = if case_insensitive?(instruction, value)
-                           value.to_s.downcase
-                         else
-                           value.to_s
-                         end
-          # 'aB09ü'
-          # -> ["a", "B", "0", "9", "ü"]
-          # -> ["097", "066", "048", "057", "252"]
-          # -> ["097", ".", "066", "048", "057", "252"]
-          # -> "097.066048057252"
-          # -> (24266512014313/250000000000)
-          return string_value
-                 .split('')
-                 .map { |char| char.ord.to_s.rjust(3, '0') }
-                 .insert(1, '.')
-                 .reduce(&:concat)
-                 .to_r
-        elsif value.respond_to?(:to_time)
-          return (value.to_time.to_f * 1000).round
-        else
-          # :nocov:
-          return value
-          # :nocov:
+        if value.is_a?(String) || value.is_a?(Symbol)
+          value = if case_insensitive?(instruction, value)
+                    value.to_s.downcase
+                  else
+                    value.to_s
+                  end
         end
+
+        transform_to_sortable_numeric(value)
       end
 
       def case_insensitive?(instruction, _value)
