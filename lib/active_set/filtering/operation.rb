@@ -46,10 +46,10 @@ class ActiveSet
         return false unless @set.respond_to? :select
 
         @set.select do |item|
-          if execute_attribute_comparison_for?(item)
-            next attribute_comparison_for(item)
-          elsif execute_class_method_call_for?(item)
-            next class_method_call_for(item)
+          if can_match_attribute_for?(item)
+            next attribute_matches_for?(item)
+          elsif can_match_class_method_for?(item)
+            next class_method_matches_for?(item)
           else
             next false
           end
@@ -58,7 +58,7 @@ class ActiveSet
 
       private
 
-      def execute_attribute_comparison_for?(item)
+      def can_match_attribute_for?(item)
         attribute_item = attribute_item_for(item)
 
         return false unless attribute_item
@@ -68,7 +68,7 @@ class ActiveSet
         true
       end
 
-      def execute_class_method_call_for?(item)
+      def can_match_class_method_for?(item)
         attribute_item = attribute_item_for(item)
 
         return false unless attribute_item
@@ -79,7 +79,7 @@ class ActiveSet
         true
       end
 
-      def attribute_comparison_for(item)
+      def attribute_matches_for?(item)
         @attribute_instruction
           .value_for(item: item)
           .public_send(
@@ -88,7 +88,7 @@ class ActiveSet
           )
       end
 
-      def class_method_call_for(item)
+      def class_method_matches_for?(item)
         maybe_item_or_collection_or_nil = attribute_item_for(item)
                                           .class
                                           .public_send(
