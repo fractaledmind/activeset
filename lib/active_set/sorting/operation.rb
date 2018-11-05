@@ -37,6 +37,7 @@ class ActiveSet
       end
 
       def execute
+        # http://brandon.dimcheff.com/2009/11/18/rubys-sort-vs-sort-by/
         @set.sort_by do |item|
           @attribute_instructions.map do |instruction|
             sortable_numeric_for(instruction, item) * direction_multiplier(instruction.value)
