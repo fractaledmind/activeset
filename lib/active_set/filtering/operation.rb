@@ -63,7 +63,7 @@ class ActiveSet
 
         return false unless attribute_item
         return false unless attribute_item.respond_to?(@attribute_instruction.attribute)
-        return false unless attribute_item.method(@attribute_instruction.attribute).arity <= 0
+        return false unless attribute_item.method(@attribute_instruction.attribute).arity.zero?
 
         true
       end
@@ -74,7 +74,7 @@ class ActiveSet
         return false unless attribute_item
         return false unless attribute_item.class
         return false unless attribute_item.class.respond_to?(@attribute_instruction.attribute)
-        return false if attribute_item.class.method(@attribute_instruction.attribute).arity <= 0
+        return false if attribute_item.class.method(@attribute_instruction.attribute).arity.zero?
 
         true
       end
@@ -145,7 +145,7 @@ class ActiveSet
       def execute_merge_operation?
         return false unless attribute_model
         return false unless attribute_model.respond_to?(@attribute_instruction.attribute)
-        return false if attribute_model.method(@attribute_instruction.attribute).arity <= 0
+        return false if attribute_model.method(@attribute_instruction.attribute).arity.zero?
 
         true
       end
