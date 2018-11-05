@@ -177,12 +177,13 @@ class ActiveSet
 
       def attribute_model
         return @set.klass if @attribute_instruction.associations_array.empty?
+        return @attribute_model if defined? @attribute_model
 
-        @attribute_instruction
-          .associations_array
-          .reduce(@set) do |obj, assoc|
-            obj.reflections[assoc.to_s]&.klass
-          end
+        @attribute_model = @attribute_instruction
+                            .associations_array
+                            .reduce(@set) do |obj, assoc|
+                              obj.reflections[assoc.to_s]&.klass
+                            end
       end
     end
   end
