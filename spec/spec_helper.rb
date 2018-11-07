@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'simplecov_helper'
 
 require 'bundler'
@@ -6,25 +8,15 @@ Bundler.require :default, :development
 Combustion.initialize! :active_record
 
 require 'bundler/setup'
+require 'ostruct'
+require 'csv'
 require 'active_set'
-require 'database_cleaner'
 
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
 
 RSpec.configure do |config|
   config.mock_with :rspec
   config.order = 'random'
-
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
-    end
-  end
 
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
@@ -36,9 +28,12 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   config.before(:suite) do
-    FactoryGirl.find_definitions
+    begin
+      FactoryBot.find_definitions
+    rescue FactoryBot::DuplicateDefinitionError
+    end
   end
 end

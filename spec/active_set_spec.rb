@@ -3,10 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe ActiveSet do
-  it 'has a version number' do
-    expect(ActiveSet::VERSION).not_to be nil
-  end
-
   context 'as a Decorator of the set it is initialized with' do
     describe 'a Set' do
       it { expect(ActiveSet.new(Set.new)).to respond_to :superset? }
@@ -63,7 +59,7 @@ RSpec.describe ActiveSet do
     let(:set) { [1, 2, 3] }
     let(:active_set) { ActiveSet.new(set) }
     let(:paginated_set) { active_set.paginate(paginate_instructions) }
-    let(:paginate_instructions) { { page: 1, size: 1 } }
+    let(:paginate_instructions) { { page: 1, size: 1, count: 3 } }
 
     it 'returns the paginated set' do
       expect(paginated_set).to eq [1]
@@ -78,7 +74,7 @@ RSpec.describe ActiveSet do
     end
 
     it 'saves the passed instructions' do
-      expect(paginated_set.instructions).to eq({ paginate: paginate_instructions })
+      expect(paginated_set.instructions).to eq(paginate: paginate_instructions)
     end
 
     context 'with no instructions' do
@@ -93,7 +89,7 @@ RSpec.describe ActiveSet do
       end
 
       it 'saves the default instructions' do
-        expect(paginated_set.instructions).to eq({ paginate: { page: 1, size: 25 } })
+        expect(paginated_set.instructions).to eq(paginate: { page: 1, size: 25, count: 3 })
       end
     end
   end

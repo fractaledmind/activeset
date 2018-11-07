@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] ||= 'test'
 require 'simplecov'
 require 'simplecov-console'
@@ -6,14 +8,14 @@ unless ENV['COVERAGE'] == 'false'
 
   SimpleCov.minimum_coverage 100
   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
-    SimpleCov::Formatter::HTMLFormatter,
-    SimpleCov::Formatter::Console
-  ])
+                                                                   SimpleCov::Formatter::HTMLFormatter,
+                                                                   SimpleCov::Formatter::Console
+                                                                 ])
   SimpleCov.start 'rails' do
     track_files 'engines/**/*.rb'
-    %w(
+    %w[
       lib/active_set/version.rb
-    ).each do |ignorable|
+    ].each do |ignorable|
       add_filter ignorable
     end
   end

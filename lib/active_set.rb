@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-require 'active_set/version'
-
 require 'active_support/core_ext/hash/reverse_merge'
-require 'active_set/processor_filter'
-require 'active_set/processor_sort'
-require 'active_set/processor_paginate'
-require 'active_set/processor_transform'
+require 'patches/core_ext/hash/flatten_keys'
+require 'helpers/throws'
+require 'active_set/attribute_instruction'
+require 'active_set/filtering/operation'
+require 'active_set/sorting/operation'
+require 'active_set/paginating/operation'
+require 'active_set/exporting/operation'
 
 class ActiveSet
   include Enumerable
@@ -19,16 +20,18 @@ class ActiveSet
     @instructions = instructions
   end
 
-  def inspect
-    "#<ActiveSet:#{"0x00%x" % (object_id << 1)} @instructions=#{@instructions.inspect}>"
-  end
-
   def each(&block)
     @view.each(&block)
   end
 
+  # :nocov:
+  def inspect
+    "#<ActiveSet:#{format('0x00%x', (object_id << 1))} @instructions=#{@instructions.inspect}>"
+  end
+
   def ==(other)
     return @view == other unless other.is_a?(ActiveSet)
+
     @view == other.view
   end
 
@@ -41,27 +44,26 @@ class ActiveSet
   def respond_to_missing?(method_name, include_private = false)
     @view.respond_to?(method_name) || super
   end
+  # :nocov:
 
-  def filter(instructions)
-    filterer = Processor::Filter.new(@view, instructions)
-    reinitialize(filterer.process, :filter, instructions)
+  def filter(instructions_hash)
+    filterer = Filtering::Operation.new(@view, instructions_hash)
+    reinitialize(filterer.execute, :filter, filterer.operation_instructions)
   end
 
-  def sort(instructions)
-    sorter = Processor::Sort.new(@view, instructions)
-    reinitialize(sorter.process, :sort, instructions)
+  def sort(instructions_hash)
+    sorter = Sorting::Operation.new(@view, instructions_hash)
+    reinitialize(sorter.execute, :sort, sorter.operation_instructions)
   end
 
-  def paginate(instructions)
-    paginater = Processor::Paginate.new(@view, instructions)
-    full_instructions = instructions.reverse_merge(page: paginater.instructions.get(:page),
-                                                   size: paginater.instructions.get(:size))
-    reinitialize(paginater.process, :paginate, full_instructions)
+  def paginate(instructions_hash)
+    paginater = Paginating::Operation.new(@view, instructions_hash)
+    reinitialize(paginater.execute, :paginate, paginater.operation_instructions)
   end
 
-  def transform(instructions)
-    transformer = Processor::Transform.new(@view, instructions)
-    transformer.process
+  def export(instructions_hash)
+    exporter = Exporting::Operation.new(@view, instructions_hash)
+    exporter.execute
   end
 
   private
@@ -70,6 +72,7 @@ class ActiveSet
     self.class.new(@set,
                    view: processed_set,
                    instructions: @instructions.merge(
-                     method => instructions))
+                     method => instructions
+                   ))
   end
 end
