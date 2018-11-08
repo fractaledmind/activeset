@@ -6,7 +6,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 Gem::Specification.new do |spec|
   spec.platform      = Gem::Platform::RUBY
   spec.name          = 'activeset'
-  spec.version       = '0.7.0'
+  spec.version       = '0.7.1'
   spec.authors       = ['Stephen Margheim']
   spec.email         = ['stephen.margheim@gmail.com']
 

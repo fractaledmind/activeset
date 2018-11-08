@@ -1,3 +1,5 @@
+v 0.7.1
+  - Fix a small bug with Enumberable filtering of metaprogrammatically defined getter methods
 v 0.7.0
   - another rewrite from the ground up
   - allow each operation to exist and function in its own way and in its own context
