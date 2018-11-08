@@ -1,3 +1,8 @@
+v 0.7.0
+  - another rewrite from the ground up
+  - allow each operation to exist and function in its own way and in its own context
+  - only write tests against the public interface of the ActiveSet class, not any internal classes
+  - attempt a proper and complete sorting implementation that offers multi-dimensional, multi-directional sorting for either ActiveRecord or Enumerable sets
 v 0.6.5
   - Fix the ActiveRecord filtering adapter to use the correct operator (=) for Oracle WHERE clauses
 v 0.6.4
