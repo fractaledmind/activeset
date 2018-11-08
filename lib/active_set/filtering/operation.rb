@@ -63,7 +63,7 @@ class ActiveSet
 
         return false unless attribute_item
         return false unless attribute_item.respond_to?(@attribute_instruction.attribute)
-        return false unless attribute_item.method(@attribute_instruction.attribute).arity.zero?
+        return false if attribute_item.method(@attribute_instruction.attribute).arity > 0
 
         true
       end
