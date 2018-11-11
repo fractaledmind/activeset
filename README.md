@@ -1,5 +1,7 @@
 # ActiveSet
 
+[![codecov](https://codecov.io/gh/fractaledmind/activeset/branch/master/graph/badge.svg)](https://codecov.io/gh/fractaledmind/activeset)
+
 ## Installation
 
 Add this line to your application's Gemfile:
