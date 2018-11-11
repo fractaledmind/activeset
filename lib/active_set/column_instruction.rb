@@ -12,12 +12,10 @@ class ActiveSet
     def key
       return @instructions_hash[:key] if @instructions_hash.key? :key
 
-      titleized = attribute_instruction.keypath.map(&:titleize).join(' ')
-      return titleized unless attribute_instruction.attribute
+      return titleized_attribute_key unless attribute_instruction.attribute
 
       attribute_resource = attribute_instruction.resource_for(item: @item)
-      return titleized unless attribute_resource
-      return titleized unless attribute_resource.class.respond_to?(:human_attribute_name)
+      return titleized_attribute_key unless attribute_resource&.class&.respond_to?(:human_attribute_name)
 
       attribute_resource.class.human_attribute_name(attribute_instruction.attribute)
     end
@@ -39,6 +37,10 @@ class ActiveSet
       return @instructions_hash[:default] if @instructions_hash.key? :default
 
       '—'
+    end
+
+    def titleized_attribute_key
+      attribute_instruction.keypath.map(&:titleize).join(' ')
     end
   end
 end

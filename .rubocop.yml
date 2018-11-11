@@ -17,3 +17,7 @@ Metrics/BlockLength:
     - 'activeset.gemspec'
     - 'spec/**/*_spec.rb'
     - '**/schema.rb'
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+Style/DateTime:
+  AllowCoercion: true

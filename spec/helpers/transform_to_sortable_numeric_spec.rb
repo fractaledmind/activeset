@@ -13,7 +13,7 @@ RSpec.describe '#transform_to_sortable_numeric' do
     end
 
     context 'Float' do
-      let(:value) { rand() }
+      let(:value) { rand }
 
       it { expect(result).to eq value }
     end
@@ -25,7 +25,7 @@ RSpec.describe '#transform_to_sortable_numeric' do
     end
 
     context 'Rational' do
-      let(:value) { Rational(rand(10), rand(10) + 1) }
+      let(:value) { Rational(rand(10), rand(1..10)) }
 
       it { expect(result).to eq value }
     end
@@ -45,32 +45,34 @@ RSpec.describe '#transform_to_sortable_numeric' do
     context 'String' do
       let(:value) { 'aB09ü' }
 
-      it { expect(result).to eq Rational(24266512014313, 250000000000) }
+      it { expect(result).to eq Rational(24_266_512_014_313, 250_000_000_000) }
     end
 
     context 'Symbol' do
       let(:value) { 'aB09ü'.to_sym }
 
-      it { expect(result).to eq Rational(24266512014313, 250000000000) }
+      it { expect(result).to eq Rational(24_266_512_014_313, 250_000_000_000) }
     end
 
     context 'Date' do
       let(:value) { Date.new(2000, 12, 25) }
 
-      it { expect(result).to eq 977720400000 }
+      it { expect(result).to eq 977_720_400_000 }
     end
 
     context 'Time' do
       let(:value) { Time.new(2000, 12, 25, 11, 30) }
 
-      it { expect(result).to eq 977761800000 }
+      it { expect(result).to eq 977_761_800_000 }
     end
 
+    # rubocop:disable Style/DateTime
     context 'DateTime' do
       let(:value) { DateTime.new(2000, 12, 25, 11, 30) }
 
-      it { expect(result).to eq 977743800000 }
+      it { expect(result).to eq 977_743_800_000 }
     end
+    # rubocop:enable Style/DateTime
   end
 
   describe 'retains sortability' do

@@ -104,14 +104,14 @@ RSpec.describe ActiveSet do
           computed_assoc.computed_#{type_2}
         ]
         all_possible_instructions = paths
-          .combination(2)
-          .flat_map do |path_1, path_2|
-            [:asc, 'desc']
-              .repeated_permutation(2)
-              .map do |pair|
-                Hash[ [path_1, path_2].zip(pair) ]
-              end
-          end
+                                    .combination(2)
+                                    .flat_map do |path_1, path_2|
+          [:asc, 'desc']
+            .repeated_permutation(2)
+            .map do |pair|
+              Hash[[path_1, path_2].zip(pair)]
+            end
+        end
 
         all_possible_instructions.each do |instructions|
           context "{ #{instructions} }" do
@@ -128,13 +128,13 @@ RSpec.describe ActiveSet do
 
                 expect(left_value_1).to be.send(operator_1, right_value_1)
 
-                if left_value_1 == right_value_1
-                  left_value_2 = value_for(path: path_2, object: left_result)
-                  right_value_2 = value_for(path: path_2, object: right_result)
-                  operator_2 = dir_2 == :asc ? '<=' : '>='
+                next unless left_value_1 == right_value_1
 
-                  expect(left_value_2).to be.send(operator_2, right_value_2)
-                end
+                left_value_2 = value_for(path: path_2, object: left_result)
+                right_value_2 = value_for(path: path_2, object: right_result)
+                operator_2 = dir_2 == :asc ? '<=' : '>='
+
+                expect(left_value_2).to be.send(operator_2, right_value_2)
               end
             end
           end
@@ -145,7 +145,7 @@ RSpec.describe ActiveSet do
     context 'with STRING case-insensitive type' do
       [:asc, 'desc'].each do |direction|
         context "in #{direction} direction" do
-          %W[
+          %w[
             string(i)
             computed_string(i)
             assoc.string(i)
@@ -175,8 +175,8 @@ RSpec.describe ActiveSet do
       end
     end
 
-    context "with STRING case-insenstive and INTEGER types" do
-      paths = %W[
+    context 'with STRING case-insenstive and INTEGER types' do
+      paths = %w[
         string(i)
         integer
         computed_string(i)
@@ -191,14 +191,14 @@ RSpec.describe ActiveSet do
         computed_assoc.computed_integer
       ]
       all_possible_instructions = paths
-        .combination(2)
-        .flat_map do |path_1, path_2|
-          [:asc, 'desc']
-            .repeated_permutation(2)
-            .map do |pair|
-              Hash[ [path_1, path_2].zip(pair) ]
-            end
-        end
+                                  .combination(2)
+                                  .flat_map do |path_1, path_2|
+        [:asc, 'desc']
+          .repeated_permutation(2)
+          .map do |pair|
+            Hash[[path_1, path_2].zip(pair)]
+          end
+      end
 
       all_possible_instructions.each do |instructions|
         context "{ #{instructions} }" do
@@ -215,13 +215,13 @@ RSpec.describe ActiveSet do
 
               expect(left_value_1).to be.send(operator_1, right_value_1)
 
-              if left_value_1 == right_value_1
-                left_value_2 = value_for(path: path_2, object: left_result)
-                right_value_2 = value_for(path: path_2, object: right_result)
-                operator_2 = dir_2 == :asc ? '<=' : '>='
+              next unless left_value_1 == right_value_1
 
-                expect(left_value_2).to be.send(operator_2, right_value_2)
-              end
+              left_value_2 = value_for(path: path_2, object: left_result)
+              right_value_2 = value_for(path: path_2, object: right_result)
+              operator_2 = dir_2 == :asc ? '<=' : '>='
+
+              expect(left_value_2).to be.send(operator_2, right_value_2)
             end
           end
         end

@@ -18,6 +18,7 @@ Combustion.initialize! :active_record
 begin
   FactoryBot.find_definitions
 rescue FactoryBot::DuplicateDefinitionError
+  nil
 end
 
 # (If you use this, don't forget to add pry to your Gemfile!)

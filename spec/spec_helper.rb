@@ -34,6 +34,7 @@ RSpec.configure do |config|
     begin
       FactoryBot.find_definitions
     rescue FactoryBot::DuplicateDefinitionError
+      nil
     end
   end
 end

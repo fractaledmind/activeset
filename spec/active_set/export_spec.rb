@@ -194,7 +194,14 @@ RSpec.describe ActiveSet do
         it { expect(result).to eq expected_csv }
       end
 
-      context "{ format: :csv, columns: [{key: 'ID', value: ->(item) { item.id * 2 }}, {key: 'Assoc', value: ->(item) { item.assoc.string.upcase }}] }" do
+      context "{
+        format: :csv,
+        columns: [
+          { key: 'ID',
+            value: ->(item) { item.id * 2 } },
+          { key: 'Assoc',
+            value: ->(item) { item.assoc.string.upcase } }
+        ] }" do
         let(:instructions) do
           { format: :csv,
             columns: [

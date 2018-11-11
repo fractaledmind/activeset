@@ -14,8 +14,8 @@ class ActiveSet
 
       def execute
         attribute_instructions = @instructions_hash
-                                   .flatten_keys
-                                   .map { |k, v| AttributeInstruction.new(k, v) }
+                                 .flatten_keys
+                                 .map { |k, v| AttributeInstruction.new(k, v) }
 
         activerecord_strategy = ActiveRecordStrategy.new(@set, attribute_instructions)
         if activerecord_strategy.executable_instructions == attribute_instructions

@@ -12,13 +12,10 @@ class ActiveSet
         return false unless @set.respond_to? :select
 
         @set.select do |item|
-          if can_match_attribute_for?(item)
-            next attribute_matches_for?(item)
-          elsif can_match_class_method_for?(item)
-            next class_method_matches_for?(item)
-          else
-            next false
-          end
+          next attribute_matches_for?(item) if can_match_attribute_for?(item)
+          next class_method_matches_for?(item) if can_match_class_method_for?(item)
+
+          next false
         end
       end
 
@@ -29,7 +26,7 @@ class ActiveSet
 
         return false unless attribute_item
         return false unless attribute_item.respond_to?(@attribute_instruction.attribute)
-        return false if attribute_item.method(@attribute_instruction.attribute).arity > 0
+        return false if attribute_item.method(@attribute_instruction.attribute).arity.positive?
 
         true
       end
@@ -54,6 +51,7 @@ class ActiveSet
           )
       end
 
+      # rubocop:disable Metrics/MethodLength
       def class_method_matches_for?(item)
         maybe_item_or_collection_or_nil = attribute_item_for(item)
                                           .class
@@ -69,6 +67,7 @@ class ActiveSet
           maybe_item_or_collection_or_nil.present?
         end
       end
+      # rubocop:enable Metrics/MethodLength
 
       def attribute_item_for(item)
         @attribute_instruction

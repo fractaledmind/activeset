@@ -31,7 +31,8 @@ class Hash
     _flatten_keys(self, ->(*keys) { keys.join('-') })
   end
 
-  # Returns a flat hash where all nested keys are collapsed into a string of keys fitting the Rails request param pattern.
+  # Returns a flat hash where all nested keys are collapsed into a string of keys
+  # fitting the Rails request param pattern.
   #
   #   hash = { person: { name: { first: 'Rob' }, age: '28' } }
   #   hash.flatten_keys_to_rails_param

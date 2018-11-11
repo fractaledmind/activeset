@@ -72,10 +72,10 @@ RSpec.describe Hash do
           a: 'a',
           b: {
             c: 'c',
-            d: [
-              'x',
-              'y',
-              'z'
+            d: %w[
+              x
+              y
+              z
             ]
           }
         }
@@ -168,10 +168,10 @@ RSpec.describe Hash do
           a: 'a',
           b: {
             c: 'c',
-            d: [
-              'x',
-              'y',
-              'z'
+            d: %w[
+              x
+              y
+              z
             ]
           }
         }
@@ -264,10 +264,10 @@ RSpec.describe Hash do
           a: 'a',
           b: {
             c: 'c',
-            d: [
-              'x',
-              'y',
-              'z'
+            d: %w[
+              x
+              y
+              z
             ]
           }
         }
@@ -360,10 +360,10 @@ RSpec.describe Hash do
           a: 'a',
           b: {
             c: 'c',
-            d: [
-              'x',
-              'y',
-              'z'
+            d: %w[
+              x
+              y
+              z
             ]
           }
         }
