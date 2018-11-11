@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport', '>= 4.0.2'
 
   spec.add_development_dependency 'bundler', '~> 1.15'
+  spec.add_development_dependency 'codecov'
   spec.add_development_dependency 'combustion', '~> 0.7.0'
   spec.add_development_dependency 'database_cleaner', '~> 1.6.1'
   spec.add_development_dependency 'factory_bot', '~> 4.8.0'
