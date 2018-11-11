@@ -12,10 +12,11 @@ class ActiveSet
         @instructions_hash = instructions_hash
       end
 
+      # rubocop:disable Metrics/MethodLength
       def execute
         attribute_instructions = @instructions_hash
-                                   .flatten_keys
-                                   .map { |k, v| AttributeInstruction.new(k, v) }
+                                 .flatten_keys
+                                 .map { |k, v| AttributeInstruction.new(k, v) }
 
         activerecord_filtered_set = attribute_instructions.reduce(@set) do |set, attribute_instruction|
           maybe_set_or_false = ActiveRecordStrategy.new(set, attribute_instruction).execute
@@ -32,6 +33,7 @@ class ActiveSet
           maybe_set_or_false.presence || set
         end
       end
+      # rubocop:enable Metrics/MethodLength
 
       def operation_instructions
         @instructions_hash.symbolize_keys

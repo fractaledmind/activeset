@@ -43,16 +43,12 @@ class ActiveSet
       end
 
       def where_operation
-        arel_operator = @attribute_instruction.operator(default: '=')
-        arel_column = Arel::Table.new(attribute_model.table_name)[@attribute_instruction.attribute]
-        arel_value = Arel.sql(ActiveRecord::Base.connection.quote(@attribute_instruction.value))
-
         @set.eager_load(@attribute_instruction.associations_hash)
             .where(
               Arel::Nodes::InfixOperation.new(
-                arel_operator,
-                arel_column,
-                arel_value
+                @attribute_instruction.operator(default: '='),
+                Arel::Table.new(attribute_model.table_name)[@attribute_instruction.attribute],
+                Arel.sql(ActiveRecord::Base.connection.quote(@attribute_instruction.value))
               )
             )
       end
@@ -72,10 +68,10 @@ class ActiveSet
         return @attribute_model if defined? @attribute_model
 
         @attribute_model = @attribute_instruction
-                            .associations_array
-                            .reduce(@set) do |obj, assoc|
-                              obj.reflections[assoc.to_s]&.klass
-                            end
+                           .associations_array
+                           .reduce(@set) do |obj, assoc|
+          obj.reflections[assoc.to_s]&.klass
+        end
       end
     end
   end
