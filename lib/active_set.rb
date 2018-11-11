@@ -47,8 +47,11 @@ class ActiveSet
   # :nocov:
 
   def filter(instructions_hash)
-    filterer = Filtering::Operation.new(@view, instructions_hash)
-    reinitialize(filterer.execute, :filter, filterer.operation_instructions)
+    @filtered_set ||= Hash.new do |h, (view, instructions_hash)|
+      filterer = Filtering::Operation.new(view, instructions_hash)
+      h[[view, instructions_hash]] = reinitialize(filterer.execute, :filter, filterer.operation_instructions)
+    end
+    @filtered_set[[@view, instructions_hash]]
   end
 
   def sort(instructions_hash)
