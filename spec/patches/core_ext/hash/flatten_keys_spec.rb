@@ -31,6 +31,7 @@ RSpec.describe Hash do
         expect(subject).not_to eq(result)
       end
     end
+
     context 'with an empty hash' do
       let(:subject) do
         {}
@@ -42,6 +43,7 @@ RSpec.describe Hash do
         expect(subject.flatten_keys_to_array).to eq(result)
       end
     end
+
     context 'with a flat hash' do
       let(:subject) do
         {
@@ -53,6 +55,38 @@ RSpec.describe Hash do
         {
           [:a] => 'a',
           [:b] => 'b'
+        }
+      end
+      it 'returns a flat hash with array keys' do
+        expect(subject.flatten_keys_to_array).to eq(result)
+      end
+      it 'does\'t mutate the subject' do
+        subject.flatten_keys_to_array
+        expect(subject).not_to eq(result)
+      end
+    end
+
+    context 'with a nested array' do
+      let(:subject) do
+        {
+          a: 'a',
+          b: {
+            c: 'c',
+            d: [
+              'x',
+              'y',
+              'z'
+            ]
+          }
+        }
+      end
+      let(:result) do
+        {
+          [:a] => 'a',
+          %i[b c] => 'c',
+          [:b, :d, 0] => 'x',
+          [:b, :d, 1] => 'y',
+          [:b, :d, 2] => 'z'
         }
       end
       it 'returns a flat hash with array keys' do
@@ -85,7 +119,7 @@ RSpec.describe Hash do
           'b.d.e' => 'e'
         }
       end
-      it 'returns a flat hash with array keys' do
+      it 'returns a flat hash with dotpath keys' do
         expect(subject.flatten_keys_to_dotpath).to eq(result)
       end
       it 'does\'t mutate the subject' do
@@ -93,6 +127,7 @@ RSpec.describe Hash do
         expect(subject).not_to eq(result)
       end
     end
+
     context 'with an empty hash' do
       let(:subject) do
         {}
@@ -100,10 +135,11 @@ RSpec.describe Hash do
       let(:result) do
         {}
       end
-      it 'returns a flat hash with array keys' do
+      it 'returns a flat hash with dotpath keys' do
         expect(subject.flatten_keys_to_dotpath).to eq(result)
       end
     end
+
     context 'with a flat hash' do
       let(:subject) do
         {
@@ -117,7 +153,39 @@ RSpec.describe Hash do
           'b' => 'b'
         }
       end
-      it 'returns a flat hash with array keys' do
+      it 'returns a flat hash with dotpath keys' do
+        expect(subject.flatten_keys_to_dotpath).to eq(result)
+      end
+      it 'does\'t mutate the subject' do
+        subject.flatten_keys_to_array
+        expect(subject).not_to eq(result)
+      end
+    end
+
+    context 'with a nested array' do
+      let(:subject) do
+        {
+          a: 'a',
+          b: {
+            c: 'c',
+            d: [
+              'x',
+              'y',
+              'z'
+            ]
+          }
+        }
+      end
+      let(:result) do
+        {
+          'a' => 'a',
+          'b.c' => 'c',
+          'b.d.0' => 'x',
+          'b.d.1' => 'y',
+          'b.d.2' => 'z'
+        }
+      end
+      it 'returns a flat hash with dotpath keys' do
         expect(subject.flatten_keys_to_dotpath).to eq(result)
       end
       it 'does\'t mutate the subject' do
@@ -147,7 +215,7 @@ RSpec.describe Hash do
           'b-d-e' => 'e'
         }
       end
-      it 'returns a flat hash with array keys' do
+      it 'returns a flat hash with html_attribute keys' do
         expect(subject.flatten_keys_to_html_attribute).to eq(result)
       end
       it 'does\'t mutate the subject' do
@@ -155,6 +223,7 @@ RSpec.describe Hash do
         expect(subject).not_to eq(result)
       end
     end
+
     context 'with an empty hash' do
       let(:subject) do
         {}
@@ -162,10 +231,11 @@ RSpec.describe Hash do
       let(:result) do
         {}
       end
-      it 'returns a flat hash with array keys' do
+      it 'returns a flat hash with html_attribute keys' do
         expect(subject.flatten_keys_to_html_attribute).to eq(result)
       end
     end
+
     context 'with a flat hash' do
       let(:subject) do
         {
@@ -179,11 +249,43 @@ RSpec.describe Hash do
           'b' => 'b'
         }
       end
-      it 'returns a flat hash with array keys' do
+      it 'returns a flat hash with html_attribute keys' do
         expect(subject.flatten_keys_to_html_attribute).to eq(result)
       end
       it 'does\'t mutate the subject' do
         subject.flatten_keys_to_array
+        expect(subject).not_to eq(result)
+      end
+    end
+
+    context 'with a nested array' do
+      let(:subject) do
+        {
+          a: 'a',
+          b: {
+            c: 'c',
+            d: [
+              'x',
+              'y',
+              'z'
+            ]
+          }
+        }
+      end
+      let(:result) do
+        {
+          'a' => 'a',
+          'b-c' => 'c',
+          'b-d-0' => 'x',
+          'b-d-1' => 'y',
+          'b-d-2' => 'z'
+        }
+      end
+      it 'returns a flat hash with html_attribute keys' do
+        expect(subject.flatten_keys_to_html_attribute).to eq(result)
+      end
+      it 'does\'t mutate the subject' do
+        subject.flatten_keys_to_html_attribute
         expect(subject).not_to eq(result)
       end
     end
@@ -209,7 +311,7 @@ RSpec.describe Hash do
           'b[d][e]' => 'e'
         }
       end
-      it 'returns a flat hash with array keys' do
+      it 'returns a flat hash with rails_param keys' do
         expect(subject.flatten_keys_to_rails_param).to eq(result)
       end
       it 'does\'t mutate the subject' do
@@ -217,6 +319,7 @@ RSpec.describe Hash do
         expect(subject).not_to eq(result)
       end
     end
+
     context 'with an empty hash' do
       let(:subject) do
         {}
@@ -224,10 +327,11 @@ RSpec.describe Hash do
       let(:result) do
         {}
       end
-      it 'returns a flat hash with array keys' do
+      it 'returns a flat hash with rails_param keys' do
         expect(subject.flatten_keys_to_rails_param).to eq(result)
       end
     end
+
     context 'with a flat hash' do
       let(:subject) do
         {
@@ -241,11 +345,43 @@ RSpec.describe Hash do
           'b' => 'b'
         }
       end
-      it 'returns a flat hash with array keys' do
+      it 'returns a flat hash with rails_param keys' do
         expect(subject.flatten_keys_to_rails_param).to eq(result)
       end
       it 'does\'t mutate the subject' do
         subject.flatten_keys_to_array
+        expect(subject).not_to eq(result)
+      end
+    end
+
+    context 'with a nested array' do
+      let(:subject) do
+        {
+          a: 'a',
+          b: {
+            c: 'c',
+            d: [
+              'x',
+              'y',
+              'z'
+            ]
+          }
+        }
+      end
+      let(:result) do
+        {
+          'a' => 'a',
+          'b[c]' => 'c',
+          'b[d][0]' => 'x',
+          'b[d][1]' => 'y',
+          'b[d][2]' => 'z'
+        }
+      end
+      it 'returns a flat hash with rails_param keys' do
+        expect(subject.flatten_keys_to_rails_param).to eq(result)
+      end
+      it 'does\'t mutate the subject' do
+        subject.flatten_keys_to_html_attribute
         expect(subject).not_to eq(result)
       end
     end
