@@ -1,0 +1,217 @@
+Predicates
+
+eq          (==)
+eq_any      (E==)
+eq_all      (A==)
+not_eq      (!=)
+not_eq_any  (E!=)
+not_eq_all  (A!=)
+
+matches             (=~)
+matches_any         (E=~)
+matches_all         (A=~)
+does_not_match      (!~)
+does_not_match_any  (E!~)
+does_not_match_all  (A!~)
+
+in          (<<)
+in_any      (E<<)
+in_all      (A<<)
+not_in      (!<)
+not_in_any  (E!<)
+not_in_all  (A!<)
+
+between     (..)
+not_between (!.)
+
+lt          (<)
+lt_any      (E<)
+lt_all      (A<)
+lteq        (<=)
+lteq_any    (E<=)
+lteq_all    (A<=)
+
+gt          (>)
+gt_any      (E>)
+gt_all      (A>)
+gteq        (>=)
+gteq_any    (E>=)
+gteq_all    (A>=)
+
+is_null     (-)
+not_null    (!-)
+is_present  (+)
+not_present (!+)
+is_true
+is_false
+
+start         (^)
+start_any     (E^)
+start_all     (A^)
+not_start     (!^)
+not_start_any (E!^)
+not_start_all (A!^)
+
+end           ($)
+end_any       (E$)
+end_all       (A$)
+not_end       (!$)
+not_end_any   (E!$)
+not_end_all   (A!$)
+
+contain         (~)
+contain_any     (E~)
+contain_all     (A~)
+not_contain     (!~)
+not_contain_any (E!~)
+not_contain_all (A!~)
+
+- - -
+
+
+[
+  Foo<str='abc', to_one=Foo<str='ghi'> to_many=[Foo<str='mno'>, Foo<str='xyz'>]>,
+  Foo<str='def', to_one=Foo<str='jkl'> to_many=[Foo<str='stu'>, Foo<str='xyz'>]>
+]
+
+{ 'str': 'abc' }
+  foo.str == 'abc'
+  WHERE "foos"."str" = 'abc'
+{ 'to_one.str': 'ghi' }
+  foo.to_one.str == 'ghi'
+  INNER JOIN "to_ones"
+    ON "to_ones"."id" = "foos"."to_one_id"
+  WHERE "to_ones"."str" = 'ghi'
+{ 'to_many[any].str': 'mno' }
+  foo.to_many.any? { |o| o.str == 'mno' }
+  INNER JOIN "to_manys"
+    ON "to_manys"."foo_id" = "foos"."id"
+  WHERE "to_manys"."str" = 'ghi'
+{ 'to_many[all].str': 'xyz' }
+  foo.to_many.all? { |o| o.str == 'xyz' }
+  INNER JOIN "to_manys"
+    ON "to_manys"."foo_id" = "foos"."id"
+  WHERE NOT EXISTS (
+    SELECT 1 FROM "to_manys" "t"
+    WHERE "t"."foo_id" = "to_manys"."id"
+    AND "t"."string" != 'xyz')
+
+{ 'str(contain)': 'b' }
+  foo.str.include? 'b'
+  WHERE "foos"."str" LIKE '%b%'
+{ 'to_one.str(contain)': 'h' }
+  foo.to_one.str.include? 'h'
+  INNER JOIN "to_ones"
+    ON "to_ones"."id" = "foos"."to_one_id"
+  WHERE "to_ones"."str" LIKE '%h%'
+{ 'to_many[any].str(contain)': 'n' }
+  foo.to_many.any? { |o| o.str.include? 'n' }
+  INNER JOIN "to_manys"
+    ON "to_manys"."foo_id" = "foos"."id"
+  WHERE "to_manys"."str" LIKE '%n%'
+{ 'to_many[all].str(contain)': 'y' }
+  foo.to_many.all? { |o| o.str.include? 'y' }
+  INNER JOIN "to_manys"
+    ON "to_manys"."foo_id" = "foos"."id"
+  WHERE NOT EXISTS (
+    SELECT 1 FROM "to_manys" "t"
+    WHERE "t"."foo_id" = "to_manys"."id"
+    AND "t"."string" NOT LIKE '%y%')
+
+{ 'str(not_contain)': 'b' }
+  not foo.str.include? 'b'
+  WHERE "foos"."str" NOT LIKE '%b%'
+{ 'to_one.str(not_contain)': 'h' }
+  not foo.to_one.str.include? 'h'
+  INNER JOIN "to_ones"
+    ON "to_ones"."id" = "foos"."to_one_id"
+  WHERE "to_ones"."str" NOT LIKE '%h%'
+{ 'to_many[any].str(not_contain)': 'n' }
+  foo.to_many.any? { |o| not o.str.include? 'n' }
+  INNER JOIN "to_manys"
+    ON "to_manys"."foo_id" = "foos"."id"
+  WHERE "to_manys"."str" NOT LIKE '%n%'
+{ 'to_many[all].str(not_contain)': 'y' }
+  foo.to_many.all? { |o| not o.str.include? 'y' }
+  INNER JOIN "to_manys"
+    ON "to_manys"."foo_id" = "foos"."id"
+  WHERE NOT EXISTS (
+    SELECT 1 FROM "to_manys" "t"
+    WHERE "t"."foo_id" = "to_manys"."id"
+    AND "t"."string" LIKE '%y%')
+
+{ 'str(contain_any)': %w[a z] }
+  %w[a z].any? { |v| foo.str.include? v }
+  WHERE (
+    "foos"."string" LIKE '%a%'
+    OR "foos"."string" LIKE '%z%')
+{ 'to_one.str(contain_any)': %w[a z] }
+  %w[a z].any? { |v| foo.to_one.str.include? v }
+  INNER JOIN "to_ones"
+    ON "to_ones"."id" = "foos"."to_one_id"
+  WHERE (
+    "to_ones"."str" LIKE '%a%'
+    OR "to_ones"."str" LIKE '%z%')
+{ 'to_many[any].str(contain_any)': %w[a z] }
+  %w[a z].any? { |v| foo.to_many.any? { |o| o.str.include? v } }
+  INNER JOIN "to_manys"
+    ON "to_manys"."foo_id" = "foos"."id"
+  WHERE (
+    "to_manys"."str" LIKE '%a%'
+    OR "to_manys"."str" LIKE '%z%')
+{ 'to_many[all].str(contain_any)': %w[a z] }
+  %w[a z].any? { |v| foo.to_many.all? { |o| o.str.include? v } }
+  INNER JOIN "to_manys"
+    ON "to_manys"."foo_id" = "foos"."id"
+  WHERE NOT EXISTS (
+    SELECT 1 FROM "to_manys" "t"
+    WHERE "t"."foo_id" = "to_manys"."id"
+    AND (
+        "t"."string" NOT LIKE '%z%'
+        AND "t"."string" NOT LIKE '%z%'))
+
+{ 'str(contain_all)': %w[a z] }
+  %w[a z].all? { |v| foo.str.include? v }
+  WHERE (
+    "foos"."string" LIKE '%a%'
+    AND "foos"."string" LIKE '%z%')
+{ 'to_one.str(contain_all)': %w[a z] }
+  %w[a z].all? { |v| foo.to_one.str.include? v }
+  INNER JOIN "to_ones"
+    ON "to_ones"."id" = "foos"."to_one_id"
+  WHERE (
+    "to_ones"."str" LIKE '%a%'
+    AND "to_ones"."str" LIKE '%z%')
+{ 'to_many[any].str(contain_all)': %w[a z] }
+  %w[a z].all? { |v| foo.to_many.any? { |o| o.str.include? v } }
+  INNER JOIN "to_manys"
+    ON "to_manys"."foo_id" = "foos"."id"
+  WHERE (
+    "to_manys"."str" LIKE '%a%'
+    AND "to_manys"."str" LIKE '%z%')
+{ 'to_many[all].str(contain_all)': %w[a z] }
+  %w[a z].all? { |v| foo.to_many.all? { |o| o.str.include? v } }
+  INNER JOIN "to_manys"
+    ON "to_manys"."foo_id" = "foos"."id"
+  WHERE NOT EXISTS (
+    SELECT 1 FROM "to_manys" "t"
+    WHERE "t"."foo_id" = "to_manys"."id"
+    AND (
+        "t"."string" NOT LIKE '%z%'
+        OR "t"."string" NOT LIKE '%z%'))
+
+{ any: { 'str': 'abc', 'str': 'xyz' } }
+
+
+- - -
+
+a = Assoc.arel_table
+f = Foo.arel_table
+f2 = Foo.arel_table.alias
+
+q = f.project(1).from(f2).where(f2[:assoc_id].eq(a[:id])).where(f2[:string].not_eq('STRING'))
+
+
+Assoc.distinct.joins(:foos).where(f.project(1).from(f2).where(f2[:assoc_id].eq(a[:id])).where(f2[:string].does_not_match_all(%w[ %ring% %z%])).exists.not)
+
+"SELECT DISTINCT "assocs".* FROM "assocs" "
