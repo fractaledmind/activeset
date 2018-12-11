@@ -8,18 +8,18 @@ end
 
 RSpec.describe ActiveSet do
   before(:all) do
-    @foo_1 = FactoryBot.create(:foo, assoc: FactoryBot.create(:assoc))
-    @foo_2 = FactoryBot.create(:foo, assoc: FactoryBot.create(:assoc))
-    @active_set = ActiveSet.new(Foo.all)
+    @thing_1 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
+    @thing_2 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
+    @active_set = ActiveSet.new(Thing.all)
   end
-  after(:all) { Foo.delete_all }
+  after(:all) { Thing.delete_all }
 
   describe '#filter' do
     let(:result) { @active_set.filter(instructions) }
 
     context 'on a SCOPE' do
-      context 'matching @foo_1' do
-        let(:matching_item) { @foo_1 }
+      context 'matching @thing_1' do
+        let(:matching_item) { @thing_1 }
 
         context '{ string_starts_with: }' do
           let(:instructions) do
@@ -41,11 +41,11 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ assoc: { string_starts_with: } }' do
+        context '{ one: { string_starts_with: } }' do
           let(:instructions) do
             {
-              assoc: {
-                'string_starts_with': matching_item.assoc.string[0..3]
+              one: {
+                'string_starts_with': matching_item.one.string[0..3]
               }
             }
           end
@@ -53,11 +53,11 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ assoc: { string_ends_with: } }' do
+        context '{ one: { string_ends_with: } }' do
           let(:instructions) do
             {
-              assoc: {
-                'string_ends_with': matching_item.assoc.string[-3..-1]
+              one: {
+                'string_ends_with': matching_item.one.string[-3..-1]
               }
             }
           end
@@ -65,11 +65,11 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ computed_assoc: { string_starts_with: } }' do
+        context '{ computed_one: { string_starts_with: } }' do
           let(:instructions) do
             {
-              computed_assoc: {
-                'string_starts_with': matching_item.computed_assoc.string[0..3]
+              computed_one: {
+                'string_starts_with': matching_item.computed_one.string[0..3]
               }
             }
           end
@@ -77,11 +77,11 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ computed_assoc: { string_ends_with: } }' do
+        context '{ computed_one: { string_ends_with: } }' do
           let(:instructions) do
             {
-              computed_assoc: {
-                'string_ends_with': matching_item.computed_assoc.string[-3..-1]
+              computed_one: {
+                'string_ends_with': matching_item.computed_one.string[-3..-1]
               }
             }
           end
@@ -90,8 +90,8 @@ RSpec.describe ActiveSet do
         end
       end
 
-      context 'matching @foo_2' do
-        let(:matching_item) { @foo_2 }
+      context 'matching @thing_2' do
+        let(:matching_item) { @thing_2 }
 
         context '{ string_starts_with: }' do
           let(:instructions) do
@@ -113,11 +113,11 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ assoc: { string_starts_with: } }' do
+        context '{ one: { string_starts_with: } }' do
           let(:instructions) do
             {
-              assoc: {
-                'string_starts_with': matching_item.assoc.string[0..3]
+              one: {
+                'string_starts_with': matching_item.one.string[0..3]
               }
             }
           end
@@ -125,11 +125,11 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ assoc: { string_ends_with: } }' do
+        context '{ one: { string_ends_with: } }' do
           let(:instructions) do
             {
-              assoc: {
-                'string_ends_with': matching_item.assoc.string[-3..-1]
+              one: {
+                'string_ends_with': matching_item.one.string[-3..-1]
               }
             }
           end
@@ -137,11 +137,11 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ computed_assoc: { string_starts_with: } }' do
+        context '{ computed_one: { string_starts_with: } }' do
           let(:instructions) do
             {
-              computed_assoc: {
-                'string_starts_with': matching_item.computed_assoc.string[0..3]
+              computed_one: {
+                'string_starts_with': matching_item.computed_one.string[0..3]
               }
             }
           end
@@ -149,11 +149,11 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ computed_assoc: { string_ends_with: } }' do
+        context '{ computed_one: { string_ends_with: } }' do
           let(:instructions) do
             {
-              computed_assoc: {
-                'string_ends_with': matching_item.computed_assoc.string[-3..-1]
+              computed_one: {
+                'string_ends_with': matching_item.computed_one.string[-3..-1]
               }
             }
           end
@@ -164,8 +164,8 @@ RSpec.describe ActiveSet do
     end
 
     context 'on a SCOPE and with STRING type' do
-      context 'matching @foo_1' do
-        let(:matching_item) { @foo_1 }
+      context 'matching @thing_1' do
+        let(:matching_item) { @thing_1 }
 
         context '{ string_starts_with:, string: }' do
           let(:instructions) do
@@ -189,12 +189,12 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ assoc: { string_starts_with:, string: } }' do
+        context '{ one: { string_starts_with:, string: } }' do
           let(:instructions) do
             {
-              assoc: {
-                'string_starts_with': matching_item.assoc.string[0..3],
-                string: matching_item.assoc.string
+              one: {
+                'string_starts_with': matching_item.one.string[0..3],
+                string: matching_item.one.string
               }
             }
           end
@@ -202,12 +202,12 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ assoc: { string_ends_with:, string: } }' do
+        context '{ one: { string_ends_with:, string: } }' do
           let(:instructions) do
             {
-              assoc: {
-                'string_ends_with': matching_item.assoc.string[-3..-1],
-                string: matching_item.assoc.string
+              one: {
+                'string_ends_with': matching_item.one.string[-3..-1],
+                string: matching_item.one.string
               }
             }
           end
@@ -215,12 +215,12 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ computed_assoc: { string_starts_with:, string: } }' do
+        context '{ computed_one: { string_starts_with:, string: } }' do
           let(:instructions) do
             {
-              computed_assoc: {
-                'string_starts_with': matching_item.computed_assoc.string[0..3],
-                string: matching_item.computed_assoc.string
+              computed_one: {
+                'string_starts_with': matching_item.computed_one.string[0..3],
+                string: matching_item.computed_one.string
               }
             }
           end
@@ -228,12 +228,12 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ computed_assoc: { string_ends_with:, string: } }' do
+        context '{ computed_one: { string_ends_with:, string: } }' do
           let(:instructions) do
             {
-              computed_assoc: {
-                'string_ends_with': matching_item.computed_assoc.string[-3..-1],
-                string: matching_item.computed_assoc.string
+              computed_one: {
+                'string_ends_with': matching_item.computed_one.string[-3..-1],
+                string: matching_item.computed_one.string
               }
             }
           end
@@ -242,8 +242,8 @@ RSpec.describe ActiveSet do
         end
       end
 
-      context 'matching @foo_2' do
-        let(:matching_item) { @foo_2 }
+      context 'matching @thing_2' do
+        let(:matching_item) { @thing_2 }
 
         context '{ string_starts_with:, string: }' do
           let(:instructions) do
@@ -267,12 +267,12 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ assoc: { string_starts_with:, string: } }' do
+        context '{ one: { string_starts_with:, string: } }' do
           let(:instructions) do
             {
-              assoc: {
-                'string_starts_with': matching_item.assoc.string[0..3],
-                string: matching_item.assoc.string
+              one: {
+                'string_starts_with': matching_item.one.string[0..3],
+                string: matching_item.one.string
               }
             }
           end
@@ -280,12 +280,12 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ assoc: { string_ends_with:, string: } }' do
+        context '{ one: { string_ends_with:, string: } }' do
           let(:instructions) do
             {
-              assoc: {
-                'string_ends_with': matching_item.assoc.string[-3..-1],
-                string: matching_item.assoc.string
+              one: {
+                'string_ends_with': matching_item.one.string[-3..-1],
+                string: matching_item.one.string
               }
             }
           end
@@ -293,12 +293,12 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ computed_assoc: { string_starts_with:, string: } }' do
+        context '{ computed_one: { string_starts_with:, string: } }' do
           let(:instructions) do
             {
-              computed_assoc: {
-                'string_starts_with': matching_item.computed_assoc.string[0..3],
-                string: matching_item.computed_assoc.string
+              computed_one: {
+                'string_starts_with': matching_item.computed_one.string[0..3],
+                string: matching_item.computed_one.string
               }
             }
           end
@@ -306,12 +306,12 @@ RSpec.describe ActiveSet do
           it_behaves_like 'a successful filter'
         end
 
-        context '{ computed_assoc: { string_ends_with:, string: } }' do
+        context '{ computed_one: { string_ends_with:, string: } }' do
           let(:instructions) do
             {
-              computed_assoc: {
-                'string_ends_with': matching_item.computed_assoc.string[-3..-1],
-                string: matching_item.computed_assoc.string
+              computed_one: {
+                'string_ends_with': matching_item.computed_one.string[-3..-1],
+                string: matching_item.computed_one.string
               }
             }
           end
