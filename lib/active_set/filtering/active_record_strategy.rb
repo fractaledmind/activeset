@@ -43,8 +43,7 @@ class ActiveSet
       end
 
       def where_operation
-        arel_table = Arel::Table.new(attribute_model.table_name)
-        arel_column = arel_table[@attribute_instruction.attribute]
+        arel_column = attribute_model.arel_table[@attribute_instruction.attribute]
 
         initial_relation
           .where(
