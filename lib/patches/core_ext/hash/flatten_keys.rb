@@ -47,8 +47,8 @@ class Hash
   def _flatten_keys(input, keypath_gen = ->(*keys) { keys }, keys = [], output = {})
     if input.is_a? Hash
       input.each { |k, v| _flatten_keys(v, keypath_gen, keys + Array(k), output) }
-    elsif input.is_a? Array
-      input.each_with_index { |v, i| _flatten_keys(v, keypath_gen, keys + Array(i), output) }
+    # elsif input.is_a? Array
+    #   input.each_with_index { |v, i| _flatten_keys(v, keypath_gen, keys + Array(i), output) }
     else
       return output.merge!(keypath_gen.call(*keys) => input)
     end
