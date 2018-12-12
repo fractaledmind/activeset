@@ -43,24 +43,32 @@ class ActiveSet
       end
 
       def where_operation
-        @set.eager_load(@attribute_instruction.associations_hash)
-            .where(
-              Arel::Nodes::InfixOperation.new(
-                @attribute_instruction.operator(default: '='),
-                Arel::Table.new(attribute_model.table_name)[@attribute_instruction.attribute],
-                Arel.sql(ActiveRecord::Base.connection.quote(@attribute_instruction.value))
-              )
+        arel_table = Arel::Table.new(attribute_model.table_name)
+        arel_column = arel_table[@attribute_instruction.attribute]
+
+        initial_relation
+          .where(
+            arel_column.send(
+              @attribute_instruction.operator(default: 'eq'),
+              @attribute_instruction.value
             )
+          )
       end
 
       def merge_operation
-        @set.eager_load(@attribute_instruction.associations_hash)
-            .merge(
-              attribute_model.public_send(
-                @attribute_instruction.attribute,
-                @attribute_instruction.value
-              )
+        initial_relation
+          .merge(
+            attribute_model.public_send(
+              @attribute_instruction.attribute,
+              @attribute_instruction.value
             )
+          )
+      end
+
+      def initial_relation
+        return @set if @attribute_instruction.associations_array.empty?
+
+        @set.eager_load(@attribute_instruction.associations_hash)
       end
 
       def attribute_model
