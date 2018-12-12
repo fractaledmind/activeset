@@ -84,9 +84,11 @@ RSpec.describe Hash do
         {
           [:a] => 'a',
           %i[b c] => 'c',
-          [:b, :d, 0] => 'x',
-          [:b, :d, 1] => 'y',
-          [:b, :d, 2] => 'z'
+          [:b, :d] => %w[
+            x
+            y
+            z
+          ]
         }
       end
       it 'returns a flat hash with array keys' do
@@ -180,9 +182,11 @@ RSpec.describe Hash do
         {
           'a' => 'a',
           'b.c' => 'c',
-          'b.d.0' => 'x',
-          'b.d.1' => 'y',
-          'b.d.2' => 'z'
+          'b.d' => %w[
+            x
+            y
+            z
+          ]
         }
       end
       it 'returns a flat hash with dotpath keys' do
@@ -276,9 +280,11 @@ RSpec.describe Hash do
         {
           'a' => 'a',
           'b-c' => 'c',
-          'b-d-0' => 'x',
-          'b-d-1' => 'y',
-          'b-d-2' => 'z'
+          'b-d' => %w[
+            x
+            y
+            z
+          ]
         }
       end
       it 'returns a flat hash with html_attribute keys' do
@@ -372,9 +378,11 @@ RSpec.describe Hash do
         {
           'a' => 'a',
           'b[c]' => 'c',
-          'b[d][0]' => 'x',
-          'b[d][1]' => 'y',
-          'b[d][2]' => 'z'
+          'b[d]' => %w[
+            x
+            y
+            z
+          ]
         }
       end
       it 'returns a flat hash with rails_param keys' do
