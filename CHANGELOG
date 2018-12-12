@@ -1,3 +1,9 @@
+v 0.8.0
+  - simplify the `inspect` method for ActiveSet instances, only showing the instructions
+  - split the strategy files from the operation files
+  - update how ActiveRecord filtering works
+    + instruction operators must now be ARel methods, not SQL operators
+  - memoize the `transform_to_sortable_numeric` method
 v 0.7.1
   - Fix a small bug with Enumberable filtering of metaprogrammatically defined getter methods
 v 0.7.0
