@@ -9,7 +9,9 @@ FactoryBot.define do
     sequence(:decimal)  { |n| Faker::Number.decimal(2).to_f + n }
     sequence(:float)    { |n| Faker::Number.decimal(2).to_f + n }
     sequence(:integer, &:to_i)
-    sequence(:string)   { |n| ('a'..'z').to_a[n..(n+3)].join }
+    sequence(:string) do |n|
+      n.hash.abs.to_s.split('').map { |i| ('a'..'z').to_a.shuffle[i.to_i] }.join
+    end
     sequence(:text)     { |n| [Faker::Lorem.paragraph, n].join('-') }
     sequence(:time)     { |n| Faker::Time.between(n.send(:year).ago, n.send(:year).from_now).to_s[12..-1] }
 
