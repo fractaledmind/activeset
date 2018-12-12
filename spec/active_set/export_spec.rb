@@ -4,15 +4,15 @@ require 'spec_helper'
 
 RSpec.describe ActiveSet do
   before(:all) do
-    @foo_1 = FactoryBot.create(:foo, assoc: FactoryBot.create(:assoc))
-    @foo_2 = FactoryBot.create(:foo, assoc: FactoryBot.create(:assoc))
-    @foo_3 = FactoryBot.create(:foo, assoc: FactoryBot.create(:assoc))
+    @thing_1 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
+    @thing_2 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
+    @thing_3 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
   end
-  after(:all) { Foo.delete_all }
+  after(:all) { Thing.delete_all }
 
   describe '#export' do
     context 'with ActiveRecord collection' do
-      before(:all) { @active_set = ActiveSet.new(Foo.all) }
+      before(:all) { @active_set = ActiveSet.new(Thing.all) }
       let(:result) { @active_set.export(instructions) }
 
       context '{ format: :csv, columns: [{}] }' do
@@ -112,19 +112,19 @@ RSpec.describe ActiveSet do
         it { expect(result).to eq expected_csv }
       end
 
-      context "{ format: :csv, columns: [{value: 'id'}, {value: 'assoc.string'}] }" do
+      context "{ format: :csv, columns: [{value: 'id'}, {value: 'one.string'}] }" do
         let(:instructions) do
           { format: :csv,
             columns: [
               { value: 'id' },
-              { value: 'assoc.string' }
+              { value: 'one.string' }
             ] }
         end
         let(:expected_csv) do
           ::CSV.generate do |output|
             output << %w[Id String]
             @active_set.each do |item|
-              output << [item.id, item.assoc.string]
+              output << [item.id, item.one.string]
             end
           end
         end
@@ -152,21 +152,21 @@ RSpec.describe ActiveSet do
         it { expect(result).to eq expected_csv }
       end
 
-      context "{ format: :csv, columns: [{key: 'ID', value: 'id'}, {key: 'Assoc', value: 'assoc.string'}] }" do
+      context "{ format: :csv, columns: [{key: 'ID', value: 'id'}, {key: 'Assoc', value: 'one.string'}] }" do
         let(:instructions) do
           { format: :csv,
             columns: [
               { key: 'ID',
                 value: 'id' },
               { key: 'Assoc',
-                value: 'assoc.string' }
+                value: 'one.string' }
             ] }
         end
         let(:expected_csv) do
           ::CSV.generate do |output|
             output << %w[ID Assoc]
             @active_set.each do |item|
-              output << [item.id, item.assoc.string]
+              output << [item.id, item.one.string]
             end
           end
         end
@@ -200,7 +200,7 @@ RSpec.describe ActiveSet do
           { key: 'ID',
             value: ->(item) { item.id * 2 } },
           { key: 'Assoc',
-            value: ->(item) { item.assoc.string.upcase } }
+            value: ->(item) { item.one.string.upcase } }
         ] }" do
         let(:instructions) do
           { format: :csv,
@@ -208,14 +208,14 @@ RSpec.describe ActiveSet do
               { key: 'ID',
                 value: ->(item) { item.id * 2 } },
               { key: 'Assoc',
-                value: ->(item) { item.assoc.string.upcase } }
+                value: ->(item) { item.one.string.upcase } }
             ] }
         end
         let(:expected_csv) do
           ::CSV.generate do |output|
             output << %w[ID Assoc]
             @active_set.each do |item|
-              output << [(item.id * 2), item.assoc.string.upcase]
+              output << [(item.id * 2), item.one.string.upcase]
             end
           end
         end
