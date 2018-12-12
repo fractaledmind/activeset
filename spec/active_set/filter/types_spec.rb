@@ -2,10 +2,6 @@
 
 require 'spec_helper'
 
-RSpec.shared_examples 'a successful filter' do
-  it { expect(result.map(&:id)).to eq [matching_item.id] }
-end
-
 RSpec.describe ActiveSet do
   before(:all) do
     @thing_1 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
@@ -38,7 +34,7 @@ RSpec.describe ActiveSet do
                   }
                 end
 
-                it_behaves_like 'a successful filter'
+                it { expect(result.map(&:id)).to eq [matching_item.id] }
               end
             end
           end
@@ -74,7 +70,7 @@ RSpec.describe ActiveSet do
                   }
                 end
 
-                it_behaves_like 'a successful filter'
+                it { expect(result.map(&:id)).to eq [matching_item.id] }
               end
             end
           end

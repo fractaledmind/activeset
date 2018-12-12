@@ -2,10 +2,6 @@
 
 require 'spec_helper'
 
-RSpec.shared_examples 'a successful filter' do
-  it { expect(result.map(&:id)).to eq [matching_item.id] }
-end
-
 RSpec.describe ActiveSet do
   before(:all) do
     @thing_1 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
@@ -28,7 +24,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ string_ends_with: }' do
@@ -38,7 +34,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ one: { string_starts_with: } }' do
@@ -50,7 +46,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ one: { string_ends_with: } }' do
@@ -62,7 +58,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ computed_one: { string_starts_with: } }' do
@@ -74,7 +70,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ computed_one: { string_ends_with: } }' do
@@ -86,7 +82,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
       end
 
@@ -100,7 +96,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ string_ends_with: }' do
@@ -110,7 +106,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ one: { string_starts_with: } }' do
@@ -122,7 +118,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ one: { string_ends_with: } }' do
@@ -134,7 +130,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ computed_one: { string_starts_with: } }' do
@@ -146,7 +142,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ computed_one: { string_ends_with: } }' do
@@ -158,7 +154,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
       end
     end
@@ -175,7 +171,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ string_ends_with:, string: }' do
@@ -186,7 +182,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ one: { string_starts_with:, string: } }' do
@@ -199,7 +195,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ one: { string_ends_with:, string: } }' do
@@ -212,7 +208,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ computed_one: { string_starts_with:, string: } }' do
@@ -225,7 +221,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ computed_one: { string_ends_with:, string: } }' do
@@ -238,7 +234,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
       end
 
@@ -253,7 +249,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ string_ends_with:, string: }' do
@@ -264,7 +260,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ one: { string_starts_with:, string: } }' do
@@ -277,7 +273,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ one: { string_ends_with:, string: } }' do
@@ -290,7 +286,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ computed_one: { string_starts_with:, string: } }' do
@@ -303,7 +299,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
 
         context '{ computed_one: { string_ends_with:, string: } }' do
@@ -316,7 +312,7 @@ RSpec.describe ActiveSet do
             }
           end
 
-          it_behaves_like 'a successful filter'
+          it { expect(result.map(&:id)).to eq [matching_item.id] }
         end
       end
     end
