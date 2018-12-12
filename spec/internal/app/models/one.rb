@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Assoc < ApplicationRecord
-  has_many :foos
+class One < ApplicationRecord
+  has_one :things
 
   scope :string_starts_with, (lambda do |substr|
     where(Arel::Table.new(table_name)[:string].matches("#{substr}%"))

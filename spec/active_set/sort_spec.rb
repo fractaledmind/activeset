@@ -4,42 +4,42 @@ require 'spec_helper'
 
 RSpec.describe ActiveSet do
   before(:all) do
-    @foo_1 = FactoryBot.create(:foo, string: 'a', integer: 1, boolean: true,
+    @thing_1 = FactoryBot.create(:thing, string: 'a', integer: 1, boolean: true,
                                      date: 1.day.from_now.to_date, datetime: 1.day.from_now.to_datetime,
                                      decimal: 1.1, float: 1.1, time: 1.hour.from_now.to_time.to_s[12..-1],
-                                     assoc: FactoryBot.create(:assoc, string: 'ra', integer: 9))
-    @foo_2 = FactoryBot.create(:foo, string: 'a', integer: 2, boolean: true,
+                                     one: FactoryBot.create(:one, string: 'ra', integer: 9))
+    @thing_2 = FactoryBot.create(:thing, string: 'a', integer: 2, boolean: true,
                                      date: 1.day.ago.to_date, datetime: 1.day.ago.to_datetime,
                                      decimal: 2.2, float: 2.2, time: 2.hours.from_now.to_time.to_s[12..-1],
-                                     assoc: FactoryBot.create(:assoc, string: 'ra', integer: 8))
-    @foo_3 = FactoryBot.create(:foo, string: 'z', integer: 1, boolean: true,
+                                     one: FactoryBot.create(:one, string: 'ra', integer: 8))
+    @thing_3 = FactoryBot.create(:thing, string: 'z', integer: 1, boolean: true,
                                      date: 1.day.from_now.to_date, datetime: 1.day.from_now.to_datetime,
                                      decimal: 1.1, float: 1.1, time: 1.hour.ago.to_time.to_s[12..-1],
-                                     assoc: FactoryBot.create(:assoc, string: 'rz', integer: 9))
-    @foo_4 = FactoryBot.create(:foo, string: 'z', integer: 2, boolean: true,
+                                     one: FactoryBot.create(:one, string: 'rz', integer: 9))
+    @thing_4 = FactoryBot.create(:thing, string: 'z', integer: 2, boolean: true,
                                      date: 1.day.ago.to_date, datetime: 1.day.ago.to_datetime,
                                      decimal: 2.2, float: 2.2, time: 2.hours.ago.to_time.to_s[12..-1],
-                                     assoc: FactoryBot.create(:assoc, string: 'rz', integer: 8))
-    @foo_5 = FactoryBot.create(:foo, string: 'A', integer: 1, boolean: false,
+                                     one: FactoryBot.create(:one, string: 'rz', integer: 8))
+    @thing_5 = FactoryBot.create(:thing, string: 'A', integer: 1, boolean: false,
                                      date: 1.week.from_now.to_date, datetime: 1.week.from_now.to_datetime,
                                      decimal: 1.1, float: 1.1, time: 1.hour.from_now.to_time.to_s[12..-1],
-                                     assoc: FactoryBot.create(:assoc, string: 'rA', integer: 9))
-    @foo_6 = FactoryBot.create(:foo, string: 'A', integer: 2, boolean: false,
+                                     one: FactoryBot.create(:one, string: 'rA', integer: 9))
+    @thing_6 = FactoryBot.create(:thing, string: 'A', integer: 2, boolean: false,
                                      date: 1.week.ago.to_date, datetime: 1.week.ago.to_datetime,
                                      decimal: 2.2, float: 2.2, time: 2.hours.from_now.to_time.to_s[12..-1],
-                                     assoc: FactoryBot.create(:assoc, string: 'rA', integer: 8))
-    @foo_7 = FactoryBot.create(:foo, string: 'Z', integer: 1, boolean: false,
+                                     one: FactoryBot.create(:one, string: 'rA', integer: 8))
+    @thing_7 = FactoryBot.create(:thing, string: 'Z', integer: 1, boolean: false,
                                      date: 1.week.from_now.to_date, datetime: 1.week.from_now.to_datetime,
                                      decimal: 1.1, float: 1.1, time: 1.hour.ago.to_time.to_s[12..-1],
-                                     assoc: FactoryBot.create(:assoc, string: 'rZ', integer: 9))
-    @foo_8 = FactoryBot.create(:foo, string: 'Z', integer: 2, boolean: false,
+                                     one: FactoryBot.create(:one, string: 'rZ', integer: 9))
+    @thing_8 = FactoryBot.create(:thing, string: 'Z', integer: 2, boolean: false,
                                      date: 1.week.ago.to_date, datetime: 1.week.ago.to_datetime,
                                      decimal: 2.2, float: 2.2, time: 2.hours.ago.to_time.to_s[12..-1],
-                                     assoc: FactoryBot.create(:assoc, string: 'rZ', integer: 8))
-    @active_set = ActiveSet.new(Foo.all)
-    @all_foos = Foo.all.to_a
+                                     one: FactoryBot.create(:one, string: 'rZ', integer: 8))
+    @active_set = ActiveSet.new(Thing.all)
+    @all_things = Thing.all.to_a
   end
-  after(:all) { Foo.delete_all }
+  after(:all) { Thing.delete_all }
 
   def value_for(path:, object:)
     value = path.split('.').reduce(object) { |obj, m| obj.send(m.gsub('(i)', '')) }
@@ -59,10 +59,10 @@ RSpec.describe ActiveSet do
             %W[
               #{type}
               computed_#{type}
-              assoc.#{type}
-              assoc.computed_#{type}
-              computed_assoc.#{type}
-              computed_assoc.computed_#{type}
+              one.#{type}
+              one.computed_#{type}
+              computed_one.#{type}
+              computed_one.computed_#{type}
             ].each do |path|
               context "{ #{path}: }" do
                 let(:instructions) do
@@ -94,14 +94,14 @@ RSpec.describe ActiveSet do
           #{type_2}
           computed_#{type_1}
           computed_#{type_2}
-          assoc.#{type_1}
-          assoc.#{type_2}
-          assoc.computed_#{type_1}
-          assoc.computed_#{type_2}
-          computed_assoc.#{type_1}
-          computed_assoc.#{type_2}
-          computed_assoc.computed_#{type_1}
-          computed_assoc.computed_#{type_2}
+          one.#{type_1}
+          one.#{type_2}
+          one.computed_#{type_1}
+          one.computed_#{type_2}
+          computed_one.#{type_1}
+          computed_one.#{type_2}
+          computed_one.computed_#{type_1}
+          computed_one.computed_#{type_2}
         ]
         all_possible_instructions = paths
                                     .combination(2)
@@ -148,10 +148,10 @@ RSpec.describe ActiveSet do
           %w[
             string(i)
             computed_string(i)
-            assoc.string(i)
-            assoc.computed_string(i)
-            computed_assoc.string(i)
-            computed_assoc.computed_string(i)
+            one.string(i)
+            one.computed_string(i)
+            computed_one.string(i)
+            computed_one.computed_string(i)
           ].each do |path|
             context "{ #{path}: }" do
               let(:instructions) do
@@ -181,14 +181,14 @@ RSpec.describe ActiveSet do
         integer
         computed_string(i)
         computed_integer
-        assoc.string(i)
-        assoc.integer
-        assoc.computed_string(i)
-        assoc.computed_integer
-        computed_assoc.string(i)
-        computed_assoc.integer
-        computed_assoc.computed_string(i)
-        computed_assoc.computed_integer
+        one.string(i)
+        one.integer
+        one.computed_string(i)
+        one.computed_integer
+        computed_one.string(i)
+        computed_one.integer
+        computed_one.computed_string(i)
+        computed_one.computed_integer
       ]
       all_possible_instructions = paths
                                   .combination(2)
