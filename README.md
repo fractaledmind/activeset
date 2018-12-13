@@ -57,40 +57,38 @@ The logic of this method is to attempt to process every instruction with the Act
 
 This filtering operation does not preserve the order of the filters, enforces conjunction, and will discard any unprocessable instruction.
 
-For ActiveRecord sets, the various ARel predicate methods are available as operators:
+For ActiveRecord sets, the various [ARel predicate methods](https://www.rubydoc.info/github/rails/arel/Arel/Predications) are available as operators:
 
-operator
-------------
-eq
-not_eq
-eq_any
-not_eq_any
-eq_all
-not_eq_all
-in
-not_in
-in_any
-not_in_any
-in_all
-not_in_all
-lt
-lteq
-lt_any
-lteq_any
-lt_all
-lteq_all
-gt
-gteq
-gt_any
-gteq_any
-gt_all
-gteq_all
-matches
-does_not_match
-matches_any
-does_not_match_any
-matches_all
-does_not_match_all
+- `eq`
+- `not_eq`
+- `eq_any`
+- `not_eq_any`
+- `eq_all`
+- `not_eq_all`
+- `in`
+- `not_in`
+- `in_any`
+- `not_in_any`
+- `in_all`
+- `not_in_all`
+- `lt`
+- `lteq`
+- `lt_any`
+- `lteq_any`
+- `lt_all`
+- `lteq_all`
+- `gt`
+- `gteq`
+- `gt_any`
+- `gteq_any`
+- `gt_all`
+- `gteq_all`
+- `matches`
+- `does_not_match`
+- `matches_any`
+- `does_not_match_any`
+- `matches_all`
+- `does_not_match_all`
 
 ## Sorting
 
