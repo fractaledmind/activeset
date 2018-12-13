@@ -41,7 +41,13 @@ The syntax for the instructions hash is relatively simple:
     attribute: 'value',
     association: {
         field: 'value'
-    }
+    },
+    'association.field' => 'value',
+    'attribute(operator)' => 1.0,
+    association: {
+        'field(operator)': 'value'
+    },
+    'association.field(operator)' => 'value',
 }
 ```
 
@@ -49,7 +55,42 @@ Every entry in the instructions hash is treated and processed as an independent 
 
 The logic of this method is to attempt to process every instruction with the ActiveRecordStrategy, marking all successful attempts. If we successfully processed every instruction, we simply returned the processed result. If there are any instructions that went unprocessed, we take only those instructions and process them against the set processed by the ActiveRecordStrategy.
 
-This filtering operation does not preserve the order of the filters, enforces conjunction, and will functionally discard any unprocessable instruction.
+This filtering operation does not preserve the order of the filters, enforces conjunction, and will discard any unprocessable instruction.
+
+For ActiveRecord sets, the various ARel predicate methods are available as operators:
+
+operator
+------------
+eq
+not_eq
+eq_any
+not_eq_any
+eq_all
+not_eq_all
+in
+not_in
+in_any
+not_in_any
+in_all
+not_in_all
+lt
+lteq
+lt_any
+lteq_any
+lt_all
+lteq_all
+gt
+gteq
+gt_any
+gteq_any
+gt_all
+gteq_all
+matches
+does_not_match
+matches_any
+does_not_match_any
+matches_all
+does_not_match_all
 
 ## Sorting
 
