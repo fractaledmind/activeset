@@ -43,9 +43,6 @@ class ActiveSet
       end
 
       def where_operation
-        arel_table = Arel::Table.new(attribute_model.table_name)
-        arel_column = arel_table[@attribute_instruction.attribute]
-
         initial_relation
           .where(
             arel_column.send(
@@ -69,6 +66,19 @@ class ActiveSet
         return @set if @attribute_instruction.associations_array.empty?
 
         @set.eager_load(@attribute_instruction.associations_hash)
+      end
+
+      def arel_column
+        attribute_type = attribute_model.columns_hash[@attribute_instruction.attribute].type
+
+        # This is to work around an bug in ActiveRecord,
+        # where BINARY fields aren't found properly when using the `arel_table` class method
+        # to build an ARel::Node
+        if attribute_type == :binary
+          Arel::Table.new(attribute_model.table_name)[@attribute_instruction.attribute]
+        else
+          attribute_model.arel_table[@attribute_instruction.attribute]
+        end
       end
 
       def attribute_model
