@@ -1,3 +1,7 @@
+v 0.8.1
+  - fix a small bug when doing ARel filtering against binary fields
+  - add the ARel operators to the README
+  - update the ARel operator spec
 v 0.8.0
   - simplify the `inspect` method for ActiveSet instances, only showing the instructions
   - split the strategy files from the operation files
