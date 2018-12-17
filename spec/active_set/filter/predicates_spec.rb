@@ -11,253 +11,185 @@ RSpec.describe ActiveSet do
   after(:all) { Thing.delete_all }
 
   describe '#filter' do
-    let(:result) { @active_set.filter(instructions) }
+    let(:results) { @active_set.filter(instructions) }
+    let(:result_ids) { results.map(&:id) }
 
-    context 'equality' do
-      context 'eq' do
-        let(:instructions) do
-          { 'id(eq)': @thing_1.id }
+    ApplicationRecord::DB_FIELD_TYPES.each do |type|
+      [1, 2].each do |id|
+        # single value inclusive operators
+        %i[
+          eq
+          lteq
+          gteq
+          matches
+        ].each do |operator|
+          %W[
+            #{type}(#{operator})
+            one.#{type}(#{operator})
+          ].each do |path|
+            context "{ #{path}: }" do
+              let(:matching_item) { instance_variable_get("@thing_#{id}") }
+              let(:instruction_single_value) do
+                ActiveSet::AttributeInstruction.new(path, nil).value_for(item: matching_item)
+              end
+              let(:instructions) do
+                {
+                  path => instruction_single_value
+                }
+              end
+
+              it { expect(result_ids).to include matching_item.id }
+            end
+          end
         end
 
-        it { expect(result.map(&:id)).to eq [@thing_1.id] }
-      end
+        # single value exlusive operators
+        %i[
+          not_eq
+          lt
+          gt
+          does_not_match
+        ].each do |operator|
+          %W[
+            #{type}(#{operator})
+            one.#{type}(#{operator})
+          ].each do |path|
+            context "{ #{path}: }" do
+              let(:matching_item) { instance_variable_get("@thing_#{id}") }
+              let(:instruction_single_value) do
+                ActiveSet::AttributeInstruction.new(path, nil).value_for(item: matching_item)
+              end
+              let(:instructions) do
+                {
+                  path => instruction_single_value
+                }
+              end
 
-      context 'not_eq' do
-        let(:instructions) do
-          { 'id(not_eq)': @thing_1.id }
+              it { expect(result_ids).not_to include matching_item.id }
+            end
+          end
         end
 
-        it { expect(result.map(&:id)).to eq [@thing_2.id] }
-      end
+        # multi value inclusive operators
+        %i[
+          eq_any
+          not_eq_any
+          in
+          in_any
+          not_in_any
+          lteq_any
+          gteq_any
+          matches_any
+          does_not_match_any
+        ].each do |operator|
+          %W[
+            #{type}(#{operator})
+            one.#{type}(#{operator})
+          ].each do |path|
+            context "{ #{path}: }" do
+              let(:matching_item) { instance_variable_get("@thing_#{id}") }
+              let(:other_thing) do
+                FactoryBot.build(:thing,
+                                 boolean: !matching_item.boolean,
+                                 one: FactoryBot.build(:one,
+                                                        boolean: !matching_item.one.boolean))
+              end
+              let(:instruction_multi_value) do
+                [
+                  ActiveSet::AttributeInstruction.new(path, nil).value_for(item: matching_item),
+                  ActiveSet::AttributeInstruction.new(path, nil).value_for(item: other_thing)
+                ]
+              end
+              let(:instructions) do
+                {
+                  path => instruction_multi_value
+                }
+              end
 
-      context 'eq_any' do
-        let(:instructions) do
-          { 'id(eq_any)': [@thing_1.id, (@thing_2.id + 1)] }
+              it { expect(result_ids).to include matching_item.id }
+            end
+          end
         end
 
-        it { expect(result.map(&:id)).to eq [@thing_1.id] }
-      end
+        # multi value exclusive operators
+        %i[
+          eq_all
+          not_eq_all
+          not_in
+          in_all
+          not_in_all
+          lt_all
+          gt_all
+          matches_all
+          does_not_match_all
+        ].each do |operator|
+          %W[
+            #{type}(#{operator})
+            one.#{type}(#{operator})
+          ].each do |path|
+            context "{ #{path}: }" do
+              let(:matching_item) { instance_variable_get("@thing_#{id}") }
+              let(:other_thing) do
+                FactoryBot.build(:thing,
+                                 boolean: !matching_item.boolean,
+                                 one: FactoryBot.build(:one,
+                                                        boolean: !matching_item.one.boolean))
+              end
+              let(:instruction_multi_value) do
+                [
+                  ActiveSet::AttributeInstruction.new(path, nil).value_for(item: matching_item),
+                  ActiveSet::AttributeInstruction.new(path, nil).value_for(item: other_thing)
+                ]
+              end
+              let(:instructions) do
+                {
+                  path => instruction_multi_value
+                }
+              end
 
-      context 'not_eq_any' do
-        let(:instructions) do
-          { 'id(not_eq_any)': [@thing_1.id, (@thing_2.id + 1)] }
+              it { expect(result_ids).not_to include matching_item.id }
+            end
+          end
         end
 
-        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id] }
-      end
+        # multi value mixed operators
+        # %i[
+        #   lt_any
+        #   lteq_all
+        #   gt_any
+        #   gteq_all
+        # ].each do |operator|
+        #   %W[
+        #     #{type}(#{operator})
+        #     one.#{type}(#{operator})
+        #   ].each do |path|
+        #     context "{ #{path}: }" do
+        #       let(:matching_item) { instance_variable_get("@thing_#{id}") }
+        #       let(:other_thing) do
+        #         FactoryBot.build(:thing,
+        #                          boolean: !matching_item.boolean,
+        #                          one: FactoryBot.build(:one,
+        #                                                 boolean: !matching_item.one.boolean))
+        #       end
+        #       let(:instruction_multi_value) do
+        #         [
+        #           ActiveSet::AttributeInstruction.new(path, nil).value_for(item: matching_item),
+        #           ActiveSet::AttributeInstruction.new(path, nil).value_for(item: other_thing)
+        #         ]
+        #       end
+        #       let(:instructions) do
+        #         {
+        #           path => instruction_multi_value
+        #         }
+        #       end
 
-      context 'eq_all' do
-        let(:instructions) do
-          { 'id(eq_all)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [] }
-      end
-
-      context 'not_eq_all' do
-        let(:instructions) do
-          { 'id(not_eq_all)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_2.id] }
-      end
-    end
-
-    context 'inclusion' do
-      context 'in' do
-        let(:instructions) do
-          { 'id(in)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id] }
-      end
-
-      context 'not_in' do
-        let(:instructions) do
-          { 'id(not_in)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_2.id] }
-      end
-
-      context 'in_any' do
-        let(:instructions) do
-          { 'id(in_any)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id] }
-      end
-
-      context 'not_in_any' do
-        let(:instructions) do
-          { 'id(not_in_any)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id] }
-      end
-
-      context 'in_all' do
-        let(:instructions) do
-          { 'id(in_all)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [] }
-      end
-
-      context 'not_in_all' do
-        let(:instructions) do
-          { 'id(not_in_all)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_2.id] }
-      end
-    end
-
-    context 'comparison' do
-      context 'lt' do
-        let(:instructions) do
-          { 'id(lt)': @thing_2.id }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id] }
-      end
-
-      context 'lteq' do
-        let(:instructions) do
-          { 'id(lteq)': @thing_2.id }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id] }
-      end
-
-      context 'lt_any' do
-        let(:instructions) do
-          { 'id(lt_any)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id] }
-      end
-
-      context 'lteq_any' do
-        let(:instructions) do
-          { 'id(lteq_any)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id] }
-      end
-
-      context 'lt_all' do
-        let(:instructions) do
-          { 'id(lt_all)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [] }
-      end
-
-      context 'lteq_all' do
-        let(:instructions) do
-          { 'id(lteq_all)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id] }
-      end
-
-      context 'gt' do
-        let(:instructions) do
-          { 'id(gt)': @thing_1.id }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_2.id] }
-      end
-
-      context 'gteq' do
-        let(:instructions) do
-          { 'id(gteq)': @thing_2.id }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_2.id] }
-      end
-
-      context 'gt_any' do
-        let(:instructions) do
-          { 'id(gt_any)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_2.id] }
-      end
-
-      context 'gteq_any' do
-        let(:instructions) do
-          { 'id(gteq_any)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id] }
-      end
-
-      context 'gt_all' do
-        let(:instructions) do
-          { 'id(gt_all)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [] }
-      end
-
-      context 'gteq_all' do
-        let(:instructions) do
-          { 'id(gteq_all)': [@thing_1.id, (@thing_2.id + 1)] }
-        end
-
-        it { expect(result.map(&:id)).to eq [] }
-      end
-    end
-
-    context 'matching' do
-      context 'matches' do
-        let(:instructions) do
-          { 'string(matches)': "%#{@thing_1.string[1..-2]}%" }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id] }
-      end
-
-      context 'does_not_match' do
-        let(:instructions) do
-          { 'string(does_not_match)': "%#{@thing_1.string[1..-2]}%" }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_2.id] }
-      end
-
-      context 'matches_any' do
-        let(:instructions) do
-          { 'string(matches_any)': ["%#{@thing_1.string[1..-2]}%", 'DOES NOT MATCH'] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id] }
-      end
-
-      context 'does_not_match_any' do
-        let(:instructions) do
-          { 'string(does_not_match_any)': ["%#{@thing_1.string[1..-2]}%", 'DOES NOT MATCH'] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id] }
-      end
-
-      context 'matches_all' do
-        let(:instructions) do
-          { 'string(matches_all)': ["%#{@thing_1.string[1..-2]}%", 'DOES NOT MATCH'] }
-        end
-
-        it { expect(result.map(&:id)).to eq [] }
-      end
-
-      context 'does_not_match_all' do
-        let(:instructions) do
-          { 'string(does_not_match_all)': ["%#{@thing_1.string[1..-2]}%", 'DOES NOT MATCH'] }
-        end
-
-        it { expect(result.map(&:id)).to eq [@thing_2.id] }
+        #       if type.presence_in(%i[binary datetime decimal float integer]) && operator == :gt_any
+        #         it { expect(result_ids).not_to include matching_item.id }
+        #       else
+        #       end
+        #     end
+        #   end
+        # end
       end
     end
   end
