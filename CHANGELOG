@@ -1,3 +1,5 @@
+v 0.8.2
+  - fix a bug that prevents enumerable sets from being filtered down to empty sets
 v 0.8.1
   - fix a small bug when doing ARel filtering against binary fields
   - add the ARel operators to the README
