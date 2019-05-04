@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    activeset (0.8.4)
+    activeset (0.8.5)
       activesupport (>= 4.0.2)
 
 GEM
