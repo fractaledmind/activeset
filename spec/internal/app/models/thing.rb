@@ -2,12 +2,12 @@
 
 class Thing < ApplicationRecord
   belongs_to :one,
-    optional: true
+             optional: true
   has_many :alots,
-    inverse_of: :thing
+           inverse_of: :thing
   has_many :relateds,
-    through: :joint,
-    inverse_of: :things
+           through: :joint,
+           inverse_of: :things
 
   scope :string_starts_with, (lambda do |substr|
     where(Arel::Table.new(table_name)[:string].matches("#{substr}%"))

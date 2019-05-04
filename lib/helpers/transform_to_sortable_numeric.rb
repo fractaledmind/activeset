@@ -18,20 +18,20 @@ def transform_to_sortable_numeric(value)
   # https://www.justinweiss.com/articles/4-simple-memoization-patterns-in-ruby-and-one-gem/#and-what-about-parameters
   @sortable_numeric ||= Hash.new do |h, key|
     h[key] = if key.is_a?(Numeric)
-              key
-            elsif key == true
-              1
-            elsif key == false
-              0
-            elsif key.is_a?(String) || key.is_a?(Symbol)
-             string_to_sortable_numeric(key.to_s)
-            elsif key.is_a?(Date)
-             time_to_sortable_numeric(Time.new(key.year, key.month, key.day, 00, 00, 00, 0))
-            elsif key.respond_to?(:to_time)
-             time_to_sortable_numeric(key.to_time)
-            else
-              key
-            end
+               key
+             elsif key == true
+               1
+             elsif key == false
+               0
+             elsif key.is_a?(String) || key.is_a?(Symbol)
+               string_to_sortable_numeric(key.to_s)
+             elsif key.is_a?(Date)
+               time_to_sortable_numeric(Time.new(key.year, key.month, key.day, 0o0, 0o0, 0o0, 0))
+             elsif key.respond_to?(:to_time)
+               time_to_sortable_numeric(key.to_time)
+             else
+               key
+             end
   end
   @sortable_numeric[value]
 end
