@@ -17,6 +17,14 @@ class Thing < ApplicationRecord
     where(Arel::Table.new(table_name)[:string].matches("%#{substr}"))
   end
 
+  def self.nil_returning_class_method(_value)
+    nil
+  end
+
+  def self.item_returning_class_method(_value)
+    first
+  end
+
   def computed_assoc
     assoc
   end
