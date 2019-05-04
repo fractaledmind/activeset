@@ -64,7 +64,7 @@ class ActiveSet
         elsif maybe_item_or_collection_or_nil.respond_to?(:each)
           maybe_item_or_collection_or_nil.include? attribute_item_for(item)
         else
-          maybe_item_or_collection_or_nil.present?
+          maybe_item_or_collection_or_nil == attribute_item_for(item)
         end
       end
       # rubocop:enable Metrics/MethodLength
