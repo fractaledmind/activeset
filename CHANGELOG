@@ -1,3 +1,5 @@
+v 0.8.3
+  - fix a bug to allow sorting of computed attributes on sets that include nil values
 v 0.8.2
   - fix a bug that prevents enumerable sets from being filtered down to empty sets
 v 0.8.1
