@@ -1,3 +1,8 @@
+v 0.8.4
+  - start using Bundler v2.x
+  - check the Gemfile.lock into version control
+  - handle transforming Date objects into sortable integers a bit more intelligently to ensure UTC
+  - fix Rubocop offenses (safely)
 v 0.8.3
   - fix a bug to allow sorting of computed attributes on sets that include nil values
 v 0.8.2
