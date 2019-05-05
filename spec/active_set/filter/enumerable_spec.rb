@@ -12,31 +12,31 @@ RSpec.describe ActiveSet do
   describe '#filter' do
     let(:result) { @active_set.filter(instructions) }
 
-    # ApplicationRecord::FIELD_TYPES.each do |type|
-    #   context "with #{type.upcase} type" do
-    #     [1, 2].each do |id|
-    #       context "matching @thing_#{id}" do
-    #         let(:matching_item) { instance_variable_get("@thing_#{id}") }
+    ApplicationRecord::FIELD_TYPES.each do |type|
+      context "with #{type.upcase} type" do
+        [1, 2].each do |id|
+          context "matching @thing_#{id}" do
+            let(:matching_item) { instance_variable_get("@thing_#{id}") }
 
-    #         %W[
-    #           #{type}
-    #           one.#{type}
-    #           computed_one.#{type}
-    #         ].each do |path|
-    #           context "{ #{path}: }" do
-    #             let(:instructions) do
-    #               {
-    #                 path => path.split('.').reduce(matching_item) { |obj, m| obj.send(m) }
-    #               }
-    #             end
+            %W[
+              #{type}
+              one.#{type}
+              computed_one.#{type}
+            ].each do |path|
+              context "{ #{path}: }" do
+                let(:instructions) do
+                  {
+                    path => path.split('.').reduce(matching_item) { |obj, m| obj.send(m) }
+                  }
+                end
 
-    #             it { expect(result.map(&:id)).to eq [matching_item.id] }
-    #           end
-    #         end
-    #       end
-    #     end
-    #   end
-    # end
+                it { expect(result.map(&:id)).to eq [matching_item.id] }
+              end
+            end
+          end
+        end
+      end
+    end
 
     context 'on a SCOPE' do
       context 'matching @thing_1' do
