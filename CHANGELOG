@@ -1,3 +1,10 @@
+v 0.8.6
+  - fix a bug where ActiveRecord sorting didn't treat NULL values in the same way as Enumerable sorting
+    + where NULL values are sorted as if larger than any non-null value
+  - fix a bug with ActiveRecord scope filtering
+    + if we try to use a class method scope that returns something other than an ActiveRecord::Relation
+  - update the scopes filtering specs to be more generalized and exhaustive
+  - clean up specs in general
 v 0.8.5
   - fix a bug in Enumerable class method filtering when method returns object, not array
   - add specs for Enumerable filtering
