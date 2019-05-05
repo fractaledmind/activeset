@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :alot do
     _generic
-    trait :all_nil { _all_nil }
+    trait(:all_nil) { _all_nil }
   end
 end

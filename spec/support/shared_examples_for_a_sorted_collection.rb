@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples 'a sorted collection' do |instructions|
   it do
     result.each_cons(2) do |left_result, right_result|

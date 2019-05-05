@@ -3,8 +3,7 @@
 FactoryBot.define do
   factory :thing do
     _generic
-
-    trait :all_nil { _all_nil }
+    trait(:all_nil) { _all_nil }
 
     association :one
     transient do

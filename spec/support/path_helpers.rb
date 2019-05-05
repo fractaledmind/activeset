@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PathHelpers
   def all_possible_paths_for(type, options = {})
     association = 'one'
@@ -21,7 +23,8 @@ module PathHelpers
   def all_possible_path_combinations_for(type_1, type_2)
     all_possible_paths_for(type_1)
       .product(
-    all_possible_paths_for(type_2))
+        all_possible_paths_for(type_2)
+      )
   end
 
   def value_for(object:, path:)

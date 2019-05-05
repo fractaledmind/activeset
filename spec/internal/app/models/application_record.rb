@@ -32,7 +32,7 @@ class ApplicationRecord < ActiveRecord::Base
       find_by(field => v)
     end
 
-    define_singleton_method("#{field}_nil_method") do |v|
+    define_singleton_method("#{field}_nil_method") do |_v|
       nil
     end
   end
