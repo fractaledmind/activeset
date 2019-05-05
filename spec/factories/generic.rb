@@ -9,7 +9,7 @@ def fit_to_minmax(number, max:, min: 1)
 end
 
 FactoryBot.define do
-  trait :generic do
+  trait :_generic do
     sequence(:binary) { |n| Base64.encode64 [Faker::Crypto.sha256, n].join('-') }
     sequence(:boolean, &:even?)
     sequence(:date) do |n|
@@ -35,5 +35,18 @@ FactoryBot.define do
         rand(60).to_s.rjust(2, '0')
       ].join(':')
     end
+  end
+
+  trait :_all_nil do
+    binary    { nil }
+    boolean   { nil }
+    date      { nil }
+    datetime  { nil }
+    decimal   { nil }
+    float     { nil }
+    integer   { nil }
+    string    { nil }
+    text      { nil }
+    time      { nil }
   end
 end
