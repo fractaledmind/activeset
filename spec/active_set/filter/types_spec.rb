@@ -24,7 +24,7 @@ RSpec.describe ActiveSet do
               }
             end
 
-            expect(result.map(&:id)).to eq [matching_item.id]
+            it { expect(result.map(&:id)).to eq [matching_item.id] }
           end
         end
       end
@@ -44,7 +44,7 @@ RSpec.describe ActiveSet do
                 }
               end
 
-              expect(result.map(&:id)).to eq [matching_item.id]
+              it { expect(result.map(&:id)).to eq [matching_item.id] }
             end
           end
         end
