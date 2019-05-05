@@ -17,11 +17,9 @@ class ActiveSet
             value_for_comparison = sortable_numeric_for(instruction, item)
             direction_multiplier = direction_multiplier(instruction.value)
 
-            # in an ASC sort, nils float to the end of the list. In a DESC
-            # sort, nils float to the start of the list. This is achieved by
-            # wrapping each value_for_comparison in a tuple with 0 as the first
-            # element, and wrapping nil values with either 1 or -1 as the first
-            # element
+            # Force null values to be sorted as if larger than any non-null value
+            # ASC => [-2, -1, 1, 2, nil]
+            # DESC => [nil, 2, 1, -1, -2]
             if value_for_comparison.nil?
               [direction_multiplier, 0]
             else
