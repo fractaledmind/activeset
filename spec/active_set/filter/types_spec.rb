@@ -13,64 +13,38 @@ RSpec.describe ActiveSet do
     let(:result) { @active_set.filter(instructions) }
 
     ApplicationRecord::FIELD_TYPES.each do |type|
-      context "with #{type.upcase} type" do
-        [1, 2].each do |id|
-          context "matching @thing_#{id}" do
-            let(:matching_item) { instance_variable_get("@thing_#{id}") }
+      [1, 2].each do |id|
+        let(:matching_item) { instance_variable_get("@thing_#{id}") }
 
-            %W[
-              #{type}
-              computed_#{type}
-              one.#{type}
-              one.computed_#{type}
-              computed_one.#{type}
-              computed_one.computed_#{type}
-            ].each do |path|
-              context "{ #{path}: }" do
-                let(:instructions) do
-                  {
-                    path => path.split('.').reduce(matching_item) { |obj, m| obj.send(m) }
-                  }
-                end
-
-                it { expect(result.map(&:id)).to eq [matching_item.id] }
-              end
+        all_possible_paths_for(type).each do |path|
+          context "{ #{path}: }" do
+            let(:instructions) do
+              {
+                path => filter_value_for(object: matching_item, path: path)
+              }
             end
+
+            expect(result.map(&:id)).to eq [matching_item.id]
           end
         end
       end
     end
 
     ApplicationRecord::FIELD_TYPES.combination(2).each do |type_1, type_2|
-      context "with #{type_1.upcase} and #{type_2.upcase} types" do
-        [1, 2].each do |id|
-          context "matching @thing_#{id}" do
-            let(:matching_item) { instance_variable_get("@thing_#{id}") }
+      [1, 2].each do |id|
+        context "matching @thing_#{id}" do
+          let(:matching_item) { instance_variable_get("@thing_#{id}") }
 
-            %W[
-              #{type_1}
-              #{type_2}
-              computed_#{type_1}
-              computed_#{type_2}
-              one.#{type_1}
-              one.#{type_2}
-              one.computed_#{type_1}
-              one.computed_#{type_2}
-              computed_one.#{type_1}
-              computed_one.#{type_2}
-              computed_one.computed_#{type_1}
-              computed_one.computed_#{type_2}
-            ].combination(2).each do |path_1, path_2|
-              context "{ #{path_1}:, #{path_2} }" do
-                let(:instructions) do
-                  {
-                    path_1 => path_1.split('.').reduce(matching_item) { |obj, m| obj.send(m) },
-                    path_2 => path_2.split('.').reduce(matching_item) { |obj, m| obj.send(m) }
-                  }
-                end
-
-                it { expect(result.map(&:id)).to eq [matching_item.id] }
+          all_possible_path_combinations_for(type_1, type_2).each do |path_1, path_2|
+            context "{ #{path_1}:, #{path_2} }" do
+              let(:instructions) do
+                {
+                  path_1 => filter_value_for(object: matching_item, path: path_1),
+                  path_2 => filter_value_for(object: matching_item, path: path_2)
+                }
               end
+
+              expect(result.map(&:id)).to eq [matching_item.id]
             end
           end
         end
