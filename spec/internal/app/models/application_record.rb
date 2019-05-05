@@ -40,7 +40,7 @@ class ApplicationRecord < ActiveRecord::Base
   alias computed_bignum bignum
 
   def symbol
-    string.to_sym
+    string&.to_sym
   end
   alias computed_symbol symbol
 end
