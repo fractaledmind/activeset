@@ -4,7 +4,7 @@ require 'simplecov_helper'
 
 require 'bundler'
 require 'combustion'
-Combustion.initialize! :active_record, :action_controller, :action_view
+Combustion.initialize! :active_record
 Bundler.require :default, :development
 
 require 'bundler/setup'
