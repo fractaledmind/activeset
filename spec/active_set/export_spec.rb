@@ -8,7 +8,6 @@ RSpec.describe ActiveSet do
     @thing_2 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
     @thing_3 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
   end
-  after(:all) { Thing.delete_all }
 
   describe '#export' do
     context 'with ActiveRecord collection' do

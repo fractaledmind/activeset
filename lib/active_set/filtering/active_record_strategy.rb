@@ -14,12 +14,14 @@ class ActiveSet
         if execute_where_operation?
           statement = where_operation
         elsif execute_merge_operation?
-          statement = merge_operation
+          begin
+            statement = merge_operation
+          rescue ArgumentError # thrown if merging a non-ActiveRecord::Relation
+            return false
+          end
         else
           return false
         end
-
-        return false if throws?(ActiveRecord::StatementInvalid) { statement.load }
 
         statement
       end

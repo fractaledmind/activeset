@@ -4,7 +4,7 @@ require 'simplecov_helper'
 
 require 'bundler'
 require 'combustion'
-Combustion.initialize! :active_record, :action_controller, :action_view
+Combustion.initialize! :active_record
 Bundler.require :default, :development
 
 require 'bundler/setup'
@@ -15,6 +15,10 @@ require 'active_set'
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
 
 RSpec.configure do |config|
+  include PathHelpers
+  include FilteringHelpers
+  include SortingHelpers
+
   config.mock_with :rspec
   config.order = 'random'
 
@@ -36,5 +40,24 @@ RSpec.configure do |config|
     rescue FactoryBot::DuplicateDefinitionError
       nil
     end
+  end
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:all) do
+    DatabaseCleaner.start
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
+
+  config.after(:all) do
+    DatabaseCleaner.clean
   end
 end
