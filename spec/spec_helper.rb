@@ -15,6 +15,10 @@ require 'active_set'
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require f }
 
 RSpec.configure do |config|
+  include PathHelpers
+  include FilteringHelpers
+  include SortingHelpers
+
   config.mock_with :rspec
   config.order = 'random'
 
