@@ -39,7 +39,6 @@ RSpec.describe ActiveSet do
     @active_set = ActiveSet.new(Thing.all)
     @all_things = Thing.all.to_a
   end
-  after(:all) { Thing.delete_all }
 
   def value_for(path:, object:)
     value = path.split('.').reduce(object) { |obj, m| obj.send(m.gsub('(i)', '')) }

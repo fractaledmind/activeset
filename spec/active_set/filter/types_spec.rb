@@ -8,7 +8,6 @@ RSpec.describe ActiveSet do
     @thing_2 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
     @active_set = ActiveSet.new(Thing.all)
   end
-  after(:all) { Thing.delete_all }
 
   describe '#filter' do
     let(:result) { @active_set.filter(instructions) }
