@@ -11,9 +11,9 @@
 # throws?(StandardError) { 'foo' }
 # => false
 
-def throws?(exception) # &block
+def throws?(exception)
   yield
   false
-rescue Exception => e
+rescue StandardError => e
   e.is_a? exception
 end

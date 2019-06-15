@@ -1,3 +1,33 @@
+v 0.8.6
+  - fix a bug where ActiveRecord sorting didn't treat NULL values in the same way as Enumerable sorting
+    + where NULL values are sorted as if larger than any non-null value
+  - fix a bug with ActiveRecord scope filtering
+    + if we try to use a class method scope that returns something other than an ActiveRecord::Relation
+  - update the scopes filtering specs to be more generalized and exhaustive
+  - clean up specs in general
+v 0.8.5
+  - fix a bug in Enumerable class method filtering when method returns object, not array
+  - add specs for Enumerable filtering
+  - make the factories more intelligently to avoid some random failures from poor data creation
+v 0.8.4
+  - start using Bundler v2.x
+  - check the Gemfile.lock into version control
+  - handle transforming Date objects into sortable integers a bit more intelligently to ensure UTC
+  - fix Rubocop offenses (safely)
+v 0.8.3
+  - fix a bug to allow sorting of computed attributes on sets that include nil values
+v 0.8.2
+  - fix a bug that prevents enumerable sets from being filtered down to empty sets
+v 0.8.1
+  - fix a small bug when doing ARel filtering against binary fields
+  - add the ARel operators to the README
+  - update the ARel operator spec
+v 0.8.0
+  - simplify the `inspect` method for ActiveSet instances, only showing the instructions
+  - split the strategy files from the operation files
+  - update how ActiveRecord filtering works
+    + instruction operators must now be ARel methods, not SQL operators
+  - memoize the `transform_to_sortable_numeric` method
 v 0.7.1
   - Fix a small bug with Enumberable filtering of metaprogrammatically defined getter methods
 v 0.7.0

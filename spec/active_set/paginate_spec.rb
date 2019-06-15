@@ -4,27 +4,26 @@ require 'spec_helper'
 
 RSpec.describe ActiveSet do
   before(:all) do
-    @foo_1 = FactoryBot.create(:foo, assoc: FactoryBot.create(:assoc))
-    @foo_2 = FactoryBot.create(:foo, assoc: FactoryBot.create(:assoc))
-    @foo_3 = FactoryBot.create(:foo, assoc: FactoryBot.create(:assoc))
+    @thing_1 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
+    @thing_2 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
+    @thing_3 = FactoryBot.create(:thing, one: FactoryBot.create(:one))
   end
-  after(:all) { Foo.delete_all }
 
   describe '#paginate' do
     context 'with ActiveRecord collection' do
-      before(:all) { @active_set = ActiveSet.new(Foo.all) }
+      before(:all) { @active_set = ActiveSet.new(Thing.all) }
       let(:result) { @active_set.paginate(instructions) }
 
       context '{ page: 1, size: 1 }' do
         let(:instructions) { { page: 1, size: 1 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_1.id] }
+        it { expect(result.map(&:id)).to eq [@thing_1.id] }
       end
 
       context '{ page: 2, size: 1 }' do
         let(:instructions) { { page: 2, size: 1 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_2.id] }
+        it { expect(result.map(&:id)).to eq [@thing_2.id] }
       end
 
       context '{ page: 10, size: 1 }' do
@@ -36,13 +35,13 @@ RSpec.describe ActiveSet do
       context '{ page: 1, size: 2 }' do
         let(:instructions) { { page: 1, size: 2 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_1.id, @foo_2.id] }
+        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id] }
       end
 
       context '{ page: 2, size: 2 }' do
         let(:instructions) { { page: 2, size: 2 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_3.id] }
+        it { expect(result.map(&:id)).to eq [@thing_3.id] }
       end
 
       context '{ page: 10, size: 2 }' do
@@ -54,7 +53,7 @@ RSpec.describe ActiveSet do
       context '{ page: 1, size: 3 }' do
         let(:instructions) { { page: 1, size: 3 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_1.id, @foo_2.id, @foo_3.id] }
+        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id, @thing_3.id] }
       end
 
       context '{ page: 10, size: 3 }' do
@@ -66,7 +65,7 @@ RSpec.describe ActiveSet do
       context '{ page: 1, size: 5 }' do
         let(:instructions) { { page: 1, size: 5 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_1.id, @foo_2.id, @foo_3.id] }
+        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id, @thing_3.id] }
       end
 
       context '{ page: 10, size: 5 }' do
@@ -77,19 +76,19 @@ RSpec.describe ActiveSet do
     end
 
     context 'with Enumerable collection' do
-      before(:all) { @active_set = ActiveSet.new(Foo.all.to_a) }
+      before(:all) { @active_set = ActiveSet.new(Thing.all.to_a) }
       let(:result) { @active_set.paginate(instructions) }
 
       context '{ page: 1, size: 1 }' do
         let(:instructions) { { page: 1, size: 1 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_1.id] }
+        it { expect(result.map(&:id)).to eq [@thing_1.id] }
       end
 
       context '{ page: 2, size: 1 }' do
         let(:instructions) { { page: 2, size: 1 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_2.id] }
+        it { expect(result.map(&:id)).to eq [@thing_2.id] }
       end
 
       context '{ page: 10, size: 1 }' do
@@ -101,13 +100,13 @@ RSpec.describe ActiveSet do
       context '{ page: 1, size: 2 }' do
         let(:instructions) { { page: 1, size: 2 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_1.id, @foo_2.id] }
+        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id] }
       end
 
       context '{ page: 2, size: 2 }' do
         let(:instructions) { { page: 2, size: 2 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_3.id] }
+        it { expect(result.map(&:id)).to eq [@thing_3.id] }
       end
 
       context '{ page: 10, size: 2 }' do
@@ -119,7 +118,7 @@ RSpec.describe ActiveSet do
       context '{ page: 1, size: 3 }' do
         let(:instructions) { { page: 1, size: 3 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_1.id, @foo_2.id, @foo_3.id] }
+        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id, @thing_3.id] }
       end
 
       context '{ page: 10, size: 3 }' do
@@ -131,7 +130,7 @@ RSpec.describe ActiveSet do
       context '{ page: 1, size: 5 }' do
         let(:instructions) { { page: 1, size: 5 } }
 
-        it { expect(result.map(&:id)).to eq [@foo_1.id, @foo_2.id, @foo_3.id] }
+        it { expect(result.map(&:id)).to eq [@thing_1.id, @thing_2.id, @thing_3.id] }
       end
 
       context '{ page: 10, size: 5 }' do

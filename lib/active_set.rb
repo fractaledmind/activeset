@@ -26,7 +26,7 @@ class ActiveSet
 
   # :nocov:
   def inspect
-    "#<ActiveSet:#{format('0x00%x', (object_id << 1))} @instructions=#{@instructions.inspect}>"
+    "#<ActiveSet:#{object_id} @instructions=#{@instructions.inspect}>"
   end
 
   def ==(other)
