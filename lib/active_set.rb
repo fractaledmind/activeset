@@ -1,67 +1,78 @@
 # frozen_string_literal: true
 
-require 'active_set/version'
-
-require 'active_set/processors/filter_processor'
-require 'active_set/processors/sort_processor'
-require 'active_set/processors/paginate_processor'
-require 'active_set/processors/transform_processor'
+require 'active_support/core_ext/hash/reverse_merge'
+require 'patches/core_ext/hash/flatten_keys'
+require 'helpers/throws'
+require 'active_set/attribute_instruction'
+require 'active_set/filtering/operation'
+require 'active_set/sorting/operation'
+require 'active_set/paginating/operation'
+require 'active_set/exporting/operation'
 
 class ActiveSet
   include Enumerable
 
-  attr_reader :set, :instructions, :total_count
+  attr_reader :set, :view, :instructions
 
-  def initialize(set, instructions: {}, total_count: nil)
+  def initialize(set, view: nil, instructions: {})
     @set = set
+    @view = view || set
     @instructions = instructions
-    @total_count = total_count || @set.count
   end
 
   def each(&block)
-    @set.each(&block)
+    @view.each(&block)
+  end
+
+  # :nocov:
+  def inspect
+    "#<ActiveSet:#{object_id} @instructions=#{@instructions.inspect}>"
   end
 
   def ==(other)
-    return @set == other unless other.is_a?(ActiveSet)
-    @set == other.set
+    return @view == other unless other.is_a?(ActiveSet)
+
+    @view == other.view
   end
 
   def method_missing(method_name, *args, &block)
-    @set.send(method_name, *args, &block) || super
+    return @view.send(method_name, *args, &block) if @view.respond_to?(method_name)
+
+    super
   end
 
   def respond_to_missing?(method_name, include_private = false)
-    @set.respond_to?(method_name) || super
+    @view.respond_to?(method_name) || super
+  end
+  # :nocov:
+
+  def filter(instructions_hash)
+    filterer = Filtering::Operation.new(@view, instructions_hash)
+    reinitialize(filterer.execute, :filter, filterer.operation_instructions)
   end
 
-  def filter(instructions)
-    filterer = FilterProcessor.new(@set, instructions)
-    new_active_set(filterer.process, :filter, instructions)
+  def sort(instructions_hash)
+    sorter = Sorting::Operation.new(@view, instructions_hash)
+    reinitialize(sorter.execute, :sort, sorter.operation_instructions)
   end
 
-  def sort(instructions)
-    sorter = SortProcessor.new(@set, instructions)
-    new_active_set(sorter.process, :sort, instructions)
+  def paginate(instructions_hash)
+    paginater = Paginating::Operation.new(@view, instructions_hash)
+    reinitialize(paginater.execute, :paginate, paginater.operation_instructions)
   end
 
-  def paginate(instructions)
-    paginater = PaginateProcessor.new(@set, instructions)
-    full_instructions = instructions.reverse_merge(page: paginater.send(:page_number),
-                                                   size: paginater.send(:page_size))
-    new_active_set(paginater.process, :paginate, full_instructions)
-  end
-
-  def transform(instructions)
-    transformer = TransformProcessor.new(@set, instructions)
-    transformer.process
+  def export(instructions_hash)
+    exporter = Exporting::Operation.new(@view, instructions_hash)
+    exporter.execute
   end
 
   private
 
-  def new_active_set(set, method, instructions)
-    self.class.new(set,
-                   instructions: @instructions.merge(method => instructions),
-                   total_count: @total_count)
+  def reinitialize(processed_set, method, instructions)
+    self.class.new(@set,
+                   view: processed_set,
+                   instructions: @instructions.merge(
+                     method => instructions
+                   ))
   end
 end

@@ -1,3 +1,58 @@
+v 0.8.6
+  - fix a bug where ActiveRecord sorting didn't treat NULL values in the same way as Enumerable sorting
+    + where NULL values are sorted as if larger than any non-null value
+  - fix a bug with ActiveRecord scope filtering
+    + if we try to use a class method scope that returns something other than an ActiveRecord::Relation
+  - update the scopes filtering specs to be more generalized and exhaustive
+  - clean up specs in general
+v 0.8.5
+  - fix a bug in Enumerable class method filtering when method returns object, not array
+  - add specs for Enumerable filtering
+  - make the factories more intelligently to avoid some random failures from poor data creation
+v 0.8.4
+  - start using Bundler v2.x
+  - check the Gemfile.lock into version control
+  - handle transforming Date objects into sortable integers a bit more intelligently to ensure UTC
+  - fix Rubocop offenses (safely)
+v 0.8.3
+  - fix a bug to allow sorting of computed attributes on sets that include nil values
+v 0.8.2
+  - fix a bug that prevents enumerable sets from being filtered down to empty sets
+v 0.8.1
+  - fix a small bug when doing ARel filtering against binary fields
+  - add the ARel operators to the README
+  - update the ARel operator spec
+v 0.8.0
+  - simplify the `inspect` method for ActiveSet instances, only showing the instructions
+  - split the strategy files from the operation files
+  - update how ActiveRecord filtering works
+    + instruction operators must now be ARel methods, not SQL operators
+  - memoize the `transform_to_sortable_numeric` method
+v 0.7.1
+  - Fix a small bug with Enumberable filtering of metaprogrammatically defined getter methods
+v 0.7.0
+  - another rewrite from the ground up
+  - allow each operation to exist and function in its own way and in its own context
+  - only write tests against the public interface of the ActiveSet class, not any internal classes
+  - attempt a proper and complete sorting implementation that offers multi-dimensional, multi-directional sorting for either ActiveRecord or Enumerable sets
+v 0.6.5
+  - Fix the ActiveRecord filtering adapter to use the correct operator (=) for Oracle WHERE clauses
+v 0.6.4
+  - Add multi-column sorting for ActiveRecord collections
+  - Fix the ActiveRecord `attribute_model` method to always return the class, and not an ActiveRecord::Relation object
+v 0.6.3
+  - Fix a typo in the CSV transform adapter
+v 0.6.2
+  - ensure that the default paginate instructions are saved into the ActiveSet#instructions attr
+v 0.6.1
+  - fix bug with ActiveSet#method_missing blowing up when the delegated method properly returned a false Boolean
+v 0.6.0
+  - rewrite from the ground up
+v 0.5.8
+  - Avoid a possible error path where relations with a '#union' would blow up when using '#merge' because the '#order' operation was being built with the relation and not with the relation's base class
+v 0.5.7
+  - Fix bug where filtering wasn't updating the new ActiveSet instances #total_count
+  - Add that this gem now does transformations to the README
 v 0.5.6
   - Ensure that the default value for instructions when building filtering queries is '=' and not '=='
   - Allow the default value for the instructions keypath's operator to be passed in

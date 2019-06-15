@@ -1,5 +1,8 @@
 # ActiveSet
 
+[![Build Status](https://travis-ci.com/fractaledmind/activeset.svg?branch=master)](https://travis-ci.com/fractaledmind/activeset)
+[![codecov](https://codecov.io/gh/fractaledmind/activeset/branch/master/graph/badge.svg)](https://codecov.io/gh/fractaledmind/activeset)
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -18,17 +21,108 @@ Or install it yourself as:
 
 ## Usage
 
-The `ActiveSet` class is an extension of `Enumerable` that adds methods for filtering, sorting, and paginating (right now; other methods are sure to follow).
+The `ActiveSet` class provides convenience methods for filtering, sorting, paginating, and transforming collections of data-objects, whether `ActiveRecord::Relation`s or Ruby `Array`s or custom classes that extend the `Enumerable` module.
 
-Every convenience method added to the `ActiveSet` class is handled via a `Processor` class, and that `Processor` class will then use 1 or more `Adapter` classes to actually fulfill the functional contract.
+When calling a convenience method on an instance of `ActiveSet`, you pass only 1 argument: a plain-old-Ruby-hash that encodes the instructions for that operation. Each convenience method works with hashes of differing signatures.
 
-an `Adapter` for a particular `Processor` simply handles doing the job of the processor for a particular kind of Set.
+## Filtering
 
-So, for example, the `Filter::Processor` will have an `EnumerableAdapter` (to work with generic enumerable sets) and an `ActiveRecordAdapter` (to work with active record relations).
+`ActiveSet` allows for you to filter your collection by:
 
-When calling a convenience method on an instance of `ActiveSet`, you pass only 1 argument: what I am currently calling a `structure`, which is a plain-old-Ruby-hash. Each convenience method works with hashes of differing signatures.
+- "direct" attributes (i.e. for an `ActiveRecord` model, a database attribute)
+- "computed" attributes (i.e. Ruby getter-methods on your data-objects)
+- "associated" attributes (i.e. either direct or computed attributes on objects associated with your data-objects)
+- "called" attributes (i.e. Ruby methods with non-zero arity)
 
-e.g. `filter(attribute: 'value', association: { field: 'value' })` or `sort(attribute: :asc, association: { field: 'desc' })` or `paginate(page: 1, size: 10)`
+The syntax for the instructions hash is relatively simple:
+
+```ruby
+{
+    attribute: 'value',
+    association: {
+        field: 'value'
+    },
+    'association.field' => 'value',
+    'attribute(operator)' => 1.0,
+    association: {
+        'field(operator)': 'value'
+    },
+    'association.field(operator)' => 'value',
+}
+```
+
+Every entry in the instructions hash is treated and processed as an independent operation, and all operations are _conjoined_ ("AND"-ed). At the moment, you cannot use disjointed ("OR"-ed) operations.
+
+The logic of this method is to attempt to process every instruction with the ActiveRecordStrategy, marking all successful attempts. If we successfully processed every instruction, we simply returned the processed result. If there are any instructions that went unprocessed, we take only those instructions and process them against the set processed by the ActiveRecordStrategy.
+
+This filtering operation does not preserve the order of the filters, enforces conjunction, and will discard any unprocessable instruction.
+
+For ActiveRecord sets, the various [ARel predicate methods](https://www.rubydoc.info/github/rails/arel/Arel/Predications) are available as operators:
+
+- `eq`
+- `not_eq`
+- `eq_any`
+- `not_eq_any`
+- `eq_all`
+- `not_eq_all`
+- `in`
+- `not_in`
+- `in_any`
+- `not_in_any`
+- `in_all`
+- `not_in_all`
+- `lt`
+- `lteq`
+- `lt_any`
+- `lteq_any`
+- `lt_all`
+- `lteq_all`
+- `gt`
+- `gteq`
+- `gt_any`
+- `gteq_any`
+- `gt_all`
+- `gteq_all`
+- `matches`
+- `does_not_match`
+- `matches_any`
+- `does_not_match_any`
+- `matches_all`
+- `does_not_match_all`
+
+## Sorting
+
+`ActiveSet` allows for multi-dimensional, multi-directional sorting across the same kinds of attributes as filtering ("direct", "computed", "associated", and "called").
+
+The syntax for the instructions hash is relatively simple:
+
+```ruby
+{
+    attribute: :desc,
+    association: {
+        field: :asc
+    }
+}
+```
+
+The logic for this method is to check whether all of the instructions appear to be processable by the ActiveRecordStrategy, and if they are to attempt to sort using the ActiveRecordStrategy (with all of the instructions, as you can't split sorting instructions). We then double check that all of the instructions were indeed successfully processed by the ActiveRecordStrategy, and if they were, we return that result. Otherwise (if either some instructions don't appear to be processable by ActiveRecord or some instructions weren't processed by ActiveRecord), we sort with the EnumerableStrategy.
+
+## Paginating
+
+`ActiveSet` also allows for paginating both ActiveRecord or plain Ruby enumerable sets.
+
+The syntax for the instructions hash remains relatively simple:
+
+```ruby
+{
+    size: 25,
+    page: 1
+}
+```
+
+Unlike the filtering or sorting operations, you do not have to pass an instructions hash, as the operation will default to paginating with a `size` of 25 and starting on `page` 1.
+
+Paginating as an operation works with "direct" instructions (that is, the instructions don't represent attribute paths or column structures; the instructions hash is a simple, flat hash), and the operation requires all instruction entries together (as opposed to filtering for example, where we can process each instruction entry separately).
 
 ## Future Feature Ideas
 
@@ -38,8 +132,6 @@ e.g. `filter(attribute: 'value', association: { field: 'value' })` or `sort(attr
 ## Notes
 
 This library does not deal with typecasting string values; the values of your structures must be of the appropriate data-type.
-
-This library does not work with `:time` fields in ActiveRecord relations.
 
 ## Development
 
