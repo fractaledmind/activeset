@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'factory_bot', '~> 4.8.0'
   spec.add_development_dependency 'faker', '~> 1.8.4'
   spec.add_development_dependency 'activerecord', '~> 5.1.0'
-  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rake', '~> 12.3'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'simplecov', '~> 0.15.0'
