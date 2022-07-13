@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'database_cleaner', '~> 1.6.1'
   spec.add_development_dependency 'factory_bot', '~> 4.8.0'
   spec.add_development_dependency 'faker', '~> 1.8.4'
-  spec.add_development_dependency 'activerecord', '~> 5.1.0'
+  spec.add_development_dependency 'activerecord', '~> 5.2.8'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop'
